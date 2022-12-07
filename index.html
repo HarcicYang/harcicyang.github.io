@@ -1,110 +1,25 @@
-<html>
+<!DOCTYPE html>
+<html lang="zh-cn">
     <head>
-        <title>蔡徐坤邀请你语音通话</title>
+        <title>Test Page</title>
         <style>
-            #accept-button {
-                border: 0px;
-                border-radius: 120px;
-                background-color: rgb(52, 204, 52);
-                width: 220px;
-                height: 110px;
-                margin-left: 170px;
-                margin-top: 570px;
-            }
-
-            #refuse-button {
-                border: 0px;
-                border-radius: 120px;
-                background-color: red;
-                width: 220px;
-                height: 110px;
-                margin-left: 570px;
-                margin-top: -147px;
-            }
-
-            div p {
-                font-size: 30pt;
-                padding: 23px;
-                padding-left: 70px;
+            body {
+                background-color: rgb(30, 30, 30);
                 color: white;
             }
-
-            #title p {
-                color: black;
-                font-size: 32pt;
-                margin-left: 192px;
+            .b {
+                width: 650px;
+                height: 21px;
+                background-color: rgb(75, 110, 175);
+                border: 0px;
+                border-radius: 3px;
+                display: block;
             }
-
-            #head img {
-                margin-left: 320px;
-                margin-top: 200px;
-                border: 1px gray;
-                border-radius: 220px;
-                width: 320px;
-                height: 320px;
-            }
-
         </style>
-        
     </head>
     <body>
-        <div id="head">
-            <img src="cxk.jpg" alt=" ">
-        </div>
-        <div id="title">
-            <p id="title">蔡徐坤  邀请你语音通话</p>
-        </div>
-        <div id="accept-button">
-            <p id = "p">接听</p>
-        </div>
-        <div id="refuse-button">
-            <p>挂断</p>
-        </div>
-        
-        
-        <script>
-            var acpb = document.getElementById("accept-button");
-            var refb = document.getElementById("refuse-button");
-            var p = document.getElementById("p");
-            var times = 1;
-            function play(ch) {
-                var audio = document.createElement("audio");
-                if (ch == "accept") {
-                    audio.src = 'ctrl.m4a';
-                }
-                else if (ch == "ring") {
-                    audio.src = "ring.mp3"
-                }
-                else {
-                    audio.src = 'jntm.mp3';
-                }
-                
-                audio.play();
-            }
-
-            window.onload = function() {
-                play("ring");
-            }
-
-            acpb.onclick = function() {
-                if (times > 1) {
-                    p.textContent = "正在跳转";
-                    location.replace("https://github.com/HarcicYang");
-                }
-                refb.style.display = "none"
-                p.textContent = "挂断"
-                acpb.style.backgroundColor = "red"
-                acpb.style.width = "655px"
-                play("accept");
-                times = 2;
-            }
-
-            refb.onclick = function() {
-                alert("你干嘛哈哈哎呦~~")
-                acpb.style.display = "none"
-                refb.style.display = "none"
-                play("L");
-            }
-        </script>
+        <h1>Just Test Page \ 测试页面</h1>
+        <p>2022.12.1</p>
+        <div class = "b">TEST</div>
     </body>
 </html>
