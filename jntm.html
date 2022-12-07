@@ -29,7 +29,7 @@
                 color: white;
             }
 
-            #title p {
+            #title-p {
                 color: black;
                 font-size: 32pt;
                 margin-left: 192px;
@@ -44,6 +44,33 @@
                 height: 320px;
             }
 
+            @keyframes button-change {
+                0% {
+                    width: 220px;
+                    color: greenyellow;
+                }
+                50% {
+                    color: rgb(255, 240, 172);
+                }
+                90% {
+                    color: rgb(255, 196, 129);
+                }
+                100% {
+                    width: 655px;
+                    color: red;
+                }
+            }
+
+            #accept-onclick {
+                border: 0px;
+                border-radius: 120px;
+                height: 110px;
+                width: 655px;
+                margin-left: 170px;
+                margin-top: 570px;
+                animation-duration: 1s;
+                animation-name: button-change;
+            }
         </style>
         
     </head>
@@ -52,7 +79,7 @@
             <img src="cxk.jpg" alt=" ">
         </div>
         <div id="title">
-            <p id="title">蔡徐坤  邀请你语音通话</p>
+            <p id="title-p">蔡徐坤  邀请你语音通话</p>
         </div>
         <div id="accept-button">
             <p id = "p">接听</p>
@@ -60,13 +87,16 @@
         <div id="refuse-button">
             <p>挂断</p>
         </div>
-        
-        
+
         <script>
             var acpb = document.getElementById("accept-button");
             var refb = document.getElementById("refuse-button");
+            var title_show = document.getElementById("title-p");
             var p = document.getElementById("p");
             var times = 1;
+            var timed = 0;
+            var timed_h = 0;
+
             function play(ch) {
                 var audio = document.createElement("audio");
                 if (ch == "accept") {
@@ -91,18 +121,32 @@
                     p.textContent = "正在跳转";
                     location.replace("https://github.com/HarcicYang");
                 }
-                refb.style.display = "none"
-                p.textContent = "挂断"
-                acpb.style.backgroundColor = "red"
-                acpb.style.width = "655px"
+                refb.style.display = "none";
+                p.textContent = "挂断";
+                acpb.style.backgroundColor = "red";
+                acpb.id = "accept-onclick";
                 play("accept");
                 times = 2;
+                setInterval(function() {
+                    if (timed >= 10) {
+                        title_show.textContent = "正在通话 蔡徐坤 " + "00:" + timed;
+                        
+                    }
+                    else {
+                        title_show.textContent = "正在通话 蔡徐坤 00:0" + timed;
+                    }
+                    title_show.style.marginLeft = "192px";
+                    title_show.style.color = "black";
+                    title_show.style.fontSize = "32pt"
+                    timed += 1;
+                },1000)
             }
 
             refb.onclick = function() {
-                alert("你干嘛哈哈哎呦~~")
-                acpb.style.display = "none"
-                refb.style.display = "none"
+                alert("你干嘛哈哈哎呦~~");
+                acpb.style.display = "none";
+                refb.style.display = "none";
+                title_show.style.display = "none";
                 play("L");
             }
         </script>
