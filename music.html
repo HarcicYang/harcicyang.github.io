@@ -1,0 +1,37 @@
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+        <title>经典老歌送给你</title>
+        <link id="icon" rel="icon" href="https://pic1.zhimg.com/80/v2-ff34ce767b2a0883cec251c1820ab065_720w.webp">
+        <style>
+            #play {
+                border-radius: 7px;
+                border: 1px solid lightblue;
+                background-color: aqua;
+                text-align: center;
+                width: 128px;
+                height: 160px;
+            }
+        </style>
+        
+    </head>
+    <body>
+        <div id="play">
+            <svg xmlns="http://www.w3.org/2000/svg" width="110" height="110" class="bi bi-play-fill" viewBox="0 0 16 16">
+                <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/>
+              </svg>
+            <span id="text">点击播放</span>
+        </div>
+    </body>
+    <script>
+        let play = document.getElementById("play");
+        let text = document.getElementById("text");
+        play.onclick = function() {
+            play.style.borderColor = "black";
+            play.style.backgroundColor = "gray";
+            text.innerHTML = "你被骗了";
+            let music = new Audio("http://other-player-ri01-sycdn.kuwo.cn/acdcdc0646b8ef8ab358d5911221e9df/64da192f/resource/n2/55/73/2708435384.mp3");
+            music.play();
+        }
+    </script>
+</html>
