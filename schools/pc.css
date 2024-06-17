@@ -1,0 +1,57 @@
+div#title {
+    align-content: center;
+    align-self: center;
+    width: auto;
+    height: auto;
+    margin: 50px auto;
+    padding: 50px;
+    border: 1px solid rgb(220, 220, 220);
+    border-radius: 15px;
+    background-color: rgb(252, 252, 252);
+}
+
+div#title span {
+    display: block;
+    margin-top: 20px;
+    margin-bottom: -20px;
+    font-size: 18pt;
+}
+
+div#input input {
+    width: 220px;
+    height: 30px;
+    border: 0;
+    border-bottom: 2px solid rgb(40, 117, 246);
+    border-radius: 5px;
+    background-color: #ffffff;
+    text-align: center;
+    text-indent: 5px;
+    font-size: 12pt;
+}
+
+div#input input:focus {
+    outline: 2px dotted rgb(40, 117, 246);
+}
+
+div#button {
+    /*align-content: center;*/
+    width: 20%;
+    height: 20%;
+    background-color: rgb(40, 117, 246);
+    border: 0;
+    border-radius: 5px;
+    color: white;
+}
+
+div#button span {
+    margin: 20px auto;
+    padding: 5%;
+    align-self: center;
+    font-size: 12pt;
+    text-indent: 5px;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
