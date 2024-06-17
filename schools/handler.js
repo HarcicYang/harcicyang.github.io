@@ -9,10 +9,9 @@ button.onclick = function(){
     else if (score == 0) {
         window.location.pathname = "/schools/results/2.html";
     }
-    else if (0 < score <= 650) {
+    else if (0 < score && score <= 650) {
         window.location.pathname = "/schools/results/1.html";
     }
-
     else {
         alert("你要去火星吗？")
     }
