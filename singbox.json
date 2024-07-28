@@ -4003,4 +4003,1304 @@
         "type": "ws",
         "path": "/?ed=2048",
         "headers": {
- 
+          "Host": "aliorg.filegear-sg.me"
+        }
+      },
+      "tls": {
+        "enabled": true,
+        "server_name": "aliorg.filegear-sg.me",
+        "insecure": true
+      },
+      "tcp_fast_open": false
+    },
+    {
+      "type": "trojan",
+      "tag": "SIN\ud83d\udc32\u2122\ufe0f\u3010\u8bf7\u52ff\u6d4b\u901f\u3011 20",
+      "server": "47.236.118.216",
+      "server_port": 2087,
+      "password": "CMLiu",
+      "transport": {
+        "type": "ws",
+        "path": "/?ed=2048",
+        "headers": {
+          "Host": "aliorg.filegear-sg.me"
+        }
+      },
+      "tls": {
+        "enabled": true,
+        "server_name": "aliorg.filegear-sg.me",
+        "insecure": true
+      },
+      "tcp_fast_open": false
+    },
+    {
+      "type": "trojan",
+      "tag": "TPE\ud83d\udc32\u2122\ufe0f\u3010\u8bf7\u52ff\u6d4b\u901f\u3011 6",
+      "server": "37.128.253.196",
+      "server_port": 34237,
+      "password": "CMLiu",
+      "transport": {
+        "type": "ws",
+        "path": "/?ed=2048",
+        "headers": {
+          "Host": "aliorg.filegear-sg.me"
+        }
+      },
+      "tls": {
+        "enabled": true,
+        "server_name": "aliorg.filegear-sg.me",
+        "insecure": true
+      },
+      "tcp_fast_open": false
+    },
+    {
+      "type": "trojan",
+      "tag": "SIN\ud83d\udc32\u2122\ufe0f\u3010\u8bf7\u52ff\u6d4b\u901f\u3011 21",
+      "server": "47.236.9.152",
+      "server_port": 2053,
+      "password": "CMLiu",
+      "transport": {
+        "type": "ws",
+        "path": "/?ed=2048",
+        "headers": {
+          "Host": "aliorg.filegear-sg.me"
+        }
+      },
+      "tls": {
+        "enabled": true,
+        "server_name": "aliorg.filegear-sg.me",
+        "insecure": true
+      },
+      "tcp_fast_open": false
+    },
+    {
+      "type": "trojan",
+      "tag": "SIN\ud83d\udc32\u2122\ufe0f\u3010\u8bf7\u52ff\u6d4b\u901f\u3011 22",
+      "server": "47.236.232.148",
+      "server_port": 2053,
+      "password": "CMLiu",
+      "transport": {
+        "type": "ws",
+        "path": "/?ed=2048",
+        "headers": {
+          "Host": "aliorg.filegear-sg.me"
+        }
+      },
+      "tls": {
+        "enabled": true,
+        "server_name": "aliorg.filegear-sg.me",
+        "insecure": true
+      },
+      "tcp_fast_open": false
+    },
+    {
+      "type": "trojan",
+      "tag": "SEA\ud83d\udc32\u2122\ufe0f\u3010\u8bf7\u52ff\u6d4b\u901f\u3011 5",
+      "server": "146.56.37.60",
+      "server_port": 20018,
+      "password": "CMLiu",
+      "transport": {
+        "type": "ws",
+        "path": "/?ed=2048",
+        "headers": {
+          "Host": "aliorg.filegear-sg.me"
+        }
+      },
+      "tls": {
+        "enabled": true,
+        "server_name": "aliorg.filegear-sg.me",
+        "insecure": true
+      },
+      "tcp_fast_open": false
+    },
+    {
+      "type": "trojan",
+      "tag": "SIN\ud83d\udc32\u2122\ufe0f\u3010\u8bf7\u52ff\u6d4b\u901f\u3011 23",
+      "server": "47.236.180.24",
+      "server_port": 8443,
+      "password": "CMLiu",
+      "transport": {
+        "type": "ws",
+        "path": "/?ed=2048",
+        "headers": {
+          "Host": "aliorg.filegear-sg.me"
+        }
+      },
+      "tls": {
+        "enabled": true,
+        "server_name": "aliorg.filegear-sg.me",
+        "insecure": true
+      },
+      "tcp_fast_open": false
+    },
+    {
+      "type": "trojan",
+      "tag": "ICN\ud83d\udc32\u2122\ufe0f\u3010\u8bf7\u52ff\u6d4b\u901f\u3011 11",
+      "server": "58.140.88.28",
+      "server_port": 30054,
+      "password": "CMLiu",
+      "transport": {
+        "type": "ws",
+        "path": "/?ed=2048",
+        "headers": {
+          "Host": "aliorg.filegear-sg.me"
+        }
+      },
+      "tls": {
+        "enabled": true,
+        "server_name": "aliorg.filegear-sg.me",
+        "insecure": true
+      },
+      "tcp_fast_open": false
+    },
+    {
+      "type": "trojan",
+      "tag": "TPE\ud83d\udc32\u2122\ufe0f\u3010\u8bf7\u52ff\u6d4b\u901f\u3011 7",
+      "server": "141.11.87.96",
+      "server_port": 34237,
+      "password": "CMLiu",
+      "transport": {
+        "type": "ws",
+        "path": "/?ed=2048",
+        "headers": {
+          "Host": "aliorg.filegear-sg.me"
+        }
+      },
+      "tls": {
+        "enabled": true,
+        "server_name": "aliorg.filegear-sg.me",
+        "insecure": true
+      },
+      "tcp_fast_open": false
+    },
+    {
+      "type": "trojan",
+      "tag": "SIN\ud83d\udc32\u2122\ufe0f\u3010\u8bf7\u52ff\u6d4b\u901f\u3011 24",
+      "server": "47.236.180.51",
+      "server_port": 2087,
+      "password": "CMLiu",
+      "transport": {
+        "type": "ws",
+        "path": "/?ed=2048",
+        "headers": {
+          "Host": "aliorg.filegear-sg.me"
+        }
+      },
+      "tls": {
+        "enabled": true,
+        "server_name": "aliorg.filegear-sg.me",
+        "insecure": true
+      },
+      "tcp_fast_open": false
+    },
+    {
+      "type": "trojan",
+      "tag": "SIN\ud83d\udc32\u2122\ufe0f\u3010\u8bf7\u52ff\u6d4b\u901f\u3011 25",
+      "server": "47.236.202.91",
+      "server_port": 2083,
+      "password": "CMLiu",
+      "transport": {
+        "type": "ws",
+        "path": "/?ed=2048",
+        "headers": {
+          "Host": "aliorg.filegear-sg.me"
+        }
+      },
+      "tls": {
+        "enabled": true,
+        "server_name": "aliorg.filegear-sg.me",
+        "insecure": true
+      },
+      "tcp_fast_open": false
+    },
+    {
+      "type": "trojan",
+      "tag": "TPE\ud83d\udc32\u2122\ufe0f\u3010\u8bf7\u52ff\u6d4b\u901f\u3011 8",
+      "server": "141.11.87.84",
+      "server_port": 34237,
+      "password": "CMLiu",
+      "transport": {
+        "type": "ws",
+        "path": "/?ed=2048",
+        "headers": {
+          "Host": "aliorg.filegear-sg.me"
+        }
+      },
+      "tls": {
+        "enabled": true,
+        "server_name": "aliorg.filegear-sg.me",
+        "insecure": true
+      },
+      "tcp_fast_open": false
+    },
+    {
+      "type": "trojan",
+      "tag": "KIX\ud83d\udc32\u2122\ufe0f\u3010\u8bf7\u52ff\u6d4b\u901f\u3011 6",
+      "server": "141.11.87.20",
+      "server_port": 443,
+      "password": "CMLiu",
+      "transport": {
+        "type": "ws",
+        "path": "/?ed=2048",
+        "headers": {
+          "Host": "aliorg.filegear-sg.me"
+        }
+      },
+      "tls": {
+        "enabled": true,
+        "server_name": "aliorg.filegear-sg.me",
+        "insecure": true
+      },
+      "tcp_fast_open": false
+    },
+    {
+      "type": "trojan",
+      "tag": "SIN\ud83d\udc32\u2122\ufe0f\u3010\u8bf7\u52ff\u6d4b\u901f\u3011 26",
+      "server": "47.237.84.173",
+      "server_port": 2053,
+      "password": "CMLiu",
+      "transport": {
+        "type": "ws",
+        "path": "/?ed=2048",
+        "headers": {
+          "Host": "aliorg.filegear-sg.me"
+        }
+      },
+      "tls": {
+        "enabled": true,
+        "server_name": "aliorg.filegear-sg.me",
+        "insecure": true
+      },
+      "tcp_fast_open": false
+    },
+    {
+      "type": "trojan",
+      "tag": "SIN\ud83d\udc32\u2122\ufe0f\u3010\u8bf7\u52ff\u6d4b\u901f\u3011 27",
+      "server": "47.236.189.92",
+      "server_port": 8443,
+      "password": "CMLiu",
+      "transport": {
+        "type": "ws",
+        "path": "/?ed=2048",
+        "headers": {
+          "Host": "aliorg.filegear-sg.me"
+        }
+      },
+      "tls": {
+        "enabled": true,
+        "server_name": "aliorg.filegear-sg.me",
+        "insecure": true
+      },
+      "tcp_fast_open": false
+    },
+    {
+      "type": "trojan",
+      "tag": "SIN\ud83d\udc32\u2122\ufe0f\u3010\u8bf7\u52ff\u6d4b\u901f\u3011 28",
+      "server": "47.236.171.205",
+      "server_port": 2083,
+      "password": "CMLiu",
+      "transport": {
+        "type": "ws",
+        "path": "/?ed=2048",
+        "headers": {
+          "Host": "aliorg.filegear-sg.me"
+        }
+      },
+      "tls": {
+        "enabled": true,
+        "server_name": "aliorg.filegear-sg.me",
+        "insecure": true
+      },
+      "tcp_fast_open": false
+    },
+    {
+      "type": "trojan",
+      "tag": "SIN\ud83d\udc32\u2122\ufe0f\u3010\u8bf7\u52ff\u6d4b\u901f\u3011 29",
+      "server": "47.237.92.26",
+      "server_port": 2096,
+      "password": "CMLiu",
+      "transport": {
+        "type": "ws",
+        "path": "/?ed=2048",
+        "headers": {
+          "Host": "aliorg.filegear-sg.me"
+        }
+      },
+      "tls": {
+        "enabled": true,
+        "server_name": "aliorg.filegear-sg.me",
+        "insecure": true
+      },
+      "tcp_fast_open": false
+    },
+    {
+      "type": "trojan",
+      "tag": "SIN\ud83d\udc32\u2122\ufe0f\u3010\u8bf7\u52ff\u6d4b\u901f\u3011 30",
+      "server": "47.236.237.90",
+      "server_port": 2087,
+      "password": "CMLiu",
+      "transport": {
+        "type": "ws",
+        "path": "/?ed=2048",
+        "headers": {
+          "Host": "aliorg.filegear-sg.me"
+        }
+      },
+      "tls": {
+        "enabled": true,
+        "server_name": "aliorg.filegear-sg.me",
+        "insecure": true
+      },
+      "tcp_fast_open": false
+    },
+    {
+      "type": "trojan",
+      "tag": "SIN\ud83d\udc32\u2122\ufe0f\u3010\u8bf7\u52ff\u6d4b\u901f\u3011 31",
+      "server": "47.236.165.25",
+      "server_port": 2087,
+      "password": "CMLiu",
+      "transport": {
+        "type": "ws",
+        "path": "/?ed=2048",
+        "headers": {
+          "Host": "aliorg.filegear-sg.me"
+        }
+      },
+      "tls": {
+        "enabled": true,
+        "server_name": "aliorg.filegear-sg.me",
+        "insecure": true
+      },
+      "tcp_fast_open": false
+    },
+    {
+      "type": "trojan",
+      "tag": "SIN\ud83d\udc32\u2122\ufe0f\u3010\u8bf7\u52ff\u6d4b\u901f\u3011 32",
+      "server": "47.236.75.152",
+      "server_port": 8443,
+      "password": "CMLiu",
+      "transport": {
+        "type": "ws",
+        "path": "/?ed=2048",
+        "headers": {
+          "Host": "aliorg.filegear-sg.me"
+        }
+      },
+      "tls": {
+        "enabled": true,
+        "server_name": "aliorg.filegear-sg.me",
+        "insecure": true
+      },
+      "tcp_fast_open": false
+    },
+    {
+      "type": "trojan",
+      "tag": "\ud83c\udded\ud83c\uddf0 HKG\ud83d\udc32\u2122\ufe0f\u3010\u8bf7\u52ff\u6d4b\u901f\u3011 21",
+      "server": "58.176.229.127",
+      "server_port": 35002,
+      "password": "CMLiu",
+      "transport": {
+        "type": "ws",
+        "path": "/?ed=2048",
+        "headers": {
+          "Host": "aliorg.filegear-sg.me"
+        }
+      },
+      "tls": {
+        "enabled": true,
+        "server_name": "aliorg.filegear-sg.me",
+        "insecure": true
+      },
+      "tcp_fast_open": false
+    },
+    {
+      "type": "trojan",
+      "tag": "SIN\ud83d\udc32\u2122\ufe0f\u3010\u8bf7\u52ff\u6d4b\u901f\u3011 33",
+      "server": "47.236.145.85",
+      "server_port": 2096,
+      "password": "CMLiu",
+      "transport": {
+        "type": "ws",
+        "path": "/?ed=2048",
+        "headers": {
+          "Host": "aliorg.filegear-sg.me"
+        }
+      },
+      "tls": {
+        "enabled": true,
+        "server_name": "aliorg.filegear-sg.me",
+        "insecure": true
+      },
+      "tcp_fast_open": false
+    },
+    {
+      "type": "trojan",
+      "tag": "TPE\ud83d\udc32\u2122\ufe0f\u3010\u8bf7\u52ff\u6d4b\u901f\u3011 9",
+      "server": "141.11.87.136",
+      "server_port": 34237,
+      "password": "CMLiu",
+      "transport": {
+        "type": "ws",
+        "path": "/?ed=2048",
+        "headers": {
+          "Host": "aliorg.filegear-sg.me"
+        }
+      },
+      "tls": {
+        "enabled": true,
+        "server_name": "aliorg.filegear-sg.me",
+        "insecure": true
+      },
+      "tcp_fast_open": false
+    },
+    {
+      "type": "trojan",
+      "tag": "SIN\ud83d\udc32\u2122\ufe0f\u3010\u8bf7\u52ff\u6d4b\u901f\u3011 34",
+      "server": "47.237.100.206",
+      "server_port": 2083,
+      "password": "CMLiu",
+      "transport": {
+        "type": "ws",
+        "path": "/?ed=2048",
+        "headers": {
+          "Host": "aliorg.filegear-sg.me"
+        }
+      },
+      "tls": {
+        "enabled": true,
+        "server_name": "aliorg.filegear-sg.me",
+        "insecure": true
+      },
+      "tcp_fast_open": false
+    },
+    {
+      "type": "trojan",
+      "tag": "SIN\ud83d\udc32\u2122\ufe0f\u3010\u8bf7\u52ff\u6d4b\u901f\u3011 35",
+      "server": "47.236.205.188",
+      "server_port": 2083,
+      "password": "CMLiu",
+      "transport": {
+        "type": "ws",
+        "path": "/?ed=2048",
+        "headers": {
+          "Host": "aliorg.filegear-sg.me"
+        }
+      },
+      "tls": {
+        "enabled": true,
+        "server_name": "aliorg.filegear-sg.me",
+        "insecure": true
+      },
+      "tcp_fast_open": false
+    },
+    {
+      "type": "trojan",
+      "tag": "SIN\ud83d\udc32\u2122\ufe0f\u3010\u8bf7\u52ff\u6d4b\u901f\u3011 36",
+      "server": "47.236.205.188",
+      "server_port": 2053,
+      "password": "CMLiu",
+      "transport": {
+        "type": "ws",
+        "path": "/?ed=2048",
+        "headers": {
+          "Host": "aliorg.filegear-sg.me"
+        }
+      },
+      "tls": {
+        "enabled": true,
+        "server_name": "aliorg.filegear-sg.me",
+        "insecure": true
+      },
+      "tcp_fast_open": false
+    },
+    {
+      "type": "trojan",
+      "tag": "SIN\ud83d\udc32\u2122\ufe0f\u3010\u8bf7\u52ff\u6d4b\u901f\u3011 37",
+      "server": "47.236.165.25",
+      "server_port": 2083,
+      "password": "CMLiu",
+      "transport": {
+        "type": "ws",
+        "path": "/?ed=2048",
+        "headers": {
+          "Host": "aliorg.filegear-sg.me"
+        }
+      },
+      "tls": {
+        "enabled": true,
+        "server_name": "aliorg.filegear-sg.me",
+        "insecure": true
+      },
+      "tcp_fast_open": false
+    },
+    {
+      "type": "trojan",
+      "tag": "\ud83c\udded\ud83c\uddf0 HKG\ud83d\udc32\u2122\ufe0f\u3010\u8bf7\u52ff\u6d4b\u901f\u3011 22",
+      "server": "123.202.145.26",
+      "server_port": 443,
+      "password": "CMLiu",
+      "transport": {
+        "type": "ws",
+        "path": "/?ed=2048",
+        "headers": {
+          "Host": "aliorg.filegear-sg.me"
+        }
+      },
+      "tls": {
+        "enabled": true,
+        "server_name": "aliorg.filegear-sg.me",
+        "insecure": true
+      },
+      "tcp_fast_open": false
+    },
+    {
+      "type": "trojan",
+      "tag": "SIN\ud83d\udc32\u2122\ufe0f\u3010\u8bf7\u52ff\u6d4b\u901f\u3011 38",
+      "server": "47.236.75.152",
+      "server_port": 2053,
+      "password": "CMLiu",
+      "transport": {
+        "type": "ws",
+        "path": "/?ed=2048",
+        "headers": {
+          "Host": "aliorg.filegear-sg.me"
+        }
+      },
+      "tls": {
+        "enabled": true,
+        "server_name": "aliorg.filegear-sg.me",
+        "insecure": true
+      },
+      "tcp_fast_open": false
+    },
+    {
+      "type": "trojan",
+      "tag": "SIN\ud83d\udc32\u2122\ufe0f\u3010\u8bf7\u52ff\u6d4b\u901f\u3011 39",
+      "server": "47.237.121.38",
+      "server_port": 2053,
+      "password": "CMLiu",
+      "transport": {
+        "type": "ws",
+        "path": "/?ed=2048",
+        "headers": {
+          "Host": "aliorg.filegear-sg.me"
+        }
+      },
+      "tls": {
+        "enabled": true,
+        "server_name": "aliorg.filegear-sg.me",
+        "insecure": true
+      },
+      "tcp_fast_open": false
+    },
+    {
+      "type": "trojan",
+      "tag": "SIN\ud83d\udc32\u2122\ufe0f\u3010\u8bf7\u52ff\u6d4b\u901f\u3011 40",
+      "server": "47.237.10.1",
+      "server_port": 2053,
+      "password": "CMLiu",
+      "transport": {
+        "type": "ws",
+        "path": "/?ed=2048",
+        "headers": {
+          "Host": "aliorg.filegear-sg.me"
+        }
+      },
+      "tls": {
+        "enabled": true,
+        "server_name": "aliorg.filegear-sg.me",
+        "insecure": true
+      },
+      "tcp_fast_open": false
+    },
+    {
+      "type": "trojan",
+      "tag": "BUF\ud83d\udc32\u2122\ufe0f\u3010\u8bf7\u52ff\u6d4b\u901f\u3011",
+      "server": "108.174.61.165",
+      "server_port": 8443,
+      "password": "CMLiu",
+      "transport": {
+        "type": "ws",
+        "path": "/?ed=2048",
+        "headers": {
+          "Host": "aliorg.filegear-sg.me"
+        }
+      },
+      "tls": {
+        "enabled": true,
+        "server_name": "aliorg.filegear-sg.me",
+        "insecure": true
+      },
+      "tcp_fast_open": false
+    },
+    {
+      "type": "trojan",
+      "tag": "SIN\ud83d\udc32\u2122\ufe0f\u3010\u8bf7\u52ff\u6d4b\u901f\u3011 41",
+      "server": "47.236.118.216",
+      "server_port": 2083,
+      "password": "CMLiu",
+      "transport": {
+        "type": "ws",
+        "path": "/?ed=2048",
+        "headers": {
+          "Host": "aliorg.filegear-sg.me"
+        }
+      },
+      "tls": {
+        "enabled": true,
+        "server_name": "aliorg.filegear-sg.me",
+        "insecure": true
+      },
+      "tcp_fast_open": false
+    },
+    {
+      "type": "trojan",
+      "tag": "SIN\ud83d\udc32\u2122\ufe0f\u3010\u8bf7\u52ff\u6d4b\u901f\u3011 42",
+      "server": "47.237.8.82",
+      "server_port": 2096,
+      "password": "CMLiu",
+      "transport": {
+        "type": "ws",
+        "path": "/?ed=2048",
+        "headers": {
+          "Host": "aliorg.filegear-sg.me"
+        }
+      },
+      "tls": {
+        "enabled": true,
+        "server_name": "aliorg.filegear-sg.me",
+        "insecure": true
+      },
+      "tcp_fast_open": false
+    },
+    {
+      "type": "trojan",
+      "tag": "LHR\ud83d\udc32\u2122\ufe0f\u3010\u8bf7\u52ff\u6d4b\u901f\u3011",
+      "server": "51.89.241.53",
+      "server_port": 8443,
+      "password": "CMLiu",
+      "transport": {
+        "type": "ws",
+        "path": "/?ed=2048",
+        "headers": {
+          "Host": "aliorg.filegear-sg.me"
+        }
+      },
+      "tls": {
+        "enabled": true,
+        "server_name": "aliorg.filegear-sg.me",
+        "insecure": true
+      },
+      "tcp_fast_open": false
+    },
+    {
+      "type": "trojan",
+      "tag": "TPE\ud83d\udc32\u2122\ufe0f\u3010\u8bf7\u52ff\u6d4b\u901f\u3011 10",
+      "server": "37.128.253.156",
+      "server_port": 34237,
+      "password": "CMLiu",
+      "transport": {
+        "type": "ws",
+        "path": "/?ed=2048",
+        "headers": {
+          "Host": "aliorg.filegear-sg.me"
+        }
+      },
+      "tls": {
+        "enabled": true,
+        "server_name": "aliorg.filegear-sg.me",
+        "insecure": true
+      },
+      "tcp_fast_open": false
+    },
+    {
+      "type": "trojan",
+      "tag": "SIN\ud83d\udc32\u2122\ufe0f\u3010\u8bf7\u52ff\u6d4b\u901f\u3011 43",
+      "server": "47.236.102.102",
+      "server_port": 2053,
+      "password": "CMLiu",
+      "transport": {
+        "type": "ws",
+        "path": "/?ed=2048",
+        "headers": {
+          "Host": "aliorg.filegear-sg.me"
+        }
+      },
+      "tls": {
+        "enabled": true,
+        "server_name": "aliorg.filegear-sg.me",
+        "insecure": true
+      },
+      "tcp_fast_open": false
+    },
+    {
+      "type": "trojan",
+      "tag": "IAD\ud83d\udc32\u2122\ufe0f\u3010\u8bf7\u52ff\u6d4b\u901f\u3011 3",
+      "server": "99.83.209.185",
+      "server_port": 443,
+      "password": "CMLiu",
+      "transport": {
+        "type": "ws",
+        "path": "/?ed=2048",
+        "headers": {
+          "Host": "aliorg.filegear-sg.me"
+        }
+      },
+      "tls": {
+        "enabled": true,
+        "server_name": "aliorg.filegear-sg.me",
+        "insecure": true
+      },
+      "tcp_fast_open": false
+    },
+    {
+      "type": "trojan",
+      "tag": "SJC\ud83d\udc32\u2122\ufe0f\u3010\u8bf7\u52ff\u6d4b\u901f\u3011 25",
+      "server": "37.123.193.187",
+      "server_port": 110,
+      "password": "CMLiu",
+      "transport": {
+        "type": "ws",
+        "path": "/?ed=2048",
+        "headers": {
+          "Host": "aliorg.filegear-sg.me"
+        }
+      },
+      "tls": {
+        "enabled": true,
+        "server_name": "aliorg.filegear-sg.me",
+        "insecure": true
+      },
+      "tcp_fast_open": false
+    },
+    {
+      "type": "trojan",
+      "tag": "SIN\ud83d\udc32\u2122\ufe0f\u3010\u8bf7\u52ff\u6d4b\u901f\u3011 44",
+      "server": "47.237.84.173",
+      "server_port": 2096,
+      "password": "CMLiu",
+      "transport": {
+        "type": "ws",
+        "path": "/?ed=2048",
+        "headers": {
+          "Host": "aliorg.filegear-sg.me"
+        }
+      },
+      "tls": {
+        "enabled": true,
+        "server_name": "aliorg.filegear-sg.me",
+        "insecure": true
+      },
+      "tcp_fast_open": false
+    },
+    {
+      "type": "trojan",
+      "tag": "CDG\ud83d\udc32\u2122\ufe0f\u3010\u8bf7\u52ff\u6d4b\u901f\u3011",
+      "server": "137.74.157.158",
+      "server_port": 8443,
+      "password": "CMLiu",
+      "transport": {
+        "type": "ws",
+        "path": "/?ed=2048",
+        "headers": {
+          "Host": "aliorg.filegear-sg.me"
+        }
+      },
+      "tls": {
+        "enabled": true,
+        "server_name": "aliorg.filegear-sg.me",
+        "insecure": true
+      },
+      "tcp_fast_open": false
+    },
+    {
+      "type": "trojan",
+      "tag": "TPE\ud83d\udc32\u2122\ufe0f\u3010\u8bf7\u52ff\u6d4b\u901f\u3011 11",
+      "server": "37.128.252.242",
+      "server_port": 34237,
+      "password": "CMLiu",
+      "transport": {
+        "type": "ws",
+        "path": "/?ed=2048",
+        "headers": {
+          "Host": "aliorg.filegear-sg.me"
+        }
+      },
+      "tls": {
+        "enabled": true,
+        "server_name": "aliorg.filegear-sg.me",
+        "insecure": true
+      },
+      "tcp_fast_open": false
+    },
+    {
+      "type": "trojan",
+      "tag": "\ud83c\udded\ud83c\uddf0 HKG\ud83d\udc32\u2122\ufe0f\u3010\u8bf7\u52ff\u6d4b\u901f\u3011 23",
+      "server": "166.0.198.3",
+      "server_port": 13755,
+      "password": "CMLiu",
+      "transport": {
+        "type": "ws",
+        "path": "/?ed=2048",
+        "headers": {
+          "Host": "aliorg.filegear-sg.me"
+        }
+      },
+      "tls": {
+        "enabled": true,
+        "server_name": "aliorg.filegear-sg.me",
+        "insecure": true
+      },
+      "tcp_fast_open": false
+    },
+    {
+      "type": "trojan",
+      "tag": "AMS\ud83d\udc32\u2122\ufe0f\u3010\u8bf7\u52ff\u6d4b\u901f\u3011",
+      "server": "104.40.244.228",
+      "server_port": 443,
+      "password": "CMLiu",
+      "transport": {
+        "type": "ws",
+        "path": "/?ed=2048",
+        "headers": {
+          "Host": "aliorg.filegear-sg.me"
+        }
+      },
+      "tls": {
+        "enabled": true,
+        "server_name": "aliorg.filegear-sg.me",
+        "insecure": true
+      },
+      "tcp_fast_open": false
+    },
+    {
+      "type": "trojan",
+      "tag": "NRT\ud83d\udc32\u2122\ufe0f\u3010\u8bf7\u52ff\u6d4b\u901f\u3011 26",
+      "server": "103.117.102.7",
+      "server_port": 45454,
+      "password": "CMLiu",
+      "transport": {
+        "type": "ws",
+        "path": "/?ed=2048",
+        "headers": {
+          "Host": "aliorg.filegear-sg.me"
+        }
+      },
+      "tls": {
+        "enabled": true,
+        "server_name": "aliorg.filegear-sg.me",
+        "insecure": true
+      },
+      "tcp_fast_open": false
+    },
+    {
+      "type": "trojan",
+      "tag": "AMS\ud83d\udc32\u2122\ufe0f\u3010\u8bf7\u52ff\u6d4b\u901f\u3011 2",
+      "server": "167.172.40.90",
+      "server_port": 443,
+      "password": "CMLiu",
+      "transport": {
+        "type": "ws",
+        "path": "/?ed=2048",
+        "headers": {
+          "Host": "aliorg.filegear-sg.me"
+        }
+      },
+      "tls": {
+        "enabled": true,
+        "server_name": "aliorg.filegear-sg.me",
+        "insecure": true
+      },
+      "tcp_fast_open": false
+    }
+  ],
+  "route": {
+    "auto_detect_interface": true,
+    "final": "proxy",
+    "rules": [
+      {
+        "protocol": "dns",
+        "outbound": "dns-out"
+      },
+      {
+        "port": 53,
+        "outbound": "dns-out"
+      },
+      {
+        "network": "udp",
+        "port": 443,
+        "outbound": "block"
+      },
+      {
+        "rule_set": "geosite-category-ads-all",
+        "outbound": "AdBlock"
+      },
+      {
+        "clash_mode": "direct",
+        "outbound": "direct"
+      },
+      {
+        "clash_mode": "global",
+        "outbound": "proxy"
+      },
+      {
+        "domain": [
+          "clash.razord.top",
+          "yacd.metacubex.one",
+          "yacd.haishan.me",
+          "d.metacubex.one"
+        ],
+        "outbound": "direct"
+      },
+      {
+        "rule_set": "geosite-openai",
+        "outbound": "OpenAI"
+      },
+      {
+        "rule_set": "geosite-youtube",
+        "outbound": "Google"
+      },
+      {
+        "rule_set": "geoip-google",
+        "outbound": "Google"
+      },
+      {
+        "rule_set": "geosite-google",
+        "outbound": "Google"
+      },
+      {
+        "rule_set": "geosite-github",
+        "outbound": "Google"
+      },
+      {
+        "rule_set": "geoip-telegram",
+        "outbound": "Telegram"
+      },
+      {
+        "rule_set": "geosite-telegram",
+        "outbound": "Telegram"
+      },
+      {
+        "rule_set": "geoip-twitter",
+        "outbound": "Twitter"
+      },
+      {
+        "rule_set": "geosite-twitter",
+        "outbound": "Twitter"
+      },
+      {
+        "rule_set": "geoip-facebook",
+        "outbound": "Facebook"
+      },
+      {
+        "rule_set": [
+          "geosite-facebook",
+          "geosite-instagram"
+        ],
+        "outbound": "Facebook"
+      },
+      {
+        "rule_set": "geoip-bilibili",
+        "outbound": "BiliBili"
+      },
+      {
+        "rule_set": "geosite-bilibili",
+        "outbound": "BiliBili"
+      },
+      {
+        "rule_set": "geosite-bahamut",
+        "outbound": "Bahamut"
+      },
+      {
+        "rule_set": "geosite-spotify",
+        "outbound": "Spotify"
+      },
+      {
+        "rule_set": "geosite-tiktok",
+        "outbound": "TikTok"
+      },
+      {
+        "rule_set": "geoip-netflix",
+        "outbound": "NETFLIX"
+      },
+      {
+        "rule_set": "geosite-netflix",
+        "outbound": "NETFLIX"
+      },
+      {
+        "rule_set": "geosite-disney",
+        "outbound": "Disney+"
+      },
+      {
+        "rule_set": "geosite-apple",
+        "outbound": "Apple"
+      },
+      {
+        "rule_set": "geosite-amazon",
+        "outbound": "Apple"
+      },
+      {
+        "rule_set": "geosite-microsoft",
+        "outbound": "Microsoft"
+      },
+      {
+        "rule_set": "geosite-category-games",
+        "outbound": "Games"
+      },
+      {
+        "rule_set": "geosite-hbo",
+        "outbound": "Streaming"
+      },
+      {
+        "rule_set": "geosite-primevideo",
+        "outbound": "Streaming"
+      },
+      {
+        "rule_set": "geosite-geolocation-!cn",
+        "outbound": "Global"
+      },
+      {
+        "rule_set": "geosite-private",
+        "outbound": "direct"
+      },
+      {
+        "ip_is_private": true,
+        "outbound": "direct"
+      },
+      {
+        "rule_set": "geoip-cn",
+        "outbound": "China"
+      },
+      {
+        "rule_set": "geosite-cn",
+        "outbound": "China"
+      }
+    ],
+    "rule_set": [
+      {
+        "tag": "geoip-google",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geoip/google.srs",
+        "download_detour": "direct"
+      },
+      {
+        "tag": "geoip-telegram",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geoip/telegram.srs",
+        "download_detour": "direct"
+      },
+      {
+        "tag": "geoip-twitter",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geoip/twitter.srs",
+        "download_detour": "direct"
+      },
+      {
+        "tag": "geoip-facebook",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geoip/facebook.srs",
+        "download_detour": "direct"
+      },
+      {
+        "tag": "geoip-netflix",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geoip/netflix.srs",
+        "download_detour": "direct"
+      },
+      {
+        "tag": "geoip-apple",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo-lite/geoip/apple.srs",
+        "download_detour": "direct"
+      },
+      {
+        "tag": "geoip-bilibili",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo-lite/geoip/bilibili.srs",
+        "download_detour": "direct"
+      },
+      {
+        "tag": "geoip-cn",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geoip/cn.srs",
+        "download_detour": "direct"
+      },
+      {
+        "tag": "geosite-private",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/private.srs",
+        "download_detour": "direct"
+      },
+      {
+        "tag": "geosite-openai",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/openai.srs",
+        "download_detour": "direct"
+      },
+      {
+        "tag": "geosite-youtube",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/youtube.srs",
+        "download_detour": "direct"
+      },
+      {
+        "tag": "geosite-google",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/google.srs",
+        "download_detour": "direct"
+      },
+      {
+        "tag": "geosite-github",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/github.srs",
+        "download_detour": "direct"
+      },
+      {
+        "tag": "geosite-telegram",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/telegram.srs",
+        "download_detour": "direct"
+      },
+      {
+        "tag": "geosite-twitter",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/twitter.srs",
+        "download_detour": "direct"
+      },
+      {
+        "tag": "geosite-facebook",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/facebook.srs",
+        "download_detour": "direct"
+      },
+      {
+        "tag": "geosite-instagram",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/instagram.srs",
+        "download_detour": "direct"
+      },
+      {
+        "tag": "geosite-bilibili",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/bilibili.srs",
+        "download_detour": "direct"
+      },
+      {
+        "tag": "geosite-bahamut",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/bahamut.srs",
+        "download_detour": "direct"
+      },
+      {
+        "tag": "geosite-spotify",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/spotify.srs",
+        "download_detour": "direct"
+      },
+      {
+        "tag": "geosite-tiktok",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/tiktok.srs",
+        "download_detour": "direct"
+      },
+      {
+        "tag": "geosite-netflix",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/netflix.srs",
+        "download_detour": "direct"
+      },
+      {
+        "tag": "geosite-disney",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/disney.srs",
+        "download_detour": "direct"
+      },
+      {
+        "tag": "geosite-apple",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/apple.srs",
+        "download_detour": "direct"
+      },
+      {
+        "tag": "geosite-amazon",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/amazon.srs",
+        "download_detour": "direct"
+      },
+      {
+        "tag": "geosite-microsoft",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/microsoft.srs",
+        "download_detour": "direct"
+      },
+      {
+        "tag": "geosite-category-games",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/category-games.srs",
+        "download_detour": "direct"
+      },
+      {
+        "tag": "geosite-hbo",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/hbo.srs",
+        "download_detour": "direct"
+      },
+      {
+        "tag": "geosite-primevideo",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/primevideo.srs",
+        "download_detour": "direct"
+      },
+      {
+        "tag": "geosite-cn",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/cn.srs",
+        "download_detour": "direct"
+      },
+      {
+        "tag": "geosite-geolocation-!cn",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/geolocation-!cn.srs",
+        "download_detour": "direct"
+      },
+      {
+        "tag": "geosite-category-ads-all",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/category-ads-all.srs",
+        "download_detour": "direct"
+      }
+    ]
+  }
+}
