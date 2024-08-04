@@ -1,0 +1,1 @@
+import{_ as s,c as i,o as a,a2 as n}from"./chunks/framework.Di2I1Wv_.js";const g=JSON.parse('{"title":"简单配置","description":"","frontmatter":{},"headers":[],"relativePath":"usage/config.md","filePath":"usage/config.md"}'),t={name:"usage/config.md"},e=n("",5),l=[e];function p(h,k,o,d,E,c){return a(),i("div",null,l)}const u=s(t,[["render",p]]);export{g as __pageData,u as default};
