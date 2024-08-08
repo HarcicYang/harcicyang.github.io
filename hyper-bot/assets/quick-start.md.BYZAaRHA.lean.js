@@ -1,1 +1,0 @@
-import{_ as s,c as i,o as a,a2 as n}from"./chunks/framework.Di2I1Wv_.js";const c=JSON.parse('{"title":"快速开始","description":"","frontmatter":{},"headers":[],"relativePath":"quick-start.md","filePath":"quick-start.md"}'),t={name:"quick-start.md"},e=n("",39),p=[e];function l(h,k,o,r,E,d){return a(),i("div",null,p)}const u=s(t,[["render",l]]);export{c as __pageData,u as default};
