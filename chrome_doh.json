@@ -1,0 +1,30 @@
+{
+    "version": 1,
+    "rules": [
+        {
+            "domain": [
+                "dnsnl.alekberg.net",
+                "doh.cleanbrowsing.org",
+                "chrome.cloudflare-dns.com",
+                "doh.xfinity.com",
+                "doh.cox.net",
+                "odvr.nic.cz",
+                "doh.dns.sb",
+                "dns.google",
+                "dns64.dns.google",
+                "public.dns.iij.jp",
+                "dns.levonet.sk",
+                "chromium.dns.nextdns.io",
+                "doh.opendns.com",
+                "doh.familyshield.opendns.com",
+                "dns11.quad9.net",
+                "dns10.quad9.net",
+                "dns.quad9.net",
+                "doh.quickline.ch",
+                "doh-01.spectrum.com",
+                "doh-02.spectrum.com",
+                "use-application-dns.net"
+            ]
+        }
+    ]
+}
