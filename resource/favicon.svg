@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1920" height="1920" viewBox="0 0 1920 1920">
+	<defs>
+		<clipPath id="clip-LOGO">
+			<rect width="1920" height="1920"/>
+		</clipPath>
+	</defs>
+	<g id="LOGO" clip-path="url(#clip-LOGO)">
+		<g id="logo-2" transform="translate(127.376 68.102)">
+			<rect id="矩形_1" width="150" height="1100" transform="translate(952.628 148.113) rotate(60)" fill="#fff"/>
+			<rect id="矩形_2" width="150" height="747" transform="translate(503.802 1271.921) rotate(150)" fill="#fff"/>
+			<rect id="矩形_3" width="150" height="1400" transform="translate(1659.528 1356.548) rotate(150)" fill="#fff"/>
+			<rect id="矩形_4" width="150" height="1400" transform="translate(1511.65 516.523) rotate(60)" fill="#fff"/>
+			<rect id="矩形_6" width="150" height="747" transform="translate(1589.725 646.921) rotate(150)" fill="#fff"/>
+			<rect id="矩形_7" width="150" height="458.837" rx="75" transform="translate(1104.114 1166.766) rotate(60)" fill="#00a8ff"/>
+		</g>
+	</g>
+</svg>

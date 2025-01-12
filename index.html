@@ -1,25 +1,132 @@
 <!DOCTYPE html>
-<html lang="zh-cn">
+<html lang="zh">
     <head>
-        <title>Test Page</title>
-        <style>
-            body {
-                background-color: rgb(30, 30, 30);
-                color: white;
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Rcitrat - Alpha</title>
+        <link rel="icon" type="image/svg+xml" href="/resource/favicon.svg">
+        <link rel="stylesheet" href="resource/style.css">
+        <script>
+            function getDomainFromUrl(url) {
+                const parsedUrl = new URL(url);
+                return parsedUrl.hostname;
             }
-            .b {
-                width: 650px;
-                height: 21px;
-                background-color: rgb(75, 110, 175);
-                border: 0px;
-                border-radius: 3px;
-                display: block;
+
+            function getCSSVar(variableName) {
+                return getComputedStyle(document.documentElement).getPropertyValue(variableName);
             }
-        </style>
+
+            class PinItem extends HTMLElement {
+                urlToJump;
+                title;
+
+                connectedCallback() {
+                    this.title = this.getAttribute("title");
+                    this.urlToJump = this.getAttribute("url");
+                    const shadow = this.attachShadow({mode: "open"});
+                    const wrapper = document.createElement("div");
+                    let iconBlock = document.createElement("div");
+                    let iconImg = document.createElement("img");
+                    let titleText = document.createElement("p");
+                    iconBlock.className = "pin-item-block";
+                    iconImg.src = "http://" + getDomainFromUrl(this.urlToJump) + "/favicon.ico";
+                    iconImg.height = 50;
+                    iconImg.width = 50;
+                    iconBlock.style.margin = "20px 0 15px 30px";
+
+                    titleText.innerText = this.title;
+                    titleText.style.width = "110px";
+                    titleText.style.marginTop = "2px";
+                    titleText.style.fontSize = "12pt";
+                    titleText.style.textAlign = "center";
+                    titleText.style.color = getCSSVar("--text-color");
+
+                    iconBlock.appendChild(iconImg);
+                    wrapper.appendChild(iconBlock);
+                    wrapper.appendChild(titleText);
+                    shadow.appendChild(wrapper);
+                }
+
+                jump() {
+                    location.href = this.urlToJump;
+                }
+            }
+            customElements.define("pin-item", PinItem);
+        </script>
     </head>
     <body>
-        <h1>Just Test Page \ 测试页面</h1>
-        <p>2022.12.1</p>
-        <div class = "b">TEST</div>
+        <div class="overlay">
+            <div class="container">
+                <div class="logo-block">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1920" height="1920" viewBox="0 0 1920 1920">
+                        <defs>
+                            <clipPath id="clip-LOGO">
+                                <rect width="1920" height="1920"/>
+                            </clipPath>
+                        </defs>
+                        <g id="LOGO" clip-path="url(#clip-LOGO)">
+                            <g id="logo-2" transform="translate(127.376 68.102)">
+                                <rect class="logo-main" width="150" height="1100" transform="translate(952.628 148.113) rotate(60)"/>
+                                <rect class="logo-main" width="150" height="747" transform="translate(503.802 1271.921) rotate(150)"/>
+                                <rect class="logo-main" width="150" height="1400" transform="translate(1659.528 1356.548) rotate(150)"/>
+                                <rect class="logo-main" width="150" height="1400" transform="translate(1511.65 516.523) rotate(60)"/>
+                                <rect class="logo-main" width="150" height="747" transform="translate(1589.725 646.921) rotate(150)"/>
+                                <rect class="logo-sub" width="150" height="458.837" rx="75" transform="translate(1104.114 1166.766) rotate(60)"/>
+                            </g>
+                        </g>
+                    </svg>
+                </div>
+                <div class="search-box" id="sb">
+                    <label>
+                        <input class="search-ipt" type="text" id="i1" autocomplete="off"/>
+                        <button class="search-btn" id="i2">
+                            <svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M1024 981.333333c0 23.466667-19.2 42.666667-42.666667 42.666667-12.8 0-23.466667-4.266667-29.866667-12.8L697.6 757.333333C622.933333 817.066667 529.066667 853.333333 426.666667 853.333333 192 853.333333 0 661.333333 0 426.666667 0 192 192 0 426.666667 0s426.666667 192 426.666667 426.666667c0 102.4-36.266667 196.266667-96 270.933333l253.866667 253.866667C1019.733333 957.866667 1024 968.533333 1024 981.333333zM426.666667 85.333333C238.933333 85.333333 85.333333 238.933333 85.333333 426.666667s153.6 341.333333 341.333333 341.333333 341.333333-153.6 341.333333-341.333333S614.4 85.333333 426.666667 85.333333z"></path>
+                            </svg>
+                        </button>
+                    </label>
+                </div>
+                <div id="pin">
+                    <pin-item class="pin-item" url="https://www.bilibili.com" title="BiliBili"></pin-item>
+                    <pin-item class="pin-item" url="https://www.microsoft.com" title="Microsoft"></pin-item>
+                    <pin-item class="pin-item" url="https://www.github.com" title="GitHub"></pin-item>
+                    <pin-item class="pin-item" url="https://harcicyang.github.io/sickof" title="发电"></pin-item>
+                </div>
+            </div>
+        </div>
     </body>
+    <script>
+        iptn = document.getElementById("i1");
+
+        function fadeAll() {
+            document.getElementById("sb").classList.add("fade");
+            document.getElementById("pin").classList.add("fade");
+        }
+
+        function goSearch() {
+            fadeAll();
+            window.location.href = "https://www.bing.com/search?q=" + iptn.value;
+        }
+
+        iptn.addEventListener("keypress", function (event) {
+            if (event.key === "Enter") {
+                goSearch();
+            }
+        })
+        iptb = document.getElementById("i2");
+        iptb.onclick = function () {
+            goSearch();
+        }
+
+        pt = document.getElementsByClassName("pin-item");
+        for (let i = 0; i < pt.length; ++i) {
+            const item = pt[i];
+            item.addEventListener("click", function () {
+                fadeAll();
+                item.jump();
+            })
+        }
+
+
+    </script>
 </html>
