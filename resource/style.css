@@ -25,7 +25,7 @@
 }
 
 body {
-	background: linear-gradient(45deg, rgba(8, 112, 228, 1), rgba(79, 217, 136, 1)), url("/resource/back.webp") no-repeat center center fixed;
+	background: url("/resource/back.webp") no-repeat center center fixed, linear-gradient(45deg, rgba(8, 112, 228, 1), rgba(79, 217, 136, 1));
 	background-size: cover;
 }
 
