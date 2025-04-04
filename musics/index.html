@@ -295,6 +295,12 @@
             padding-bottom: 0.5rem;
             border-bottom: 1px solid #4f4f4f;
         }
+
+        .lyrics-line.active {
+            color: #77a7d7;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
     </style>
 </head>
 <body>
@@ -438,10 +444,11 @@
                 const response = await fetch(lyricsUrl);
                 if (response.ok) {
                     const lyricsText = await response.text();
-                    document.getElementById('lyrics').innerHTML = formatLyrics(parseLyrics(lyricsText));
+                    const parsedLyrics = parseLyrics(lyricsText);
+                    document.getElementById('lyrics').innerHTML = formatLyrics(parsedLyrics);
                 } else {
                     document.getElementById('lyrics').innerHTML = '<span style="opacity:0.7">暂无歌词</span>';
-            }
+                }
             } catch (error) {
                 document.getElementById('lyrics').innerHTML = '<span style="color:#e74c3c">歌词加载失败</span>';
             }
@@ -455,19 +462,77 @@
 
     }
 
-    function formatLyrics(text) {
-        return text.split('\n').map(line => {
-            return line ? `<div class="lyrics-line">${line}</div>` : '<br>';
+    function formatLyrics(lyricData) {
+        return lyricData.map(item => {
+            const timeAttr = item.time !== null ? `data-time="${item.time.toFixed(2)}"` : '';
+            return item.text
+                ? `<div class="lyrics-line" ${timeAttr}>${item.text}</div>`
+                : '<br>';
         }).join('');
     }
 
     function parseLyrics(text) {
-        return text.split('\n').map(line => {
-            const closingBracketIndex = line.indexOf(']');
-            return closingBracketIndex !== -1
-                ? line.substring(closingBracketIndex + 1).trim()
-                : line.trim();
-        }).join('\n');
+        const lines = text.split('\n');
+        const lyricData = [];
+        const timeRegex = /\[(\d+):(\d+\.?\d*)\]/g;
+
+        lines.forEach(line => {
+            const texts = [];
+            let match;
+            let lastIndex = 0;
+            let times = [];
+
+            while ((match = timeRegex.exec(line)) !== null) {
+                const minutes = parseInt(match[1]);
+                const seconds = parseFloat(match[2]);
+                times.push(minutes * 60 + seconds);
+                lastIndex = match.index + match[0].length;
+            }
+
+            const text = line.substring(lastIndex).trim();
+
+            if (times.length > 0) {
+                times.forEach(time => {
+                    lyricData.push({ time, text });
+                });
+            } else if (text) {
+                lyricData.push({ time: null, text });
+            }
+        });
+
+        // 按时间排序
+        lyricData.sort((a, b) => (a.time || 0) - (b.time || 0));
+        return lyricData;
+    }
+
+    let lastHighlightedLine = null;
+    function updateLyricsHighlight(currentTime) {
+        const lines = Array.from(document.querySelectorAll('.lyrics-line[data-time]'));
+        let currentLine = null;
+
+        // 找到最后一个时间小于当前时间的歌词行
+        for (let i = lines.length - 1; i >= 0; i--) {
+            const lineTime = parseFloat(lines[i].dataset.time);
+            if (lineTime <= currentTime) {
+                currentLine = lines[i];
+                break;
+            }
+        }
+
+        if (currentLine !== lastHighlightedLine) {
+            if (lastHighlightedLine) {
+                lastHighlightedLine.classList.remove('active');
+            }
+            if (currentLine) {
+                currentLine.classList.add('active');
+                // 平滑滚动到中间位置
+                currentLine.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+            }
+            lastHighlightedLine = currentLine;
+        }
     }
 
     function updateMetadata(tags, index) {
@@ -504,6 +569,15 @@
             document.getElementById('progress').value = (audio.currentTime / audio.duration) * 100 || 0;
             document.getElementById('currentTime').textContent =
                 formatTime(audio.currentTime);
+        });
+
+        audio.addEventListener('timeupdate', () => {
+            document.getElementById('progress').value = (audio.currentTime / audio.duration) * 100 || 0;
+            document.getElementById('currentTime').textContent =
+                formatTime(audio.currentTime);
+
+            // 更新歌词高亮
+            updateLyricsHighlight(audio.currentTime);
         });
 
         document.getElementById('progress').addEventListener('input', (e) => {
