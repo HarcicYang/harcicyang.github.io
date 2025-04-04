@@ -245,19 +245,54 @@
         }
 
         .lyrics-container {
-            flex: 0 0 300px;
+            flex: 0 0 320px;
             background: #3b3b3b;
             padding: 1rem;
-            overflow-y: scroll;
             border-radius: 0.5rem;
-            max-height: 70vh;
+            max-height: 75vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
         }
 
         .lyrics-content {
             color: #90a3a6;
             white-space: pre-line;
-            line-height: 1.6;
-            font-size: 0.9em;
+            line-height: 1.8;
+            font-size: 0.95em;
+            padding-right: 12px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #606060 #3b3b3b;
+            flex-grow: 1;
+        }
+
+        /* 自定义滚动条样式 */
+        .lyrics-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .lyrics-content::-webkit-scrollbar-track {
+            background: #3b3b3b;
+            border-radius: 4px;
+        }
+
+        .lyrics-content::-webkit-scrollbar-thumb {
+            background: #606060;
+            border-radius: 4px;
+            border: 2px solid #3b3b3b;
+        }
+
+        .lyrics-content::-webkit-scrollbar-thumb:hover {
+            background: #77a7d7;
+        }
+
+        .lyrics-title {
+            color: #77a7d7;
+            margin: 0 0 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #4f4f4f;
         }
     </style>
 </head>
@@ -402,12 +437,12 @@
                 const response = await fetch(lyricsUrl);
                 if (response.ok) {
                     const lyricsText = await response.text();
-                    document.getElementById('lyrics').textContent = parseLyrics(lyricsText);
+                    document.getElementById('lyrics').innerHTML = formatLyrics(parseLyrics(lyricsText));
                 } else {
-                    document.getElementById('lyrics').textContent = '暂无歌词';
-                }
+                    document.getElementById('lyrics').innerHTML = '<span style="opacity:0.7">暂无歌词</span>';
+            }
             } catch (error) {
-                document.getElementById('lyrics').textContent = '歌词加载失败';
+                document.getElementById('lyrics').innerHTML = '<span style="color:#e74c3c">歌词加载失败</span>';
             }
 
             enableControls();
@@ -416,6 +451,13 @@
         } finally {
             showLoading(false);
         }
+
+    }
+
+    function formatLyrics(text) {
+        return text.split('\n').map(line => {
+            return line ? `<div class="lyrics-line">${line}</div>` : '<br>';
+        }).join('');
     }
 
     function parseLyrics(text) {
