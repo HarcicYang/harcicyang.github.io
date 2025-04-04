@@ -342,13 +342,13 @@
 
         @media (max-width: 768px) {
             body {
-                gap: 1rem
+                gap: 0.5rem
             }
 
             .main-container {
                 flex-direction: column;
                 margin-top: -1vh;
-                gap: 1.5rem
+                gap: 0.5rem
             }
 
             .player-container {
@@ -472,11 +472,6 @@
                     <p>${track.artist}</p>
                 </li>
             `).join('');
-
-        listElement.scrollTo({
-                    top: listElement.height - containerHeight / 2 + lineHeight / 2,
-                    behavior: 'smooth'
-                })
 
         document.querySelectorAll('.playlist-item').forEach(item => {
             item.addEventListener('click', async () => {
