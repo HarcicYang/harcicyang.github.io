@@ -408,7 +408,6 @@
 
     async function loadTrack(index) {
         const track = state.playlist[index];
-        console.log(track);
         showLoading(true);
 
         try {
@@ -489,6 +488,7 @@
                 const minutes = parseInt(match[1]);
                 const seconds = parseFloat(match[2]);
                 times.push(minutes * 60 + seconds);
+                console.log(times);
             }
 
             // 移除时间标签获取纯文本
@@ -504,12 +504,12 @@
         });
 
         // 按时间排序并过滤无效数据
+        console.log(lyricData);
         return lyricData.sort((a, b) => (a.time || 0) - (b.time || 0));
     }
 
     let lastHighlighted = null;
     function updateLyricsHighlight(currentTime) {
-        console.log(currentTime);
         const lines = document.querySelectorAll('.lyrics-line[data-time]');
         let currentLine = null;
 
@@ -579,9 +579,6 @@
         });
 
         audio.addEventListener('timeupdate', () => {
-            document.getElementById('progress').value = (audio.currentTime / audio.duration) * 100 || 0;
-            document.getElementById('currentTime').textContent =
-                formatTime(audio.currentTime);
             document.getElementById('progress').value = (audio.currentTime / audio.duration) * 100 || 0;
             document.getElementById('currentTime').textContent = formatTime(audio.currentTime);
             updateLyricsHighlight(audio.currentTime);
