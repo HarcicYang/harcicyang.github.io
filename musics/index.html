@@ -322,13 +322,11 @@
                 color: rgba(144, 163, 166, 0.7);
                 text-shadow: 0 0 1px rgba(119, 167, 215, 0),
                 0 0 2px rgba(119, 167, 215, 0);
-                transform: scale(1) translateX(2px);
             }
             to {
                 color: #77a7d7;
                 text-shadow: 0 0 12px rgba(119, 167, 215, 0.6),
                 0 0 24px rgba(119, 167, 215, 0.3);
-                transform: scale(1.12) translateX(15px);
             }
         }
 
@@ -336,7 +334,6 @@
             animation: lyrics-actions 0.25s linear;
             color: #77a7d7 !important;
             font-weight: 500;
-            transform: scale(1.12) translateX(15px);
             text-shadow: 0 0 12px rgba(119, 167, 215, 0.6),
             0 0 24px rgba(119, 167, 215, 0.3);
             transition: all 0.3s ease;
@@ -359,7 +356,7 @@
             }
 
             .playlist-container {
-                flex: 0 0 22vh;
+                flex: 0 0 15vh;
                 width: 90%;
                 height: 35%;
             }
@@ -476,6 +473,11 @@
                 </li>
             `).join('');
 
+        listElement.scrollTo({
+                    top: listElement.height - containerHeight / 2 + lineHeight / 2,
+                    behavior: 'smooth'
+                })
+
         document.querySelectorAll('.playlist-item').forEach(item => {
             item.addEventListener('click', async () => {
                 const index = parseInt(item.dataset.index);
@@ -483,6 +485,32 @@
                 window.location.search = `?index=${index}`;
             });
         });
+
+        if (state.currentTrackIndex > -1) {
+        requestAnimationFrame(() => {
+            const activeItem = listElement.querySelector(`[data-index="${state.currentTrackIndex}"]`);
+            if (activeItem) {
+                // 计算滚动位置
+                const container = listElement.parentElement;
+                const itemTop = activeItem.offsetTop;
+                const itemHeight = activeItem.offsetHeight;
+                const containerHeight = container.clientHeight;
+
+                // 居中滚动（带边界检测）
+                const targetScroll = Math.max(0, itemTop - (containerHeight - itemHeight)/2);
+
+                // 使用平滑滚动
+                container.scrollTo({
+                    top: targetScroll,
+                    behavior: 'auto' // 初始加载不使用动画
+                });
+
+                // 添加视觉辅助线（调试用）
+                activeItem.style.boxShadow = '0 0 0 2px rgba(119,167,215,0.5)';
+                setTimeout(() => activeItem.style.boxShadow = '', 1000);
+            }
+        });
+    }
     }
 
     async function loadTrack(index) {
