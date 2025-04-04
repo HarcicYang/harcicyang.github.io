@@ -397,7 +397,7 @@
 
             // 加载歌词
             try {
-                const lyricsUrl = track.url.replace(/\.[^.]+$/, '.lrc');
+                const lyricsUrl = track.lyrics;
                 const response = await fetch(lyricsUrl);
                 if (response.ok) {
                     const lyricsText = await response.text();
