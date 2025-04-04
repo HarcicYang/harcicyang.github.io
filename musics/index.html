@@ -396,7 +396,6 @@
 
         if (tags.picture) {
             const base64 = btoa(String.fromCharCode(...new Uint8Array(tags.picture.data)));
-            document.body.style.background = "";
             document.getElementById('coverArt').src = `data:${tags.picture.format};base64,${base64}`;
             document.body.style.backgroundImage = 'url(data:${tags.picture.format};base64,${base64}) no-repeat center center';
         } else {
