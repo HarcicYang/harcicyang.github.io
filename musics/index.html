@@ -17,7 +17,7 @@
             margin: 2rem auto;
             padding: 0 1rem;
             background: #111111;
-            background-size: cover;
+            /*background-size: cover;*/
             display: flex;
             gap: 2rem;
         }
@@ -32,7 +32,7 @@
             width: 100%;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.7);
-            -webkit-backdrop-filter: blur(120px);
+            -webkit-backdrop-filter: blur(25px);
         }
 
         /* 播放列表样式 */
@@ -404,7 +404,8 @@
         if (tags.picture) {
             const base64 = btoa(String.fromCharCode(...new Uint8Array(tags.picture.data)));
             document.getElementById('coverArt').src = `data:${tags.picture.format};base64,${base64}`;
-            document.body.style.background = `url(data:${tags.picture.format};base64,${base64})`;
+            document.body.style.background = `url(data:${tags.picture.format};base64,${base64}) no-repeat center center fixed`;
+            document.body.style.backgroundSize = '100% 100%';
         } else {
             document.getElementById('coverArt').src = ''; // 重置默认封面
             document.body.style.background = "#111111";
