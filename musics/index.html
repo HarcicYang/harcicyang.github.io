@@ -509,6 +509,7 @@
 
     let lastHighlighted = null;
     function updateLyricsHighlight(currentTime) {
+        console.log(currentTime);
         const lines = document.querySelectorAll('.lyrics-line[data-time]');
         let currentLine = null;
 
@@ -581,12 +582,8 @@
             document.getElementById('progress').value = (audio.currentTime / audio.duration) * 100 || 0;
             document.getElementById('currentTime').textContent =
                 formatTime(audio.currentTime);
-        });
-
-        audio.addEventListener('timeupdate', () => {
             document.getElementById('progress').value = (audio.currentTime / audio.duration) * 100 || 0;
             document.getElementById('currentTime').textContent = formatTime(audio.currentTime);
-            // 新增歌词高亮更新
             updateLyricsHighlight(audio.currentTime);
         });
 
