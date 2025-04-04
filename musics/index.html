@@ -397,7 +397,7 @@
         if (tags.picture) {
             const base64 = btoa(String.fromCharCode(...new Uint8Array(tags.picture.data)));
             document.getElementById('coverArt').src = `data:${tags.picture.format};base64,${base64}`;
-            document.body.style.backgroundImage = 'data:${tags.picture.format};base64,${base64} no-repeat center center';
+            document.body.style.background = `url(data:${tags.picture.format};base64,${base64}) no-repeat center center`;
         } else {
             document.getElementById('coverArt').src = ''; // 重置默认封面
             document.body.style.background = "#111111";
