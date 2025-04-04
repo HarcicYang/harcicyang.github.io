@@ -17,6 +17,9 @@
             margin: 2rem auto;
             padding: 0 1rem;
             background: #111111;
+            justify-content: center;
+            align-items: center;
+            align-content: center;
             display: flex;
             gap: 2rem;
         }
@@ -36,6 +39,16 @@
             z-index: -1;
         }
 
+        .main-container {
+            display: flex;
+            gap: 2rem;
+            max-width: 1200px;
+            margin-top: 16.5vh;
+            width: 100%;
+            justify-self: center;
+            align-self: center;
+        }
+
         .playlist-container {
             background: rgba(47, 47, 47, 0.7);
             padding: 1.5rem;
@@ -43,6 +56,7 @@
             flex: 0 0 300px;
             max-height: 80vh;
             overflow-y: hidden;
+            align-self: center;
         }
 
         .playlist {
@@ -95,6 +109,7 @@
             position: relative;
             display: flex;
             gap: 2rem;
+            align-self: center;
         }
 
         .player-main {
@@ -305,13 +320,13 @@
             from {
                 color: rgba(144, 163, 166, 0.7);
                 text-shadow: 0 0 1px rgba(119, 167, 215, 0),
-                     0 0 2px rgba(119, 167, 215, 0);
+                0 0 2px rgba(119, 167, 215, 0);
                 transform: scale(1) translateX(2px);
             }
             to {
                 color: #77a7d7;
                 text-shadow: 0 0 12px rgba(119, 167, 215, 0.6),
-                     0 0 24px rgba(119, 167, 215, 0.3);
+                0 0 24px rgba(119, 167, 215, 0.3);
                 transform: scale(1.12) translateX(15px);
             }
         }
@@ -322,50 +337,52 @@
             font-weight: 500;
             transform: scale(1.12) translateX(15px);
             text-shadow: 0 0 12px rgba(119, 167, 215, 0.6),
-                     0 0 24px rgba(119, 167, 215, 0.3);
+            0 0 24px rgba(119, 167, 215, 0.3);
             transition: all 0.3s ease;
             z-index: 1;
         }
     </style>
 </head>
 <body>
-<div class="playlist-container">
-    <h3 style="color: #77a7d7; margin-top: 0">播放列表</h3>
-    <ul class="playlist" id="playlist"></ul>
-</div>
-
-<div class="player-container">
-    <div class="player-main">
-        <img id="coverArt" class="cover-art" alt="" src="block.png">
-        <div class="song-info">
-            <h2 id="title">选择曲目开始播放</h2>
-            <p id="artist">&ndash;</p>
-            <p id="album">&ndash;</p>
-        </div>
-        <div class="loading-indicator">正在加载音频文件&hellip;</div>
-        <div class="error-message" id="errorMsg"></div>
-        <div class="controls">
-            <button id="playPauseBtn" disabled aria-label="播放">
-                <div class="icon-container">
-                    <svg class="icon icon-play" viewBox="0 0 24 24" fill="rgba(255,255,255,0.5)">
-                        <path d="M8 5v14l11-7z"/>
-                    </svg>
-                    <svg class="icon icon-pause" viewBox="0 0 24 24" fill="rgba(255,255,255,0.5)">
-                        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
-                    </svg>
-                </div>
-            </button>
-            <input type="range" id="progress" value="0" min="0" max="100" step="0.1" disabled>
-        </div>
-        <div class="time-display">
-            <span id="currentTime">0:00</span>
-            <span id="duration">0:00</span>
-        </div>
+<div class="main-container">
+    <div class="playlist-container">
+        <h3 style="color: #77a7d7; margin-top: 0">播放列表</h3>
+        <ul class="playlist" id="playlist"></ul>
     </div>
 
-    <div class="lyrics-container">
-        <h3 style="color: #77a7d7; margin-top: 0">歌词</h3>
-        <div id="lyrics" class="lyrics-content">暂无歌词</div>
+    <div class="player-container">
+        <div class="player-main">
+            <img id="coverArt" class="cover-art" alt="" src="block.png">
+            <div class="song-info">
+                <h2 id="title">选择曲目开始播放</h2>
+                <p id="artist">&ndash;</p>
+                <p id="album">&ndash;</p>
+            </div>
+            <div class="loading-indicator">正在加载音频文件&hellip;</div>
+            <div class="error-message" id="errorMsg"></div>
+            <div class="controls">
+                <button id="playPauseBtn" disabled aria-label="播放">
+                    <div class="icon-container">
+                        <svg class="icon icon-play" viewBox="0 0 24 24" fill="rgba(255,255,255,0.5)">
+                            <path d="M8 5v14l11-7z"/>
+                        </svg>
+                        <svg class="icon icon-pause" viewBox="0 0 24 24" fill="rgba(255,255,255,0.5)">
+                            <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                        </svg>
+                    </div>
+                </button>
+                <input type="range" id="progress" value="0" min="0" max="100" step="0.1" disabled>
+            </div>
+            <div class="time-display">
+                <span id="currentTime">0:00</span>
+                <span id="duration">0:00</span>
+            </div>
+        </div>
+
+        <div class="lyrics-container">
+            <h3 style="color: #77a7d7; margin-top: 0">歌词</h3>
+            <div id="lyrics" class="lyrics-content">暂无歌词</div>
+        </div>
     </div>
 </div>
 
@@ -437,7 +454,8 @@
         try {
             if (state.audio) {
                 state.audio.pause();
-                state.audio.removeEventListener('timeupdate', () => {});
+                state.audio.removeEventListener('timeupdate', () => {
+                });
             }
 
             state.audio = new Audio(track.url);
@@ -524,22 +542,23 @@
             // 处理有效歌词行
             if (cleanLine && timeTags.length > 0) {
                 timeTags.forEach(time => {
-                    lyricData.push({ time, text: cleanLine });
+                    lyricData.push({time, text: cleanLine});
                 });
             } else if (cleanLine) {
-                lyricData.push({ time: null, text: cleanLine });
+                lyricData.push({time: null, text: cleanLine});
             }
         });
 
         // 按时间排序并合并重复
         return lyricData.sort((a, b) => (a.time || 0) - (b.time || 0))
-                       .filter((item, index, arr) => {
-                           // 去重：合并相同时间的歌词
-                           return index === 0 || item.time !== arr[index - 1].time;
-                       });
+            .filter((item, index, arr) => {
+                // 去重：合并相同时间的歌词
+                return index === 0 || item.time !== arr[index - 1].time;
+            });
     }
 
     let lastHighlighted = null;
+
     function updateLyricsHighlight(currentTime) {
         const lines = document.querySelectorAll('.lyrics-line[data-time]');
         let currentLine = null;
@@ -570,7 +589,7 @@
                 const containerHeight = container.clientHeight;
 
                 container.scrollTo({
-                    top: lineTop - containerHeight/2 + lineHeight/2,
+                    top: lineTop - containerHeight / 2 + lineHeight / 2,
                     behavior: 'smooth'
                 });
             }
