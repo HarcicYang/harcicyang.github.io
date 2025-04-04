@@ -246,13 +246,14 @@
 
         .lyrics-container {
             flex: 0 0 320px;
-            background: #3b3b3b;
+            /*background: #3b3b3b;*/
             padding: 1rem;
             border-radius: 0.5rem;
             max-height: 45vh;
             display: flex;
             flex-direction: column;
             overflow-y: hidden;
+            overflow-x: visible;
             position: relative;
         }
 
@@ -263,6 +264,7 @@
             font-size: 0.95em;
             padding-right: 12px;
             overflow-y: scroll;
+            overflow-x: visible;
             height: 45vh;
             scrollbar-width: thin;
             scrollbar-color: #606060 #3b3b3b;
@@ -299,7 +301,6 @@
         .lyrics-line.active {
             color: #77a7d7 !important;
             font-weight: 500;
-            transform: scale(1.5) translateX(15px);
             transition: all 0.3s ease;
         }
     </style>
