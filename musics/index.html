@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>增强版音频播放器</title>
+    <title>Harcic ' Songs</title>
     <script src="https://cdn.jsdelivr.net/npm/jsmediatags@3.9.7/dist/jsmediatags.min.js"></script>
     <style>
         :root {
@@ -19,6 +19,11 @@
             background: #111111;
             display: flex;
             gap: 2rem;
+        }
+
+        body::before {
+            background: rgba(255, 255, 255, 0.5);
+            -webkit-backdrop-filter: blur(12px);
         }
 
         /* 播放列表样式 */
@@ -160,7 +165,20 @@
             cursor: not-allowed;
         }
 
+        @keyframes button-change {
+            from {
+                background: var(--primary-color);
+                transform: translateY(0);
+            }
+            to {
+                background: var(--secondary-color);
+                transform: translateY(-1px);
+            }
+        }
+
         button:hover:not(:disabled) {
+            cursor: pointer;
+            animation: button-change 1s linear infinite;
             background: var(--secondary-color);
             transform: translateY(-1px);
         }
@@ -378,8 +396,11 @@
         if (tags.picture) {
             const base64 = btoa(String.fromCharCode(...new Uint8Array(tags.picture.data)));
             document.getElementById('coverArt').src = `data:${tags.picture.format};base64,${base64}`;
+            document.body.style.background = "url(${tags.picture.url})";
         } else {
             document.getElementById('coverArt').src = ''; // 重置默认封面
+            document.body.style.background = "#111111";
+
         }
     }
 
@@ -396,8 +417,7 @@
 
         // 时间更新
         audio.addEventListener('timeupdate', () => {
-            const progress = (audio.currentTime / audio.duration) * 100 || 0;
-            document.getElementById('progress').value = progress;
+            document.getElementById('progress').value = (audio.currentTime / audio.duration) * 100 || 0;
             document.getElementById('currentTime').textContent =
                 formatTime(audio.currentTime);
         });
