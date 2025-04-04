@@ -284,7 +284,6 @@
         state.playlist = await loadPlaylist("./list.json");
 
         // 如果存在URL参数则优先播放
-        console.log(indexParam);
         if (urlParam) {
             state.playlist.unshift({
                 url: urlParam,
@@ -397,6 +396,7 @@
 
         if (tags.picture) {
             const base64 = btoa(String.fromCharCode(...new Uint8Array(tags.picture.data)));
+            document.body.style.background = "none";
             document.getElementById('coverArt').src = `data:${tags.picture.format};base64,${base64}`;
             document.body.style.backgroundImage = 'url(data:${tags.picture.format};base64,${base64}) no-repeat center center';
         } else {
