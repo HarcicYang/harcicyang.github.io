@@ -301,7 +301,7 @@
         .lyrics-line.active {
             color: #77a7d7 !important;
             font-weight: 500;
-            transform: scale(1.5);
+            transform: scale(1.02) translateX(2px);
             text-shadow: 0 0 12px rgba(255, 255, 255, 0.6),
                      0 0 24px rgba(255, 255, 255, 0.3);
             transition: all 0.3s ease;
@@ -512,7 +512,6 @@
             }
         });
 
-        console.log(lyricData);
         // 按时间排序并合并重复
         return lyricData.sort((a, b) => (a.time || 0) - (b.time || 0))
                        .filter((item, index, arr) => {
