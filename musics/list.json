@@ -1,30 +1,30 @@
 [
   {
-    "url": "https://cdn.jsdelivr.net/gh/HarcicYang/harcicyang.github.io/musics/ぺぽよ,初音ミク - らくらく安楽死.mp3",
+    "url": "./ぺぽよ,初音ミク - らくらく安楽死.mp3",
     "title": "らくらく安楽死",
     "artist": "ぺぽよ, 初音ミク",
     "album": "らくらく安楽死",
-    "lyrics": "https://cdn.jsdelivr.net/gh/HarcicYang/harcicyang.github.io/musics/ぺぽよ,初音ミク - らくらく安楽死.lrc"
+    "lyrics": "./ぺぽよ,初音ミク - らくらく安楽死.lrc"
   },
   {
-    "url": "https://cdn.jsdelivr.net/gh/HarcicYang/harcicyang.github.io/musics/ぺぽよ,初音ミク - らくらく安楽死.mp3",
+    "url": "./ぺぽよ,初音ミク - らくらく安楽死.mp3",
     "title": "[中文歌词]らくらく安楽死",
     "artist": "ぺぽよ, 初音ミク",
     "album": "らくらく安楽死",
-    "lyrics": "https://cdn.jsdelivr.net/gh/HarcicYang/harcicyang.github.io/musics/zhぺぽよ,初音ミク - らくらく安楽死.lrc"
+    "lyrics": "./zhぺぽよ,初音ミク - らくらく安楽死.lrc"
   },
   {
-    "url": "https://cdn.jsdelivr.net/gh/HarcicYang/harcicyang.github.io/musics/乌云典当记_万能青年旅店.m4a",
+    "url": "./乌云典当记_万能青年旅店.m4a",
     "title": "乌云典当记",
     "artist": "万能青年旅店",
     "album": "乌云典当记",
-    "lyrics": "https://cdn.jsdelivr.net/gh/HarcicYang/harcicyang.github.io/musics/乌云典当记_万能青年旅店.lrc"
+    "lyrics": "./乌云典当记_万能青年旅店.lrc"
   },
   {
-    "url": "https://cdn.jsdelivr.net/gh/HarcicYang/harcicyang.github.io/musics/在这颗行星所有的酒馆.m4a",
+    "url": "./在这颗行星所有的酒馆.m4a",
     "title": "在这颗行星所有的酒馆",
     "artist": "万能青年旅店",
     "album": "万能青年旅店",
-    "lyrics": "https://cdn.jsdelivr.net/gh/HarcicYang/harcicyang.github.io/musics/在这颗行星所有的酒馆.lrc"
+    "lyrics": "./在这颗行星所有的酒馆.lrc"
   }
 ]
