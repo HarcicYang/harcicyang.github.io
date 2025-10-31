@@ -518,33 +518,51 @@
                 state.audio.removeEventListener('timeupdate', () => {});
             }
     
-            // ✅ 直接创建 Audio 对象，浏览器会自动流式播放
+            // ✅ 启用浏览器原生流式播放
             state.audio = new Audio(track.url);
             state.audio.crossOrigin = "anonymous";
             setupAudioEvents();
     
-            // ✅ 只请求文件前 64KB 用于提取标签（不下载整首歌）
+            // 尝试读取前64KB标签
+            let tags = null;
             try {
-                const response = await fetch(track.url, {
-                    headers: { Range: 'bytes=0-65535' } // 仅请求前64KB
+                const headResponse = await fetch(track.url, {
+                    headers: { Range: 'bytes=0-65535' } // 前64KB
                 });
-                const arrayBuffer = await response.arrayBuffer();
-                const blob = new Blob([arrayBuffer]);
-                await new Promise((resolve) => {
-                    jsmediatags.read(blob, {
-                        onSuccess: tag => {
-                            updateMetadata(tag.tags, index);
-                            resolve();
-                        },
-                        onError: () => {
-                            updateMetadata({}, index);
-                            resolve();
-                        }
+                const headBuffer = await headResponse.arrayBuffer();
+                const headBlob = new Blob([headBuffer]);
+                tags = await new Promise((resolve) => {
+                    jsmediatags.read(headBlob, {
+                        onSuccess: tag => resolve(tag.tags),
+                        onError: () => resolve(null)
                     });
                 });
             } catch {
-                updateMetadata({}, index);
+                tags = null;
             }
+    
+            // 如果前部没有封面，尝试读取尾部数据
+            if (!tags || !tags.picture) {
+                try {
+                    const tailResponse = await fetch(track.url, {
+                        headers: { Range: 'bytes=-131072' } // 最后128KB
+                    });
+                    const tailBuffer = await tailResponse.arrayBuffer();
+                    const tailBlob = new Blob([tailBuffer]);
+                    const tailTags = await new Promise((resolve) => {
+                        jsmediatags.read(tailBlob, {
+                            onSuccess: tag => resolve(tag.tags),
+                            onError: () => resolve(null)
+                        });
+                    });
+                    if (tailTags) tags = Object.assign({}, tags || {}, tailTags);
+                } catch {
+                    // 忽略尾部读取错误
+                }
+            }
+    
+            // ✅ 更新歌曲信息和封面（无论成功或失败）
+            updateMetadata(tags || {}, index);
     
             // ✅ 加载歌词（保持原逻辑）
             try {
@@ -569,6 +587,7 @@
             showLoading(false);
         }
     }
+
     
     function formatLyrics(lyricData) {
         return lyricData.map(item => {
