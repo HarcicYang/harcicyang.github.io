@@ -376,52 +376,6 @@
 
         }
 
-        /* 默认模糊封面占位 */
-        .album-art {
-            width: 200px;
-            height: 200px;
-            border-radius: 12px;
-            padding: 12px;
-            overflow: hidden;
-            position: relative;
-            box-shadow: 0 0 10px rgba(0,0,0,0.4);
-            background: #222;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .album-art img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: opacity 0.4s ease;
-        }
-        
-        .album-placeholder {
-            position: absolute;
-            inset: 0;
-            backdrop-filter: blur(12px);
-            background: linear-gradient(120deg, #555 0%, #333 100%);
-            animation: pulse 1.5s infinite ease-in-out;
-            border-radius: 12px;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { opacity: 0.6; }
-            50% { opacity: 0.9; }
-        }
-        
-        /* 可选旋转动画（播放中可加上 .rotating） */
-        .album-art.rotating img {
-            animation: spin 20s linear infinite;
-        }
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-
     </style>
 </head>
 <body>
@@ -433,10 +387,7 @@
 
     <div class="player-container">
         <div class="player-main">
-            <div class="album-art" id="album-art">
-                <div class="album-placeholder"></div>
-                <img id="cover-image" src="./block.png" alt="Album Art" style="opacity:0;">
-            </div>
+            <img id="coverArt" class="cover-art" alt="" src="block.png">
             <div class="song-info">
                 <h2 id="title">选择曲目开始播放</h2>
                 <p id="artist">&ndash;</p>
@@ -561,64 +512,36 @@
         const track = state.playlist[index];
         showLoading(true);
 
-        const coverImg = document.getElementById("cover-image");
-        const placeholder = document.querySelector(".album-placeholder");
-
-        // ✅ 立即显示默认封面 + 占位动画
-        placeholder.style.display = "block";
-        coverImg.style.opacity = "0";
-        coverImg.src = "default-cover.jpg";
-
         try {
             if (state.audio) {
                 state.audio.pause();
-                state.audio.removeEventListener('timeupdate', () => {});
+                state.audio.removeEventListener('timeupdate', () => {
+                });
             }
 
-            // ✅ 使用流式播放（立即开始加载播放）
             state.audio = new Audio(track.url);
             state.audio.crossOrigin = "anonymous";
             setupAudioEvents();
 
-            // ✅ 读取 ID3 标签（流式 + 自动 range 请求）
-            let tags = null;
-            try {
-                await new Promise((resolve) => {
-                    jsmediatags.read(track.url, {
-                        onSuccess: tag => {
-                            tags = tag.tags;
-                            resolve();
-                        },
-                        onError: () => resolve()
-                    });
-                });
-            } catch (e) {
-                console.warn("标签读取失败:", e);
-            }
+            await new Promise((resolve, reject) => {
+                fetch(track.url)
+                    .then(response => response.blob())
+                    .then(blob => {
+                        jsmediatags.read(blob, {
+                            onSuccess: tag => {
+                                updateMetadata(tag.tags, index);
+                                resolve();
+                            },
+                            onError: () => {
+                                updateMetadata({}, index);
+                                resolve();
+                            }
+                        });
+                    })
+                    .catch(reject);
+            });
 
-            // ✅ 更新封面
-            if (tags && tags.picture) {
-                try {
-                    const pic = tags.picture;
-                    const base64 = `data:${pic.format};base64,${arrayBufferToBase64(pic.data)}`;
-                    coverImg.onload = () => {
-                        placeholder.style.display = "none";
-                        coverImg.style.opacity = "1";
-                    };
-                    coverImg.src = base64;
-                } catch (e) {
-                    console.warn("封面转换失败:", e);
-                    showDefaultCover();
-                }
-            } else {
-                // 若标签无封面，则使用默认封面
-                showDefaultCover();
-            }
-
-            // ✅ 更新标题、艺术家等文字信息
-            updateMetadata(tags || {}, index);
-
-            // ✅ 加载歌词（保持原逻辑）
+            // 加载歌词
             try {
                 const lyricsUrl = track.lyrics;
                 const response = await fetch(lyricsUrl);
@@ -626,44 +549,25 @@
                     const lyricsText = await response.text();
                     const parsedLyrics = parseLyrics(lyricsText);
                     document.getElementById('lyrics').innerHTML = formatLyrics(parsedLyrics);
+
+                    // 初始化滚动位置
                     document.querySelector('.lyrics-content').scrollTo(0, 0);
                 } else {
                     document.getElementById('lyrics').innerHTML = '<span style="opacity:0.7">暂无歌词</span>';
                 }
-            } catch {
+            } catch (error) {
                 document.getElementById('lyrics').innerHTML = '<span style="color:#e74c3c">歌词加载失败</span>';
             }
 
             enableControls();
         } catch (error) {
             showError(`加载失败: ${error.message}`);
-            showDefaultCover();
         } finally {
             showLoading(false);
         }
 
-        // 内部辅助函数
-        function showDefaultCover() {
-            placeholder.style.display = "none";
-            coverImg.src = "default-cover.jpg";
-            coverImg.style.opacity = "1";
-        }
     }
 
-    /* 将 jsmediatags 的 picture data 转换为 base64 */
-    function arrayBufferToBase64(buffer) {
-        let binary = "";
-        const bytes = new Uint8Array(buffer);
-        const len = bytes.byteLength;
-        for (let i = 0; i < len; i++) {
-            binary += String.fromCharCode(bytes[i]);
-        }
-        return window.btoa(binary);
-    }
-
-
-
-    
     function formatLyrics(lyricData) {
         return lyricData.map(item => {
             if (item.time === null) {
@@ -767,11 +671,11 @@
 
         if (tags.picture) {
             const base64 = btoa(String.fromCharCode(...new Uint8Array(tags.picture.data)));
-            // document.getElementById('coverArt').src = `data:${tags.picture.format};base64,${base64}`;
+            document.getElementById('coverArt').src = `data:${tags.picture.format};base64,${base64}`;
             document.body.style.background = `url(data:${tags.picture.format};base64,${base64}) no-repeat center center fixed`;
             document.body.style.backgroundSize = '100% 100%';
         } else {
-            // document.getElementById('coverArt').src = '';
+            document.getElementById('coverArt').src = '';
             document.body.style.background = "#111111";
         }
     }
