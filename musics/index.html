@@ -378,9 +378,10 @@
 
         /* 默认模糊封面占位 */
         .album-art {
-            width: 240px;
-            height: 240px;
+            width: 200px;
+            height: 200px;
             border-radius: 12px;
+            padding: 12px;
             overflow: hidden;
             position: relative;
             box-shadow: 0 0 10px rgba(0,0,0,0.4);
@@ -559,77 +560,64 @@
     async function loadTrack(index) {
         const track = state.playlist[index];
         showLoading(true);
-    
-        // ✅ 一开始就渲染默认封面（占位动画）
+
         const coverImg = document.getElementById("cover-image");
         const placeholder = document.querySelector(".album-placeholder");
-        coverImg.style.opacity = "0";
+
+        // ✅ 立即显示默认封面 + 占位动画
         placeholder.style.display = "block";
-        coverImg.src = "./block.png";
-    
+        coverImg.style.opacity = "0";
+        coverImg.src = "default-cover.jpg";
+
         try {
             if (state.audio) {
                 state.audio.pause();
                 state.audio.removeEventListener('timeupdate', () => {});
             }
-    
-            // ✅ 创建流式播放对象
+
+            // ✅ 使用流式播放（立即开始加载播放）
             state.audio = new Audio(track.url);
             state.audio.crossOrigin = "anonymous";
             setupAudioEvents();
-    
-            // 🔹 读取前64KB标签
+
+            // ✅ 读取 ID3 标签（流式 + 自动 range 请求）
             let tags = null;
             try {
-                const headResponse = await fetch(track.url, {
-                    headers: { Range: 'bytes=0-65535' }
-                });
-                const headBuffer = await headResponse.arrayBuffer();
-                const headBlob = new Blob([headBuffer]);
-                tags = await new Promise((resolve) => {
-                    jsmediatags.read(headBlob, {
-                        onSuccess: tag => resolve(tag.tags),
-                        onError: () => resolve(null)
+                await new Promise((resolve) => {
+                    jsmediatags.read(track.url, {
+                        onSuccess: tag => {
+                            tags = tag.tags;
+                            resolve();
+                        },
+                        onError: () => resolve()
                     });
                 });
-            } catch {
-                tags = null;
+            } catch (e) {
+                console.warn("标签读取失败:", e);
             }
-    
-            // 🔹 若无封面，再读尾部 128KB
-            if (!tags || !tags.picture) {
-                try {
-                    const tailResponse = await fetch(track.url, {
-                        headers: { Range: 'bytes=-131072' }
-                    });
-                    const tailBuffer = await tailResponse.arrayBuffer();
-                    const tailBlob = new Blob([tailBuffer]);
-                    const tailTags = await new Promise((resolve) => {
-                        jsmediatags.read(tailBlob, {
-                            onSuccess: tag => resolve(tag.tags),
-                            onError: () => resolve(null)
-                        });
-                    });
-                    if (tailTags) tags = Object.assign({}, tags || {}, tailTags);
-                } catch {}
-            }
-    
-            // ✅ 更新元数据和封面（自动淡入封面）
-            updateMetadata(tags || {}, index);
+
+            // ✅ 更新封面
             if (tags && tags.picture) {
-                const pic = tags.picture;
-                const base64 = `data:${pic.format};base64,${arrayBufferToBase64(pic.data)}`;
-                coverImg.onload = () => {
-                    placeholder.style.display = "none";
-                    coverImg.style.opacity = "1";
-                };
-                coverImg.src = base64;
+                try {
+                    const pic = tags.picture;
+                    const base64 = `data:${pic.format};base64,${arrayBufferToBase64(pic.data)}`;
+                    coverImg.onload = () => {
+                        placeholder.style.display = "none";
+                        coverImg.style.opacity = "1";
+                    };
+                    coverImg.src = base64;
+                } catch (e) {
+                    console.warn("封面转换失败:", e);
+                    showDefaultCover();
+                }
             } else {
-                // 如果没有封面，则用默认封面但仍淡入
-                placeholder.style.display = "none";
-                coverImg.style.opacity = "1";
+                // 若标签无封面，则使用默认封面
+                showDefaultCover();
             }
-    
+
+            // ✅ 更新标题、艺术家等文字信息
+            updateMetadata(tags || {}, index);
+
             // ✅ 加载歌词（保持原逻辑）
             try {
                 const lyricsUrl = track.lyrics;
@@ -645,18 +633,26 @@
             } catch {
                 document.getElementById('lyrics').innerHTML = '<span style="color:#e74c3c">歌词加载失败</span>';
             }
-    
+
             enableControls();
         } catch (error) {
             showError(`加载失败: ${error.message}`);
+            showDefaultCover();
         } finally {
             showLoading(false);
         }
+
+        // 内部辅助函数
+        function showDefaultCover() {
+            placeholder.style.display = "none";
+            coverImg.src = "default-cover.jpg";
+            coverImg.style.opacity = "1";
+        }
     }
-    
-    /* 辅助函数：将 jsmediatags 的 picture data 转成 base64 */
+
+    /* 将 jsmediatags 的 picture data 转换为 base64 */
     function arrayBufferToBase64(buffer) {
-        let binary = '';
+        let binary = "";
         const bytes = new Uint8Array(buffer);
         const len = bytes.byteLength;
         for (let i = 0; i < len; i++) {
@@ -664,6 +660,7 @@
         }
         return window.btoa(binary);
     }
+
 
 
     
