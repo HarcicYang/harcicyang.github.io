@@ -563,7 +563,6 @@
         // ✅ 一开始就渲染默认封面（占位动画）
         const coverImg = document.getElementById("cover-image");
         const placeholder = document.querySelector(".album-placeholder");
-        console.log(coverImg)
         coverImg.style.opacity = "0";
         placeholder.style.display = "block";
         coverImg.src = "./block.png";
@@ -771,11 +770,11 @@
 
         if (tags.picture) {
             const base64 = btoa(String.fromCharCode(...new Uint8Array(tags.picture.data)));
-            document.getElementById('coverArt').src = `data:${tags.picture.format};base64,${base64}`;
+            // document.getElementById('coverArt').src = `data:${tags.picture.format};base64,${base64}`;
             document.body.style.background = `url(data:${tags.picture.format};base64,${base64}) no-repeat center center fixed`;
             document.body.style.backgroundSize = '100% 100%';
         } else {
-            document.getElementById('coverArt').src = '';
+            // document.getElementById('coverArt').src = '';
             document.body.style.background = "#111111";
         }
     }
