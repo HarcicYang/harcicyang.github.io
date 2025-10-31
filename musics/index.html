@@ -376,6 +376,51 @@
 
         }
 
+        /* 默认模糊封面占位 */
+        .album-art {
+            width: 240px;
+            height: 240px;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 0 10px rgba(0,0,0,0.4);
+            background: #222;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .album-art img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.4s ease;
+        }
+        
+        .album-placeholder {
+            position: absolute;
+            inset: 0;
+            backdrop-filter: blur(12px);
+            background: linear-gradient(120deg, #555 0%, #333 100%);
+            animation: pulse 1.5s infinite ease-in-out;
+            border-radius: 12px;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 0.9; }
+        }
+        
+        /* 可选旋转动画（播放中可加上 .rotating） */
+        .album-art.rotating img {
+            animation: spin 20s linear infinite;
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+
     </style>
 </head>
 <body>
@@ -387,7 +432,10 @@
 
     <div class="player-container">
         <div class="player-main">
-            <img id="coverArt" class="cover-art" alt="" src="block.png">
+            <div class="album-art" id="album-art">
+                <div class="album-placeholder"></div>
+                <img id="cover-image" src="./block.png" alt="Album Art" style="opacity:0;">
+            </div>
             <div class="song-info">
                 <h2 id="title">选择曲目开始播放</h2>
                 <p id="artist">&ndash;</p>
@@ -512,22 +560,29 @@
         const track = state.playlist[index];
         showLoading(true);
     
+        // ✅ 一开始就渲染默认封面（占位动画）
+        const coverImg = document.getElementById("cover-image");
+        const placeholder = document.querySelector(".album-placeholder");
+        coverImg.style.opacity = "0";
+        placeholder.style.display = "block";
+        coverImg.src = "default-cover.jpg";
+    
         try {
             if (state.audio) {
                 state.audio.pause();
                 state.audio.removeEventListener('timeupdate', () => {});
             }
     
-            // ✅ 启用浏览器原生流式播放
+            // ✅ 创建流式播放对象
             state.audio = new Audio(track.url);
             state.audio.crossOrigin = "anonymous";
             setupAudioEvents();
     
-            // 尝试读取前64KB标签
+            // 🔹 读取前64KB标签
             let tags = null;
             try {
                 const headResponse = await fetch(track.url, {
-                    headers: { Range: 'bytes=0-65535' } // 前64KB
+                    headers: { Range: 'bytes=0-65535' }
                 });
                 const headBuffer = await headResponse.arrayBuffer();
                 const headBlob = new Blob([headBuffer]);
@@ -541,11 +596,11 @@
                 tags = null;
             }
     
-            // 如果前部没有封面，尝试读取尾部数据
+            // 🔹 若无封面，再读尾部 128KB
             if (!tags || !tags.picture) {
                 try {
                     const tailResponse = await fetch(track.url, {
-                        headers: { Range: 'bytes=-131072' } // 最后128KB
+                        headers: { Range: 'bytes=-131072' }
                     });
                     const tailBuffer = await tailResponse.arrayBuffer();
                     const tailBlob = new Blob([tailBuffer]);
@@ -556,13 +611,24 @@
                         });
                     });
                     if (tailTags) tags = Object.assign({}, tags || {}, tailTags);
-                } catch {
-                    // 忽略尾部读取错误
-                }
+                } catch {}
             }
     
-            // ✅ 更新歌曲信息和封面（无论成功或失败）
+            // ✅ 更新元数据和封面（自动淡入封面）
             updateMetadata(tags || {}, index);
+            if (tags && tags.picture) {
+                const pic = tags.picture;
+                const base64 = `data:${pic.format};base64,${arrayBufferToBase64(pic.data)}`;
+                coverImg.onload = () => {
+                    placeholder.style.display = "none";
+                    coverImg.style.opacity = "1";
+                };
+                coverImg.src = base64;
+            } else {
+                // 如果没有封面，则用默认封面但仍淡入
+                placeholder.style.display = "none";
+                coverImg.style.opacity = "1";
+            }
     
             // ✅ 加载歌词（保持原逻辑）
             try {
@@ -587,6 +653,18 @@
             showLoading(false);
         }
     }
+    
+    /* 辅助函数：将 jsmediatags 的 picture data 转成 base64 */
+    function arrayBufferToBase64(buffer) {
+        let binary = '';
+        const bytes = new Uint8Array(buffer);
+        const len = bytes.byteLength;
+        for (let i = 0; i < len; i++) {
+            binary += String.fromCharCode(bytes[i]);
+        }
+        return window.btoa(binary);
+    }
+
 
     
     function formatLyrics(lyricData) {
