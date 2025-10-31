@@ -511,37 +511,42 @@
     async function loadTrack(index) {
         const track = state.playlist[index];
         showLoading(true);
-
+    
         try {
             if (state.audio) {
                 state.audio.pause();
-                state.audio.removeEventListener('timeupdate', () => {
-                });
+                state.audio.removeEventListener('timeupdate', () => {});
             }
-
+    
+            // ✅ 直接创建 Audio 对象，浏览器会自动流式播放
             state.audio = new Audio(track.url);
             state.audio.crossOrigin = "anonymous";
             setupAudioEvents();
-
-            await new Promise((resolve, reject) => {
-                fetch(track.url)
-                    .then(response => response.blob())
-                    .then(blob => {
-                        jsmediatags.read(blob, {
-                            onSuccess: tag => {
-                                updateMetadata(tag.tags, index);
-                                resolve();
-                            },
-                            onError: () => {
-                                updateMetadata({}, index);
-                                resolve();
-                            }
-                        });
-                    })
-                    .catch(reject);
-            });
-
-            // 加载歌词
+    
+            // ✅ 只请求文件前 64KB 用于提取标签（不下载整首歌）
+            try {
+                const response = await fetch(track.url, {
+                    headers: { Range: 'bytes=0-65535' } // 仅请求前64KB
+                });
+                const arrayBuffer = await response.arrayBuffer();
+                const blob = new Blob([arrayBuffer]);
+                await new Promise((resolve) => {
+                    jsmediatags.read(blob, {
+                        onSuccess: tag => {
+                            updateMetadata(tag.tags, index);
+                            resolve();
+                        },
+                        onError: () => {
+                            updateMetadata({}, index);
+                            resolve();
+                        }
+                    });
+                });
+            } catch {
+                updateMetadata({}, index);
+            }
+    
+            // ✅ 加载歌词（保持原逻辑）
             try {
                 const lyricsUrl = track.lyrics;
                 const response = await fetch(lyricsUrl);
@@ -549,25 +554,22 @@
                     const lyricsText = await response.text();
                     const parsedLyrics = parseLyrics(lyricsText);
                     document.getElementById('lyrics').innerHTML = formatLyrics(parsedLyrics);
-
-                    // 初始化滚动位置
                     document.querySelector('.lyrics-content').scrollTo(0, 0);
                 } else {
                     document.getElementById('lyrics').innerHTML = '<span style="opacity:0.7">暂无歌词</span>';
                 }
-            } catch (error) {
+            } catch {
                 document.getElementById('lyrics').innerHTML = '<span style="color:#e74c3c">歌词加载失败</span>';
             }
-
+    
             enableControls();
         } catch (error) {
             showError(`加载失败: ${error.message}`);
         } finally {
             showLoading(false);
         }
-
     }
-
+    
     function formatLyrics(lyricData) {
         return lyricData.map(item => {
             if (item.time === null) {
