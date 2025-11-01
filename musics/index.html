@@ -40,7 +40,7 @@
             height: 100vh;
             padding: 0;
             margin: 0;
-            background: #0a0a0a; /* 深色背景 */
+            background: #0a0a0a;
             transition: background 1.5s ease;
         }
 
@@ -54,9 +54,9 @@
             width: 100%;
             height: 100%;
             background: 
-                radial-gradient(circle at 20% 80%, rgba(119, 167, 215, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(139, 184, 232, 0.08) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(168, 208, 255, 0.05) 0%, transparent 50%);
+                radial-gradient(circle at 20% 80%, rgba(119, 167, 215, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(139, 184, 232, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(168, 208, 255, 0.08) 0%, transparent 50%);
             -webkit-backdrop-filter: blur(80px);
             backdrop-filter: blur(80px);
             z-index: -1;
@@ -92,6 +92,19 @@
             -webkit-backdrop-filter: blur(15px);
             backdrop-filter: blur(15px);
             transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .playlist-container::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 40px;
+            background: linear-gradient(to top, rgba(47, 47, 47, 0.8), transparent);
+            pointer-events: none;
+            border-radius: 0 0 1.5rem 1.5rem;
         }
 
         .playlist-container:hover {
@@ -111,6 +124,18 @@
             height: 45vh;
             padding: 0;
             margin: 0;
+            position: relative;
+        }
+
+        .playlist::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 30px;
+            background: linear-gradient(to top, rgba(47, 47, 47, 0.9), transparent);
+            pointer-events: none;
         }
 
         .playlist::-webkit-scrollbar {
@@ -470,6 +495,18 @@
             border: 1px solid rgba(255, 255, 255, 0.03);
         }
 
+        .lyrics-container::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 40px;
+            background: linear-gradient(to top, rgba(59, 59, 59, 0.8), transparent);
+            pointer-events: none;
+            border-radius: 0 0 1rem 1rem;
+        }
+
         .lyrics-content {
             color: rgba(144, 163, 166, 0.7);
             white-space: pre-line;
@@ -481,6 +518,18 @@
             scrollbar-width: thin;
             scrollbar-color: var(--primary-color) rgba(0, 0, 0, 0);
             flex-grow: 1;
+            position: relative;
+        }
+
+        .lyrics-content::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 30px;
+            background: linear-gradient(to top, rgba(59, 59, 59, 0.9), transparent);
+            pointer-events: none;
         }
 
         .lyrics-content::-webkit-scrollbar {
@@ -504,7 +553,7 @@
 
         .lyrics-title {
             color: var(--primary-color);
-            margin: 0 0 1rem;
+            margin: 0 0 1.5rem; /* 增加标题与下方内容的距离 */
             padding-bottom: 0.5rem;
             border-bottom: 1px solid rgba(79, 79, 79, 0.5);
             font-weight: 600;
@@ -558,18 +607,18 @@
             }
             
             .player-container {
-                flex-direction: column;
+                flex-direction: row; /* 在移动端保持歌词在右侧 */
                 height: auto;
             }
             
             .lyrics-container {
-                width: 100%;
+                width: 45%;
                 flex: none;
                 max-height: 25vh;
             }
             
             .player-main {
-                max-width: 100%;
+                max-width: 55%;
             }
             
             .lyrics-content {
@@ -603,6 +652,10 @@
             .playlist {
                 height: 18vh;
             }
+            
+            .playlist-container h3, .lyrics-container h3 {
+                margin-bottom: 1.2rem; /* 移动端增加标题与内容的距离 */
+            }
         }
 
         @media (max-width: 480px) {
@@ -621,16 +674,25 @@
             }
             
             .player-container {
-                flex-direction: column;
+                flex-direction: row; /* 在移动端保持歌词在右侧 */
                 padding: 0.75rem;
             }
             
             .lyrics-container {
                 max-height: 20vh;
+                width: 48%;
+            }
+            
+            .player-main {
+                max-width: 50%;
             }
             
             .lyrics-content {
                 height: 15vh;
+            }
+            
+            .playlist-container h3, .lyrics-container h3 {
+                margin-bottom: 1.5rem; /* 移动端进一步增加标题与内容的距离 */
             }
         }
     </style>
@@ -721,11 +783,11 @@
         function applyDynamicColors(rgb) {
             const [r, g, b] = rgb;
             
-            // 创建动态背景渐变
+            // 创建动态背景渐变 - 使用更明显的颜色
             const gradient = `linear-gradient(135deg, 
-                rgba(${r}, ${g}, ${b}, 0.15) 0%, 
-                rgba(${Math.min(r + 30, 255)}, ${Math.min(g + 30, 255)}, ${Math.min(b + 30, 255)}, 0.08) 50%,
-                rgba(${r}, ${g}, ${b}, 0.15) 100%)`;
+                rgba(${r}, ${g}, ${b}, 0.4) 0%, 
+                rgba(${Math.min(r + 40, 255)}, ${Math.min(g + 40, 255)}, ${Math.min(b + 40, 255)}, 0.25) 50%,
+                rgba(${r}, ${g}, ${b}, 0.4) 100%)`;
             
             document.body.style.background = `#0a0a0a, ${gradient}`;
         }
