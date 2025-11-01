@@ -1027,12 +1027,12 @@
                     const lineTop = currentLine.offsetTop;
                     const lineHeight = currentLine.offsetHeight;
                     const containerHeight = container.clientHeight;
-                    if (lineTop)｛
+                    if (lineTop) {
                         container.scrollTo({
                             top: lineTop - containerHeight / 2 + lineHeight / 2,
                             behavior: 'smooth'
                         });
-                    ｝
+                    }
                 }
 
                 lastHighlighted = currentLine;
