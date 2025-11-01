@@ -42,7 +42,6 @@
             margin: 0;
             background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0a0a0a 100%);
             transition: background 1.5s ease;
-            overflow: hidden;
         }
 
         body::before {
@@ -69,7 +68,7 @@
             gap: 2rem;
             max-width: 1200px;
             width: 95%;
-            height: 80vh;
+            height: 85vh;
             justify-content: center;
             align-items: center;
             position: relative;
@@ -77,7 +76,7 @@
         }
 
         .playlist-container {
-            background: rgba(47, 47, 47, 0.7);
+            background: var(--bg-secondary);
             padding: 1.5rem;
             border-radius: 1.5rem;
             flex: 0 0 300px;
@@ -85,7 +84,6 @@
             overflow-y: hidden;
             box-shadow: 
                 0 8px 32px rgba(0, 0, 0, 0.3),
-                0 0 20px rgba(47, 47, 47, 0.7), /* 与背景色相同的阴影 */
                 inset 0 1px 0 rgba(255, 255, 255, 0.1),
                 inset 0 -1px 0 rgba(0, 0, 0, 0.2);
             border: 1px solid rgba(255, 255, 255, 0.05);
@@ -97,7 +95,6 @@
         .playlist-container:hover {
             box-shadow: 
                 0 12px 40px rgba(0, 0, 0, 0.4),
-                0 0 25px rgba(47, 47, 47, 0.8), /* 增强悬停阴影 */
                 0 0 0 1px rgba(119, 167, 215, 0.1),
                 inset 0 1px 0 rgba(255, 255, 255, 0.15),
                 inset 0 -1px 0 rgba(0, 0, 0, 0.2);
@@ -136,14 +133,13 @@
             padding: 0.75rem;
             border-radius: 0.75rem;
             margin-bottom: 0.5rem;
-            background: rgba(59, 59, 59, 0.6);
+            background: var(--bg-card);
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
             color: var(--text-secondary);
             position: relative;
             overflow: hidden;
             border: 1px solid rgba(255, 255, 255, 0.03);
-            box-shadow: 0 4px 10px rgba(59, 59, 59, 0.5); /* 与背景色相同的阴影 */
         }
 
         .playlist-item::before {
@@ -160,7 +156,7 @@
         .playlist-item:hover {
             background: rgba(79, 79, 79, 0.6);
             transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(79, 79, 79, 0.6); /* 更新阴影颜色 */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
             color: var(--text-primary);
         }
 
@@ -173,7 +169,6 @@
             color: white;
             box-shadow: 
                 0 4px 15px rgba(119, 167, 215, 0.4),
-                0 0 10px rgba(119, 167, 215, 0.3), /* 与背景色相同的阴影 */
                 inset 0 1px 0 rgba(255, 255, 255, 0.2),
                 inset 0 -1px 0 rgba(0, 0, 0, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -193,14 +188,13 @@
         }
 
         .player-container {
-            background: rgba(47, 47, 47, 0.7);
+            background: var(--bg-secondary);
             padding: 1.5rem;
             border-radius: 1.5rem;
             flex: 1;
             height: 100%;
             box-shadow: 
                 0 8px 32px rgba(0, 0, 0, 0.3),
-                0 0 20px rgba(47, 47, 47, 0.7), /* 与背景色相同的阴影 */
                 inset 0 1px 0 rgba(255, 255, 255, 0.1),
                 inset 0 -1px 0 rgba(0, 0, 0, 0.2);
             position: relative;
@@ -215,7 +209,6 @@
         .player-container:hover {
             box-shadow: 
                 0 12px 40px rgba(0, 0, 0, 0.4),
-                0 0 25px rgba(47, 47, 47, 0.8), /* 增强悬停阴影 */
                 0 0 0 1px rgba(119, 167, 215, 0.1),
                 inset 0 1px 0 rgba(255, 255, 255, 0.15),
                 inset 0 -1px 0 rgba(0, 0, 0, 0.2);
@@ -238,7 +231,6 @@
             background: #3b4141 url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="%23999999" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 14.5c-2.49 0-4.5-2.01-4.5-4.5S9.51 7.5 12 7.5s4.5 2.01 4.5 4.5-2.01 4.5-4.5 4.5zm0-5.5c-.55 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"/></svg>') no-repeat center/50%;
             box-shadow: 
                 0 8px 25px rgba(0, 0, 0, 0.4),
-                0 0 15px rgba(59, 65, 65, 0.6), /* 与背景色相同的阴影 */
                 0 0 0 1px rgba(255, 255, 255, 0.05),
                 inset 0 1px 0 rgba(255, 255, 255, 0.1);
             transition: all 0.4s ease;
@@ -262,7 +254,6 @@
             transform: translateY(-5px) scale(1.02);
             box-shadow: 
                 0 15px 30px rgba(0, 0, 0, 0.5),
-                0 0 20px rgba(59, 65, 65, 0.7), /* 增强悬停阴影 */
                 0 0 0 1px rgba(255, 255, 255, 0.08),
                 inset 0 1px 0 rgba(255, 255, 255, 0.15);
         }
@@ -310,7 +301,6 @@
             cursor: pointer;
             box-shadow: 
                 0 4px 15px rgba(119, 167, 215, 0.4),
-                0 0 10px rgba(119, 167, 215, 0.3), /* 与背景色相同的阴影 */
                 inset 0 1px 0 rgba(255, 255, 255, 0.2),
                 inset 0 -1px 0 rgba(0, 0, 0, 0.2);
             transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -369,7 +359,6 @@
             transform: translateY(-3px) scale(1.05);
             box-shadow: 
                 0 8px 20px rgba(119, 167, 215, 0.6),
-                0 0 15px rgba(119, 167, 215, 0.4), /* 增强悬停阴影 */
                 inset 0 1px 0 rgba(255, 255, 255, 0.3),
                 inset 0 -1px 0 rgba(0, 0, 0, 0.2);
         }
@@ -385,9 +374,7 @@
             background: rgba(79, 79, 79, 0.5);
             -webkit-appearance: none;
             outline: none;
-            box-shadow: 
-                inset 0 1px 3px rgba(0, 0, 0, 0.3),
-                0 0 8px rgba(79, 79, 79, 0.5); /* 与背景色相同的阴影 */
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
             overflow: hidden;
             cursor: pointer;
         }
@@ -401,7 +388,6 @@
             transition: all 0.2s ease;
             box-shadow: 
                 0 2px 10px rgba(0, 0, 0, 0.5),
-                0 0 8px rgba(119, 167, 215, 0.4), /* 与背景色相同的阴影 */
                 0 0 0 3px rgba(255, 255, 255, 0.1); /* 增强光影效果 */
             cursor: pointer;
             border: 2px solid rgba(255, 255, 255, 0.3); /* 添加边框增强通透感 */
@@ -413,7 +399,6 @@
             background: var(--secondary-color);
             box-shadow: 
                 0 3px 15px rgba(0, 0, 0, 0.6),
-                0 0 12px rgba(119, 167, 215, 0.5), /* 增强悬停阴影 */
                 0 0 0 3px rgba(255, 255, 255, 0.2); /* 增强悬停光影 */
         }
 
@@ -440,9 +425,7 @@
             background: rgba(74, 74, 74, 0.6);
             border-radius: 0.75rem;
             display: none;
-            box-shadow: 
-                0 4px 12px rgba(0, 0, 0, 0.2),
-                0 0 8px rgba(74, 74, 74, 0.5); /* 与背景色相同的阴影 */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
@@ -462,11 +445,10 @@
             flex-direction: column;
             overflow-y: hidden;
             position: relative;
-            background: rgba(59, 59, 59, 0.6);
+            background: var(--bg-card);
             box-shadow: 
                 inset 0 1px 0 rgba(255, 255, 255, 0.05),
-                inset 0 -1px 0 rgba(0, 0, 0, 0.1),
-                0 0 15px rgba(59, 59, 59, 0.6); /* 与背景色相同的阴影 */
+                inset 0 -1px 0 rgba(0, 0, 0, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.03);
         }
 
@@ -625,6 +607,12 @@
                 font-size: 1.25rem;
             }
         }
+
+        /* 淡化元素间的隔离感 */
+        .playlist-container, .player-container, .lyrics-container {
+            background: rgba(47, 47, 47, 0.5); /* 降低不透明度 */
+            border: 1px solid rgba(255, 255, 255, 0.08); /* 更淡的边框 */
+        }
     </style>
 </head>
 <body>
@@ -641,7 +629,7 @@
 
         <div class="player-container">
             <div class="player-main">
-                <img id="coverArt" class="cover-art" alt="" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'><rect width='200' height='200' fill='%233b4141'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='16' fill='%23999999'>专辑封面</text></svg>">
+                <img id="coverArt" class="cover-art" alt="" src="block.png">
                 <div class="song-info">
                     <h2 id="title">选择曲目开始播放</h2>
                     <p id="artist">&ndash;</p>
@@ -683,12 +671,70 @@
             playlist: []
         };
 
+        // 动态颜色提取函数
+        function getDominantColor(imageElement) {
+            return new Promise((resolve) => {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                canvas.width = 50;
+                canvas.height = 50;
+                
+                ctx.drawImage(imageElement, 0, 0, 50, 50);
+                
+                const imageData = ctx.getImageData(0, 0, 50, 50).data;
+                let r = 0, g = 0, b = 0;
+                let count = 0;
+                
+                // 采样像素
+                for (let i = 0; i < imageData.length; i += 16) { // 每16个像素采样一次
+                    r += imageData[i];
+                    g += imageData[i + 1];
+                    b += imageData[i + 2];
+                    count++;
+                }
+                
+                // 计算平均颜色
+                r = Math.floor(r / count);
+                g = Math.floor(g / count);
+                b = Math.floor(b / count);
+                
+                resolve([r, g, b]);
+            });
+        }
+
+        // 应用动态颜色到背景和强调色
+        function applyDynamicColors(rgb) {
+            const [r, g, b] = rgb;
+            
+            // 创建主色调和辅助色调
+            const primaryColor = `rgb(${r}, ${g}, ${b})`;
+            const secondaryColor = `rgb(${Math.min(r + 30, 255)}, ${Math.min(g + 30, 255)}, ${Math.min(b + 30, 255)})`;
+            const accentColor = `rgb(${Math.min(r + 60, 255)}, ${Math.min(g + 60, 255)}, ${Math.min(b + 60, 255)})`;
+            
+            // 应用颜色到CSS变量
+            document.documentElement.style.setProperty('--primary-color', primaryColor);
+            document.documentElement.style.setProperty('--secondary-color', secondaryColor);
+            document.documentElement.style.setProperty('--accent-color', accentColor);
+            
+            // 创建动态背景渐变
+            const gradient = `linear-gradient(135deg, 
+                rgba(${r}, ${g}, ${b}, 0.2) 0%, 
+                rgba(${Math.min(r + 30, 255)}, ${Math.min(g + 30, 255)}, ${Math.min(b + 30, 255)}, 0.1) 50%,
+                rgba(${r}, ${g}, ${b}, 0.2) 100%)`;
+            
+            document.body.style.background = gradient;
+            
+            // 更新光效颜色
+            document.querySelectorAll('.glow-effect').forEach(effect => {
+                effect.style.background = `radial-gradient(circle, ${primaryColor} 0%, transparent 70%)`;
+            });
+        }
+
         async function initPlayer() {
             const urlParam = getSafeAudioUrl();
             const indexParam = getIndex();
 
-            // 使用示例播放列表
-            state.playlist = samplePlaylist;
+            state.playlist = await loadPlaylist("./list.json");
 
             if (urlParam) {
                 state.playlist.unshift({
@@ -700,8 +746,6 @@
                 state.currentTrackIndex = 0;
             } else if (indexParam >= 0) {
                 state.currentTrackIndex = indexParam;
-            } else {
-                state.currentTrackIndex = 0; // 默认选择第一首
             }
 
             renderPlaylist();
@@ -734,37 +778,35 @@
                 item.addEventListener('click', async () => {
                     const index = parseInt(item.dataset.index);
                     if (index === state.currentTrackIndex) return;
-                    state.currentTrackIndex = index;
-                    renderPlaylist();
-                    await loadTrack(index);
+                    window.location.search = `?index=${index}`;
                 });
             });
 
             if (state.currentTrackIndex > -1) {
-                requestAnimationFrame(() => {
-                    const activeItem = listElement.querySelector(`[data-index="${state.currentTrackIndex}"]`);
-                    if (activeItem) {
-                        // 计算滚动位置
-                        const container = listElement.parentElement;
-                        const itemTop = activeItem.offsetTop;
-                        const itemHeight = activeItem.offsetHeight;
-                        const containerHeight = container.clientHeight;
+            requestAnimationFrame(() => {
+                const activeItem = listElement.querySelector(`[data-index="${state.currentTrackIndex}"]`);
+                if (activeItem) {
+                    // 计算滚动位置
+                    const container = listElement.parentElement;
+                    const itemTop = activeItem.offsetTop;
+                    const itemHeight = activeItem.offsetHeight;
+                    const containerHeight = container.clientHeight;
 
-                        // 居中滚动（带边界检测）
-                        const targetScroll = Math.max(0, itemTop - (containerHeight - itemHeight)/2);
+                    // 居中滚动（带边界检测）
+                    const targetScroll = Math.max(0, itemTop - (containerHeight - itemHeight)/2);
 
-                        // 使用平滑滚动
-                        container.scrollTo({
-                            top: targetScroll,
-                            behavior: 'auto' // 初始加载不使用动画
-                        });
+                    // 使用平滑滚动
+                    container.scrollTo({
+                        top: targetScroll,
+                        behavior: 'auto' // 初始加载不使用动画
+                    });
 
-                        // 添加视觉辅助线（调试用）
-                        activeItem.style.boxShadow = '0 0 0 2px rgba(119,167,215,0.5)';
-                        setTimeout(() => activeItem.style.boxShadow = '', 1000);
-                    }
-                });
-            }
+                    // 添加视觉辅助线（调试用）
+                    activeItem.style.boxShadow = '0 0 0 2px rgba(119,167,215,0.5)';
+                    setTimeout(() => activeItem.style.boxShadow = '', 1000);
+                }
+            });
+        }
         }
 
         async function loadTrack(index) {
@@ -778,20 +820,45 @@
                     });
                 }
 
-                在实际应用中，这里应该加载真实的音频文件
                 state.audio = new Audio(track.url);
                 state.audio.crossOrigin = "anonymous";
-                
-                
-                // 模拟元数据加载
-                updateMetadata({
-                    title: track.title,
-                    artist: track.artist,
-                    album: track.album
-                }, index);
+                setupAudioEvents();
 
-                // 模拟歌词加载
-                document.getElementById('lyrics').innerHTML = '<span style="opacity:0.7">示例歌词：<br>这是示例歌词的第一行<br>这是示例歌词的第二行<br>这是示例歌词的第三行</span>';
+                await new Promise((resolve, reject) => {
+                    fetch(track.url)
+                        .then(response => response.blob())
+                        .then(blob => {
+                            jsmediatags.read(blob, {
+                                onSuccess: tag => {
+                                    updateMetadata(tag.tags, index);
+                                    resolve();
+                                },
+                                onError: () => {
+                                    updateMetadata({}, index);
+                                    resolve();
+                                }
+                            });
+                        })
+                        .catch(reject);
+                });
+
+                // 加载歌词
+                try {
+                    const lyricsUrl = track.lyrics;
+                    const response = await fetch(lyricsUrl);
+                    if (response.ok) {
+                        const lyricsText = await response.text();
+                        const parsedLyrics = parseLyrics(lyricsText);
+                        document.getElementById('lyrics').innerHTML = formatLyrics(parsedLyrics);
+
+                        // 初始化滚动位置
+                        document.querySelector('.lyrics-content').scrollTo(0, 0);
+                    } else {
+                        document.getElementById('lyrics').innerHTML = '<span style="opacity:0.7">暂无歌词</span>';
+                    }
+                } catch (error) {
+                    document.getElementById('lyrics').innerHTML = '<span style="color:#ff6b6b">歌词加载失败</span>';
+                }
 
                 enableControls();
             } catch (error) {
@@ -799,6 +866,7 @@
             } finally {
                 showLoading(false);
             }
+
         }
 
         function formatLyrics(lyricData) {
@@ -894,61 +962,61 @@
 
         function updateMetadata(tags, index) {
             const track = state.playlist[index];
-            track.title = tags.title || track.title;
-            track.artist = tags.artist || track.artist;
-            track.album = tags.album || track.album;
+            track.title = tags.title || track.url.split('/').pop().replace(/\.[^.]+$/, '');
+            track.artist = tags.artist || '未知艺术家';
+            track.album = tags.album || '未知专辑';
 
             document.getElementById('title').textContent = track.title;
             document.getElementById('artist').textContent = track.artist;
             document.getElementById('album').textContent = track.album;
 
-            // 在实际应用中，这里应该处理专辑封面
-            // 这里我们使用一个示例图片
-            document.getElementById('coverArt').src = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'><rect width='200' height='200' fill='%233b4141'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='16' fill='%23999999'>专辑封面</text></svg>";
+            if (tags.picture) {
+                const base64 = btoa(String.fromCharCode(...new Uint8Array(tags.picture.data)));
+                const imgSrc = `data:${tags.picture.format};base64,${base64}`;
+                document.getElementById('coverArt').src = imgSrc;
+                
+                // 动态提取和应用颜色
+                const img = new Image();
+                img.crossOrigin = "anonymous";
+                img.onload = function() {
+                    getDominantColor(img).then(rgb => {
+                        applyDynamicColors(rgb);
+                    });
+                };
+                img.src = imgSrc;
+            } else {
+                document.getElementById('coverArt').src = '';
+                // 重置为默认颜色
+                document.body.style.background = "linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0a0a0a 100%)";
+                document.documentElement.style.setProperty('--primary-color', '#77a7d7');
+                document.documentElement.style.setProperty('--secondary-color', '#8bb8e8');
+                document.documentElement.style.setProperty('--accent-color', '#a8d0ff');
+            }
         }
 
         function setupAudioEvents() {
             const audio = state.audio;
 
             document.getElementById('playPauseBtn').addEventListener('click', () => {
-                if (!state.audio) return;
-                
-                if (state.isPlaying) {
-                    state.audio.pause();
-                } else {
-                    // 在实际应用中，这里应该播放真实的音频
-                    // state.audio.play();
-                    
-                    // 模拟播放
-                    console.log("播放音频");
-                }
+                state.isPlaying ? audio.pause() : audio.play();
                 state.isPlaying = !state.isPlaying;
                 updatePlayButton();
             });
 
-            // 模拟进度更新
-            setInterval(() => {
-                if (state.isPlaying && state.audio) {
-                    // 在实际应用中，这里应该使用真实的音频时间
-                    const currentTime = state.audio.currentTime || 0;
-                    const duration = state.audio.duration || 100;
-                    
-                    document.getElementById('progress').value = (currentTime / duration) * 100 || 0;
-                    document.getElementById('currentTime').textContent = formatTime(currentTime);
-                    updateLyricsHighlight(currentTime);
-                }
-            }, 1000);
-
-            document.getElementById('progress').addEventListener('input', (e) => {
-                if (state.audio) {
-                    state.audio.currentTime = (e.target.value / 100) * (state.audio.duration || 100);
-                }
+            audio.addEventListener('timeupdate', () => {
+                document.getElementById('progress').value = (audio.currentTime / audio.duration) * 100 || 0;
+                document.getElementById('currentTime').textContent = formatTime(audio.currentTime);
+                updateLyricsHighlight(audio.currentTime);
             });
 
-            // 模拟加载元数据
-            setTimeout(() => {
-                document.getElementById('duration').textContent = "3:45";
-            }, 500);
+            document.getElementById('progress').addEventListener('input', (e) => {
+                audio.currentTime = (e.target.value / 100) * audio.duration;
+            });
+
+            audio.addEventListener('loadedmetadata', () => {
+                document.getElementById('duration').textContent =
+                    formatTime(audio.duration);
+            });
 
             audio.addEventListener('error', (e) => {
                 const errorCode = audio.error ? `MEDIA_ERR_${audio.error.code}` : '未知错误';
@@ -1017,11 +1085,9 @@
             }
         }
 
-        // 初始化播放器
         (async () => {
             try {
                 await initPlayer();
-                setupAudioEvents();
             } catch (error) {
                 console.error('初始化错误:', error);
                 if (state.playlist.length === 0) {
