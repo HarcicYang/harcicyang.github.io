@@ -518,75 +518,120 @@
             z-index: 1;
         }
 
-        /* 移动设备优化 */
+        /* 移动设备优化 - 重新设计布局 */
         @media (max-width: 1024px) {
             .main-container {
                 flex-direction: column;
                 height: auto;
                 padding: 1rem;
                 gap: 1rem;
-            }
-            
-            .playlist-container, .player-container {
-                width: 95%;
-                flex: none;
+                width: 100%;
+                max-width: 100%;
+                overflow-y: auto;
+                height: 100vh;
             }
             
             .playlist-container {
-                max-height: 30vh;
-                flex: 0 0 auto;
+                width: 95%;
+                flex: none;
+                max-height: 25vh;
+                padding: 1rem;
             }
             
             .playlist {
-                height: 20vh;
+                height: 18vh;
                 overflow-y: auto;
             }
             
             .player-container {
-                flex-direction: column;
+                width: 95%;
+                flex-direction: row;
+                padding: 1rem;
+                gap: 1rem;
+                flex: none;
                 height: auto;
             }
             
-            .lyrics-container {
-                width: 100%;
-                flex: none;
-                max-height: 25vh;
-            }
-            
             .player-main {
-                max-width: 100%;
+                max-width: 60%;
+                flex: 1;
             }
             
-            .lyrics-content {
-                height: 20vh;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .main-container {
-                gap: 0.5rem;
-            }
-            
-            .player-container {
+            .lyrics-container {
+                width: 40%;
+                flex: none;
+                max-height: 40vh;
                 padding: 1rem;
-                gap: 1rem;
             }
             
             .cover-art {
                 width: 10rem;
                 height: 10rem;
+                margin: 0 auto 1rem;
             }
             
             #title {
                 font-size: 1.25rem;
             }
             
-            .playlist-container {
+            .lyrics-content {
+                height: 35vh;
+                font-size: 0.9em;
+            }
+            
+            .controls {
+                gap: 0.75rem;
+            }
+            
+            button {
+                padding: 12px;
+            }
+            
+            #progress {
+                height: 0.6rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                gap: 0.75rem;
+            }
+            
+            .player-container {
+                flex-direction: column;
+                padding: 1rem;
+                gap: 1rem;
+            }
+            
+            .player-main {
+                max-width: 100%;
+                width: 100%;
+            }
+            
+            .lyrics-container {
+                width: 100%;
                 max-height: 25vh;
             }
             
+            .cover-art {
+                width: 9rem;
+                height: 9rem;
+            }
+            
+            #title {
+                font-size: 1.2rem;
+            }
+            
+            .playlist-container {
+                max-height: 22vh;
+            }
+            
             .playlist {
-                height: 18vh;
+                height: 16vh;
+            }
+            
+            .lyrics-content {
+                height: 20vh;
             }
         }
 
@@ -594,10 +639,12 @@
             .main-container {
                 width: 100%;
                 padding: 0.5rem;
+                gap: 0.5rem;
             }
             
             .playlist-container, .player-container {
                 width: 100%;
+                padding: 0.75rem;
             }
             
             .cover-art {
@@ -605,9 +652,16 @@
                 height: 8rem;
             }
             
-            .player-container {
-                flex-direction: column;
-                padding: 0.75rem;
+            #title {
+                font-size: 1.1rem;
+            }
+            
+            .playlist-container {
+                max-height: 20vh;
+            }
+            
+            .playlist {
+                height: 14vh;
             }
             
             .lyrics-container {
@@ -615,7 +669,72 @@
             }
             
             .lyrics-content {
-                height: 15vh;
+                height: 16vh;
+                font-size: 0.85em;
+            }
+            
+            .controls {
+                gap: 0.5rem;
+            }
+            
+            button {
+                padding: 10px;
+            }
+            
+            .icon-container {
+                width: 20px;
+                height: 20px;
+            }
+            
+            #progress {
+                height: 0.5rem;
+            }
+            
+            #progress::-webkit-slider-thumb {
+                width: 1.4rem;
+                height: 1.4rem;
+            }
+            
+            #progress::-webkit-slider-thumb:hover {
+                width: 1.5rem;
+                height: 1.5rem;
+            }
+        }
+
+        /* 超小屏幕优化 */
+        @media (max-width: 360px) {
+            .main-container {
+                padding: 0.25rem;
+            }
+            
+            .playlist-container, .player-container {
+                padding: 0.5rem;
+            }
+            
+            .cover-art {
+                width: 7rem;
+                height: 7rem;
+            }
+            
+            #title {
+                font-size: 1rem;
+            }
+            
+            .playlist-item {
+                padding: 0.5rem;
+            }
+            
+            .playlist-item h4 {
+                font-size: 0.9rem;
+            }
+            
+            .playlist-item p {
+                font-size: 0.8rem;
+            }
+            
+            .lyrics-content {
+                font-size: 0.8em;
+                line-height: 1.6;
             }
         }
     </style>
