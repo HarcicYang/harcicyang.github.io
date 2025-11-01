@@ -1027,7 +1027,9 @@
                     const lineTop = currentLine.offsetTop;
                     const lineHeight = currentLine.offsetHeight;
                     const containerHeight = container.clientHeight;
-                    alert(lineTop, lineHeight, containerHeight);
+                    alert(lineTop);
+                    alert(lineHeight);
+                    alert(containerHeight);
                     if (lineTop) {
                         container.scrollTo({
                             top: lineTop - containerHeight / 2 + lineHeight / 2,
