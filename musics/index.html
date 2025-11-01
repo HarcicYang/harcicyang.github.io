@@ -727,7 +727,7 @@
                 rgba(${Math.min(r + 30, 255)}, ${Math.min(g + 30, 255)}, ${Math.min(b + 30, 255)}, 0.9) 37%,
                 rgba(${r}, ${g}, ${b}, 1) 95%)`;
             
-            document.body.style.background = `#0a0a0a, ${gradient}`;
+            document.body.style.background = `${gradient}, #0a0a0a`;
         }
 
         async function initPlayer() {
