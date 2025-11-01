@@ -536,7 +536,7 @@
                 flex: none;
                 max-height: 25vh;
                 padding: 1rem;
-                margin-top : -20pxpx;
+                margin-top: -20px;
             }
 
             .playlist-container {
@@ -610,7 +610,7 @@
 
             .playlist-container {
                 max-height: 17vh;
-                margin-top : -20pxpx;
+                margin-top: -20px;
             }
             
             .player-main {
@@ -659,7 +659,7 @@
 
             .playlist-container {
                 max-height: 17vh;
-                margin-top : -20pxpx;
+                margin-top: -20px;
             }
             
             .cover-art {
@@ -766,37 +766,48 @@
             audio: null,
             isPlaying: false,
             currentTrackIndex: -1,
-            playlist: []
+            playlist: [],
+            lastProcessedImage: null // 防止重复处理同一张图片
         };
 
         // 动态颜色提取函数
         function getDominantColor(imageElement) {
-            return new Promise((resolve) => {
-                const canvas = document.createElement('canvas');
-                const ctx = canvas.getContext('2d');
-                canvas.width = 50;
-                canvas.height = 50;
-                
-                ctx.drawImage(imageElement, 0, 0, 50, 50);
-                
-                const imageData = ctx.getImageData(0, 0, 50, 50).data;
-                let r = 0, g = 0, b = 0;
-                let count = 0;
-                
-                // 采样像素
-                for (let i = 0; i < imageData.length; i += 16) {
-                    r += imageData[i];
-                    g += imageData[i + 1];
-                    b += imageData[i + 2];
-                    count++;
+            return new Promise((resolve, reject) => {
+                try {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    canvas.width = 50;
+                    canvas.height = 50;
+                    
+                    // 确保图片已加载
+                    if (!imageElement.complete || imageElement.naturalHeight === 0) {
+                        reject(new Error('Image not loaded'));
+                        return;
+                    }
+                    
+                    ctx.drawImage(imageElement, 0, 0, 50, 50);
+                    
+                    const imageData = ctx.getImageData(0, 0, 50, 50).data;
+                    let r = 0, g = 0, b = 0;
+                    let count = 0;
+                    
+                    // 采样像素
+                    for (let i = 0; i < imageData.length; i += 16) {
+                        r += imageData[i];
+                        g += imageData[i + 1];
+                        b += imageData[i + 2];
+                        count++;
+                    }
+                    
+                    // 计算平均颜色
+                    r = Math.floor(r / count);
+                    g = Math.floor(g / count);
+                    b = Math.floor(b / count);
+                    
+                    resolve([r, g, b]);
+                } catch (error) {
+                    reject(error);
                 }
-                
-                // 计算平均颜色
-                r = Math.floor(r / count);
-                g = Math.floor(g / count);
-                b = Math.floor(b / count);
-                
-                resolve([r, g, b]);
             });
         }
 
@@ -806,34 +817,54 @@
             
             // 创建动态背景渐变
             const gradient = `linear-gradient(135deg, 
-                rgba(${r}, ${g}, ${b}, 1) 10%, 
-                rgba(${Math.min(r + 30, 255)}, ${Math.min(g + 30, 255)}, ${Math.min(b + 30, 255)}, 0.85) 37%,
-                rgba(${r}, ${g}, ${b}, 1) 95%)`;
+                rgba(${r}, ${g}, ${b}, 0.15) 10%, 
+                rgba(${Math.min(r + 30, 255)}, ${Math.min(g + 30, 255)}, ${Math.min(b + 30, 255)}, 0.1) 37%,
+                rgba(${r}, ${g}, ${b}, 0.15) 95%)`;
             
             document.body.style.background = `${gradient}, #0a0a0a`;
+            
+            // 更新CSS变量
+            document.documentElement.style.setProperty('--primary-color', `rgb(${r}, ${g}, ${b})`);
+            document.documentElement.style.setProperty('--secondary-color', `rgb(${Math.min(r + 30, 255)}, ${Math.min(g + 30, 255)}, ${Math.min(b + 30, 255)})`);
+            document.documentElement.style.setProperty('--accent-color', `rgb(${Math.min(r + 50, 255)}, ${Math.min(g + 50, 255)}, ${Math.min(b + 50, 255)})`);
+        }
+
+        // 重置背景颜色
+        function resetBackgroundColors() {
+            document.body.style.background = "#0a0a0a";
+            document.documentElement.style.setProperty('--primary-color', '#77a7d7');
+            document.documentElement.style.setProperty('--secondary-color', '#8bb8e8');
+            document.documentElement.style.setProperty('--accent-color', '#a8d0ff');
         }
 
         async function initPlayer() {
             const urlParam = getSafeAudioUrl();
             const indexParam = getIndex();
 
-            state.playlist = await loadPlaylist("./list.json");
+            try {
+                state.playlist = await loadPlaylist("./list.json");
 
-            if (urlParam) {
-                state.playlist.unshift({
-                    url: urlParam,
-                    title: '来自URL的歌曲',
-                    artist: ' - ',
-                    album: ' - '
-                });
-                state.currentTrackIndex = 0;
-            } else if (indexParam >= 0) {
-                state.currentTrackIndex = indexParam;
-            }
+                if (urlParam) {
+                    state.playlist.unshift({
+                        url: urlParam,
+                        title: '来自URL的歌曲',
+                        artist: ' - ',
+                        album: ' - '
+                    });
+                    state.currentTrackIndex = 0;
+                } else if (indexParam >= 0 && indexParam < state.playlist.length) {
+                    state.currentTrackIndex = indexParam;
+                } else if (state.playlist.length > 0) {
+                    state.currentTrackIndex = 0;
+                }
 
-            renderPlaylist();
-            if (state.currentTrackIndex >= 0) {
-                await loadTrack(state.currentTrackIndex);
+                renderPlaylist();
+                if (state.currentTrackIndex >= 0) {
+                    await loadTrack(state.currentTrackIndex);
+                }
+            } catch (error) {
+                console.error('初始化播放器失败:', error);
+                showError(`初始化失败: ${error.message}`);
             }
         }
 
@@ -866,86 +897,115 @@
             });
 
             if (state.currentTrackIndex > -1) {
-            requestAnimationFrame(() => {
-                const activeItem = listElement.querySelector(`[data-index="${state.currentTrackIndex}"]`);
-                if (activeItem) {
-                    // 计算滚动位置
-                    const container = listElement.parentElement;
-                    const itemTop = activeItem.offsetTop;
-                    const itemHeight = activeItem.offsetHeight;
-                    const containerHeight = container.clientHeight;
+                requestAnimationFrame(() => {
+                    const activeItem = listElement.querySelector(`[data-index="${state.currentTrackIndex}"]`);
+                    if (activeItem) {
+                        // 计算滚动位置
+                        const container = listElement.parentElement;
+                        const itemTop = activeItem.offsetTop;
+                        const itemHeight = activeItem.offsetHeight;
+                        const containerHeight = container.clientHeight;
 
-                    // 居中滚动（带边界检测）
-                    const targetScroll = Math.max(0, itemTop - (containerHeight - itemHeight)/2);
+                        // 居中滚动（带边界检测）
+                        const targetScroll = Math.max(0, itemTop - (containerHeight - itemHeight)/2);
 
-                    // 使用平滑滚动
-                    container.scrollTo({
-                        top: targetScroll,
-                        behavior: 'auto'
-                    });
-                }
-            });
-        }
+                        // 使用平滑滚动
+                        container.scrollTo({
+                            top: targetScroll,
+                            behavior: 'auto'
+                        });
+                    }
+                });
+            }
         }
 
         async function loadTrack(index) {
+            // 验证索引范围
+            if (index < 0 || index >= state.playlist.length) {
+                showError('无效的曲目索引');
+                return;
+            }
+            
             const track = state.playlist[index];
             showLoading(true);
 
             try {
+                // 停止当前播放的音频
                 if (state.audio) {
                     state.audio.pause();
-                    state.audio.removeEventListener('timeupdate', () => {
-                    });
+                    state.audio.removeEventListener('timeupdate', updateProgress);
+                    state.audio = null;
                 }
 
                 state.audio = new Audio(track.url);
                 state.audio.crossOrigin = "anonymous";
                 setupAudioEvents();
 
-                await new Promise((resolve, reject) => {
+                // 使用 Promise.race 添加超时处理
+                const metadataPromise = new Promise((resolve, reject) => {
                     fetch(track.url)
-                        .then(response => response.blob())
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error(`HTTP error ${response.status}`);
+                            }
+                            return response.blob();
+                        })
                         .then(blob => {
                             jsmediatags.read(blob, {
                                 onSuccess: tag => {
                                     updateMetadata(tag.tags, index);
                                     resolve();
                                 },
-                                onError: () => {
+                                onError: (error) => {
+                                    console.warn('Failed to read media tags:', error);
                                     updateMetadata({}, index);
-                                    resolve();
+                                    resolve(); // 即使元数据读取失败也继续
                                 }
                             });
                         })
-                        .catch(reject);
+                        .catch(error => {
+                            console.error('Fetch error:', error);
+                            updateMetadata({}, index);
+                            resolve(); // 即使获取失败也继续
+                        });
                 });
+
+                // 设置超时
+                const timeoutPromise = new Promise((resolve) => {
+                    setTimeout(resolve, 10000); // 10秒超时
+                });
+
+                await Promise.race([metadataPromise, timeoutPromise]);
 
                 // 加载歌词
                 try {
-                    const lyricsUrl = track.lyrics;
-                    const response = await fetch(lyricsUrl);
-                    if (response.ok) {
-                        const lyricsText = await response.text();
-                        const parsedLyrics = parseLyrics(lyricsText);
-                        document.getElementById('lyrics').innerHTML = formatLyrics(parsedLyrics);
-
-                        // 初始化滚动位置
-                        document.querySelector('.lyrics-content').scrollTo(0, 0);
+                    if (track.lyrics) {
+                        const response = await fetch(track.lyrics);
+                        if (response.ok) {
+                            const lyricsText = await response.text();
+                            const parsedLyrics = parseLyrics(lyricsText);
+                            document.getElementById('lyrics').innerHTML = formatLyrics(parsedLyrics);
+                            document.querySelector('.lyrics-content').scrollTo(0, 0);
+                        } else {
+                            document.getElementById('lyrics').innerHTML = '<span style="opacity:0.7">暂无歌词</span>';
+                        }
                     } else {
                         document.getElementById('lyrics').innerHTML = '<span style="opacity:0.7">暂无歌词</span>';
                     }
                 } catch (error) {
+                    console.error('Lyrics loading error:', error);
                     document.getElementById('lyrics').innerHTML = '<span style="color:#ff6b6b">歌词加载失败</span>';
                 }
 
                 enableControls();
+                renderPlaylist(); // 更新播放列表高亮
+                
             } catch (error) {
+                console.error('Track loading error:', error);
                 showError(`加载失败: ${error.message}`);
             } finally {
                 showLoading(false);
             }
-
         }
 
         function formatLyrics(lyricData) {
@@ -1027,9 +1087,7 @@
                     const lineTop = currentLine.offsetTop;
                     const lineHeight = currentLine.offsetHeight;
                     const containerHeight = container.clientHeight;
-                    // alert(lineTop);
-                    // alert(lineHeight);
-                    // alert(containerHeight);
+                    
                     if (lineTop) {
                         container.scrollTo({
                             top: lineTop - containerHeight / 2 + lineHeight / 2 + lineHeight,
@@ -1044,57 +1102,110 @@
 
         function updateMetadata(tags, index) {
             const track = state.playlist[index];
+            
+            // 添加安全检查，确保 track 存在
+            if (!track) {
+                console.error('Track not found at index:', index);
+                return;
+            }
+            
+            // 更新元数据
             track.title = tags.title || track.url.split('/').pop().replace(/\.[^.]+$/, '');
             track.artist = tags.artist || '未知艺术家';
             track.album = tags.album || '未知专辑';
 
+            // 更新 DOM 显示
             document.getElementById('title').textContent = track.title;
             document.getElementById('artist').textContent = track.artist;
             document.getElementById('album').textContent = track.album;
 
+            // 处理专辑封面
             if (tags.picture) {
-                const base64 = btoa(String.fromCharCode(...new Uint8Array(tags.picture.data)));
-                const imgSrc = `data:${tags.picture.format};base64,${base64}`;
-                document.getElementById('coverArt').src = imgSrc;
-                
-                // 动态提取和应用颜色
-                const img = new Image();
-                img.crossOrigin = "anonymous";
-                img.onload = function() {
-                    getDominantColor(img).then(rgb => {
-                        applyDynamicColors(rgb);
-                    });
-                };
-                img.src = imgSrc;
+                try {
+                    const base64 = btoa(String.fromCharCode(...new Uint8Array(tags.picture.data)));
+                    const imgSrc = `data:${tags.picture.format};base64,${base64}`;
+                    const coverArt = document.getElementById('coverArt');
+                    
+                    // 防止重复处理同一张图片
+                    if (state.lastProcessedImage === imgSrc) {
+                        return;
+                    }
+                    state.lastProcessedImage = imgSrc;
+                    
+                    // 添加图片加载错误处理
+                    coverArt.onerror = function() {
+                        console.error('Failed to load cover art');
+                        coverArt.src = 'block.png';
+                        resetBackgroundColors();
+                    };
+                    
+                    coverArt.onload = function() {
+                        // 动态提取和应用颜色
+                        getDominantColor(coverArt).then(rgb => {
+                            applyDynamicColors(rgb);
+                        }).catch(error => {
+                            console.error('Error extracting dominant color:', error);
+                            resetBackgroundColors();
+                        });
+                    };
+                    
+                    coverArt.src = imgSrc;
+                    
+                } catch (error) {
+                    console.error('Error processing cover art:', error);
+                    document.getElementById('coverArt').src = 'block.png';
+                    resetBackgroundColors();
+                }
             } else {
-                document.getElementById('coverArt').src = '';
-                // 重置为默认颜色
-                document.body.style.background = "#0a0a0a";
+                document.getElementById('coverArt').src = 'block.png';
+                resetBackgroundColors();
+            }
+        }
+
+        // 添加进度更新函数
+        function updateProgress() {
+            if (!state.audio) return;
+            
+            const progress = document.getElementById('progress');
+            const currentTime = document.getElementById('currentTime');
+            
+            if (state.audio.duration && !isNaN(state.audio.duration)) {
+                progress.value = (state.audio.currentTime / state.audio.duration) * 100 || 0;
+                currentTime.textContent = formatTime(state.audio.currentTime);
+                updateLyricsHighlight(state.audio.currentTime);
             }
         }
 
         function setupAudioEvents() {
             const audio = state.audio;
+            if (!audio) return;
 
+            // 移除可能存在的旧事件监听器
+            audio.removeEventListener('timeupdate', updateProgress);
+            
             document.getElementById('playPauseBtn').addEventListener('click', () => {
-                state.isPlaying ? audio.pause() : audio.play();
+                if (state.isPlaying) {
+                    audio.pause();
+                } else {
+                    audio.play().catch(error => {
+                        console.error('Playback failed:', error);
+                        showError(`播放失败: ${error.message}`);
+                    });
+                }
                 state.isPlaying = !state.isPlaying;
                 updatePlayButton();
             });
 
-            audio.addEventListener('timeupdate', () => {
-                document.getElementById('progress').value = (audio.currentTime / audio.duration) * 100 || 0;
-                document.getElementById('currentTime').textContent = formatTime(audio.currentTime);
-                updateLyricsHighlight(audio.currentTime);
-            });
+            audio.addEventListener('timeupdate', updateProgress);
 
             document.getElementById('progress').addEventListener('input', (e) => {
-                audio.currentTime = (e.target.value / 100) * audio.duration;
+                if (audio.duration && !isNaN(audio.duration)) {
+                    audio.currentTime = (e.target.value / 100) * audio.duration;
+                }
             });
 
             audio.addEventListener('loadedmetadata', () => {
-                document.getElementById('duration').textContent =
-                    formatTime(audio.duration);
+                document.getElementById('duration').textContent = formatTime(audio.duration);
             });
 
             audio.addEventListener('error', (e) => {
@@ -1110,6 +1221,7 @@
         }
 
         function formatTime(seconds) {
+            if (isNaN(seconds)) return "0:00";
             const minutes = Math.floor(seconds / 60);
             seconds = Math.floor(seconds % 60);
             return `${minutes}:${seconds.toString().padStart(2, '0')}`;
