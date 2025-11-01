@@ -824,17 +824,17 @@
             document.body.style.background = `${gradient}, #0a0a0a`;
             
             // 更新CSS变量
-            document.documentElement.style.setProperty('--primary-color', `rgb(${r}, ${g}, ${b})`);
-            document.documentElement.style.setProperty('--secondary-color', `rgb(${Math.min(r + 30, 255)}, ${Math.min(g + 30, 255)}, ${Math.min(b + 30, 255)})`);
-            document.documentElement.style.setProperty('--accent-color', `rgb(${Math.min(r + 50, 255)}, ${Math.min(g + 50, 255)}, ${Math.min(b + 50, 255)})`);
+            // document.documentElement.style.setProperty('--primary-color', `rgb(${r}, ${g}, ${b})`);
+            // document.documentElement.style.setProperty('--secondary-color', `rgb(${Math.min(r + 30, 255)}, ${Math.min(g + 30, 255)}, ${Math.min(b + 30, 255)})`);
+            // document.documentElement.style.setProperty('--accent-color', `rgb(${Math.min(r + 50, 255)}, ${Math.min(g + 50, 255)}, ${Math.min(b + 50, 255)})`);
         }
 
         // 重置背景颜色
         function resetBackgroundColors() {
-            document.body.style.background = "#0a0a0a";
-            document.documentElement.style.setProperty('--primary-color', '#77a7d7');
-            document.documentElement.style.setProperty('--secondary-color', '#8bb8e8');
-            document.documentElement.style.setProperty('--accent-color', '#a8d0ff');
+            // document.body.style.background = "#0a0a0a";
+            // document.documentElement.style.setProperty('--primary-color', '#77a7d7');
+            // document.documentElement.style.setProperty('--secondary-color', '#8bb8e8');
+            // document.documentElement.style.setProperty('--accent-color', '#a8d0ff');
         }
 
         async function initPlayer() {
