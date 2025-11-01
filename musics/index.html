@@ -21,21 +21,27 @@
 
         * {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden; /* 防止页面滚动 */
         }
 
         body {
             font-family: "Segoe UI", system-ui, sans-serif;
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 1rem;
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0a0a0a 100%);
+            display: flex;
             justify-content: center;
             align-items: center;
-            display: flex;
-            gap: 2rem;
             color: var(--text-primary);
             position: relative;
-            min-height: 100vh;
+            height: 100vh;
+            padding: 0;
+            margin: 0;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0a0a0a 100%);
+            transition: background 1.5s ease;
         }
 
         body::before {
@@ -54,16 +60,19 @@
             -webkit-backdrop-filter: blur(80px);
             backdrop-filter: blur(80px);
             z-index: -1;
+            transition: all 1.5s ease;
         }
 
         .main-container {
             display: flex;
             gap: 2rem;
             max-width: 1200px;
-            margin-top: 16.5vh;
-            width: 100%;
-            justify-self: center;
-            align-self: center;
+            width: 95%;
+            height: 85vh;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 1;
         }
 
         .playlist-container {
@@ -71,9 +80,8 @@
             padding: 1.5rem;
             border-radius: 1.5rem;
             flex: 0 0 300px;
-            max-height: 80vh;
+            height: 100%;
             overflow-y: hidden;
-            align-self: center;
             box-shadow: 
                 0 8px 32px rgba(0, 0, 0, 0.3),
                 inset 0 1px 0 rgba(255, 255, 255, 0.1),
@@ -97,7 +105,7 @@
             scrollbar-width: thin;
             scrollbar-color: var(--primary-color) rgba(0, 0, 0, 0);
             overflow-y: scroll;
-            height: 45vh;
+            height: calc(100% - 3rem);
             padding: 0;
             margin: 0;
         }
@@ -184,6 +192,7 @@
             padding: 1.5rem;
             border-radius: 1.5rem;
             flex: 1;
+            height: 100%;
             box-shadow: 
                 0 8px 32px rgba(0, 0, 0, 0.3),
                 inset 0 1px 0 rgba(255, 255, 255, 0.1),
@@ -191,7 +200,6 @@
             position: relative;
             display: flex;
             gap: 2rem;
-            align-self: center;
             border: 1px solid rgba(255, 255, 255, 0.05);
             -webkit-backdrop-filter: blur(15px);
             backdrop-filter: blur(15px);
@@ -208,7 +216,9 @@
 
         .player-main {
             flex: 1;
-            max-width: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         .cover-art {
@@ -359,40 +369,42 @@
 
         #progress {
             flex: 1;
-            height: 0.5rem;
-            border-radius: 0.5rem;
+            height: 0.7rem; /* 增加高度 */
+            border-radius: 0.7rem; /* 增加圆角 */
             background: rgba(79, 79, 79, 0.5);
             -webkit-appearance: none;
             outline: none;
             box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
             overflow: hidden;
+            cursor: pointer;
         }
 
         #progress::-webkit-slider-thumb {
             -webkit-appearance: none;
-            width: 1.2rem;
-            height: 1.2rem;
+            width: 1.6rem; /* 增大滑块尺寸 */
+            height: 1.6rem; /* 增大滑块尺寸 */
             border-radius: 50%;
             background: var(--primary-color);
             transition: all 0.2s ease;
             box-shadow: 
-                0 2px 8px rgba(0, 0, 0, 0.4),
-                0 0 0 2px rgba(255, 255, 255, 0.1);
+                0 2px 10px rgba(0, 0, 0, 0.5),
+                0 0 0 3px rgba(255, 255, 255, 0.1); /* 增强光影效果 */
             cursor: pointer;
+            border: 2px solid rgba(255, 255, 255, 0.3); /* 添加边框增强通透感 */
         }
 
         #progress::-webkit-slider-thumb:hover {
-            width: 1.4rem;
-            height: 1.4rem;
+            width: 1.8rem; /* 增大悬停尺寸 */
+            height: 1.8rem; /* 增大悬停尺寸 */
             background: var(--secondary-color);
             box-shadow: 
-                0 3px 10px rgba(0, 0, 0, 0.5),
-                0 0 0 2px rgba(255, 255, 255, 0.2);
+                0 3px 15px rgba(0, 0, 0, 0.6),
+                0 0 0 3px rgba(255, 255, 255, 0.2); /* 增强悬停光影 */
         }
 
         #progress::-webkit-slider-track {
-            height: 0.5rem;
-            border-radius: 0.5rem;
+            height: 0.7rem; /* 增加轨道高度 */
+            border-radius: 0.7rem; /* 增加轨道圆角 */
             background: linear-gradient(90deg, var(--primary-color) 0%, var(--secondary-color) 100%);
             box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
         }
@@ -428,7 +440,7 @@
             flex: 0 0 320px;
             padding: 1.5rem;
             border-radius: 1rem;
-            max-height: 45vh;
+            height: 100%;
             display: flex;
             flex-direction: column;
             overflow-y: hidden;
@@ -447,7 +459,7 @@
             font-size: 0.95em;
             padding-right: 12px;
             overflow-y: scroll;
-            height: 45vh;
+            height: calc(100% - 3rem);
             scrollbar-width: thin;
             scrollbar-color: var(--primary-color) rgba(0, 0, 0, 0);
             flex-grow: 1;
@@ -506,14 +518,14 @@
 
         /* 添加一些装饰性元素增强光影效果 */
         .glow-effect {
-            position: absolute;
+            position: fixed;
             width: 200px;
             height: 200px;
             border-radius: 50%;
             background: radial-gradient(circle, var(--primary-color) 0%, transparent 70%);
-            filter: blur(40px);
-            opacity: 0.1;
-            z-index: -1;
+            filter: blur(60px); /* 增加模糊度使更通透 */
+            opacity: 0.15; /* 增加透明度使更通透 */
+            z-index: 0;
             animation: float 15s infinite ease-in-out;
         }
 
@@ -547,39 +559,59 @@
             }
         }
 
-        @media (max-width: 768px) {
-            body {
-                gap: 0.5rem
-            }
-
+        /* 响应式设计 */
+        @media (max-width: 1024px) {
             .main-container {
                 flex-direction: column;
-                margin-top: -1vh;
-                gap: 0.5rem
+                height: auto;
+                padding: 1rem;
             }
-
+            
+            .playlist-container, .player-container {
+                width: 100%;
+                flex: none;
+            }
+            
             .player-container {
-                width: 90%;
+                flex-direction: column;
+                height: auto;
             }
-
-            .playlist-container {
-                flex: 0 0 15vh;
-                width: 90%;
-                height: 35%;
-            }
-
-            .playlist {
-                height: 75%;
-            }
-
+            
             .lyrics-container {
-                width: 42%;
-                flex: 0 0 37%;
+                width: 100%;
+                flex: none;
+                height: 300px;
             }
+            
+            .player-main {
+                max-width: 100%;
+            }
+        }
 
-            .lyrics-content {
-                width: 90%;
+        @media (max-width: 768px) {
+            .main-container {
+                gap: 1rem;
             }
+            
+            .player-container {
+                padding: 1rem;
+                gap: 1rem;
+            }
+            
+            .cover-art {
+                width: 10rem;
+                height: 10rem;
+            }
+            
+            #title {
+                font-size: 1.25rem;
+            }
+        }
+
+        /* 淡化元素间的隔离感 */
+        .playlist-container, .player-container, .lyrics-container {
+            background: rgba(47, 47, 47, 0.5); /* 降低不透明度 */
+            border: 1px solid rgba(255, 255, 255, 0.08); /* 更淡的边框 */
         }
     </style>
 </head>
@@ -632,13 +664,71 @@
     </div>
 
     <script>
-        // 保持原有的JavaScript代码不变
         const state = {
             audio: null,
             isPlaying: false,
             currentTrackIndex: -1,
             playlist: []
         };
+
+        // 动态颜色提取函数
+        function getDominantColor(imageElement) {
+            return new Promise((resolve) => {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                canvas.width = 50;
+                canvas.height = 50;
+                
+                ctx.drawImage(imageElement, 0, 0, 50, 50);
+                
+                const imageData = ctx.getImageData(0, 0, 50, 50).data;
+                let r = 0, g = 0, b = 0;
+                let count = 0;
+                
+                // 采样像素
+                for (let i = 0; i < imageData.length; i += 16) { // 每16个像素采样一次
+                    r += imageData[i];
+                    g += imageData[i + 1];
+                    b += imageData[i + 2];
+                    count++;
+                }
+                
+                // 计算平均颜色
+                r = Math.floor(r / count);
+                g = Math.floor(g / count);
+                b = Math.floor(b / count);
+                
+                resolve([r, g, b]);
+            });
+        }
+
+        // 应用动态颜色到背景和强调色
+        function applyDynamicColors(rgb) {
+            const [r, g, b] = rgb;
+            
+            // 创建主色调和辅助色调
+            const primaryColor = `rgb(${r}, ${g}, ${b})`;
+            const secondaryColor = `rgb(${Math.min(r + 30, 255)}, ${Math.min(g + 30, 255)}, ${Math.min(b + 30, 255)})`;
+            const accentColor = `rgb(${Math.min(r + 60, 255)}, ${Math.min(g + 60, 255)}, ${Math.min(b + 60, 255)})`;
+            
+            // 应用颜色到CSS变量
+            document.documentElement.style.setProperty('--primary-color', primaryColor);
+            document.documentElement.style.setProperty('--secondary-color', secondaryColor);
+            document.documentElement.style.setProperty('--accent-color', accentColor);
+            
+            // 创建动态背景渐变
+            const gradient = `linear-gradient(135deg, 
+                rgba(${r}, ${g}, ${b}, 0.2) 0%, 
+                rgba(${Math.min(r + 30, 255)}, ${Math.min(g + 30, 255)}, ${Math.min(b + 30, 255)}, 0.1) 50%,
+                rgba(${r}, ${g}, ${b}, 0.2) 100%)`;
+            
+            document.body.style.background = gradient;
+            
+            // 更新光效颜色
+            document.querySelectorAll('.glow-effect').forEach(effect => {
+                effect.style.background = `radial-gradient(circle, ${primaryColor} 0%, transparent 70%)`;
+            });
+        }
 
         async function initPlayer() {
             const urlParam = getSafeAudioUrl();
@@ -882,12 +972,25 @@
 
             if (tags.picture) {
                 const base64 = btoa(String.fromCharCode(...new Uint8Array(tags.picture.data)));
-                document.getElementById('coverArt').src = `data:${tags.picture.format};base64,${base64}`;
-                document.body.style.background = `url(data:${tags.picture.format};base64,${base64}) no-repeat center center fixed`;
-                document.body.style.backgroundSize = '100% 100%';
+                const imgSrc = `data:${tags.picture.format};base64,${base64}`;
+                document.getElementById('coverArt').src = imgSrc;
+                
+                // 动态提取和应用颜色
+                const img = new Image();
+                img.crossOrigin = "anonymous";
+                img.onload = function() {
+                    getDominantColor(img).then(rgb => {
+                        applyDynamicColors(rgb);
+                    });
+                };
+                img.src = imgSrc;
             } else {
                 document.getElementById('coverArt').src = '';
-                document.body.style.background = "#111111";
+                // 重置为默认颜色
+                document.body.style.background = "linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0a0a0a 100%)";
+                document.documentElement.style.setProperty('--primary-color', '#77a7d7');
+                document.documentElement.style.setProperty('--secondary-color', '#8bb8e8');
+                document.documentElement.style.setProperty('--accent-color', '#a8d0ff');
             }
         }
 
