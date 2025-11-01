@@ -683,31 +683,6 @@
             playlist: []
         };
 
-        // 示例播放列表数据
-        const samplePlaylist = [
-            {
-                url: "https://example.com/song1.mp3",
-                title: "示例歌曲 1",
-                artist: "示例艺术家",
-                album: "示例专辑",
-                lyrics: "https://example.com/lyrics1.lrc"
-            },
-            {
-                url: "https://example.com/song2.mp3",
-                title: "示例歌曲 2",
-                artist: "示例艺术家",
-                album: "示例专辑",
-                lyrics: "https://example.com/lyrics2.lrc"
-            },
-            {
-                url: "https://example.com/song3.mp3",
-                title: "示例歌曲 3",
-                artist: "示例艺术家",
-                album: "示例专辑",
-                lyrics: "https://example.com/lyrics3.lrc"
-            }
-        ];
-
         async function initPlayer() {
             const urlParam = getSafeAudioUrl();
             const indexParam = getIndex();
@@ -803,13 +778,10 @@
                     });
                 }
 
-                // 在实际应用中，这里应该加载真实的音频文件
-                // state.audio = new Audio(track.url);
-                // state.audio.crossOrigin = "anonymous";
-                
-                // 模拟音频加载
-                state.audio = new Audio();
+                在实际应用中，这里应该加载真实的音频文件
+                state.audio = new Audio(track.url);
                 state.audio.crossOrigin = "anonymous";
+                
                 
                 // 模拟元数据加载
                 updateMetadata({
