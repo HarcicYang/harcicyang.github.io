@@ -1,135 +1,223 @@
 <!DOCTYPE html>
 <html lang="zh">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Rcitrat - Alpha</title>
-        <link rel="icon" type="image/svg+xml" href="/resource/favicon.svg">
-        <link rel="stylesheet" href="resource/style.css">
-        <script>
-            function getDomainFromUrl(url) {
-                const parsedUrl = new URL(url);
-                return parsedUrl.hostname;
-            }
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#e8ecf1" media="(prefers-color-scheme: light)">
+    <title>Harcic's Hub</title>
+    <link rel="icon" type="image/svg+xml" href="/resource/favicon.svg">
+    <link rel="stylesheet" href="/resource/theme.css">
+    <style>
+        .hub-container {
+            width: 100%;
+            max-width: 850px;
+        }
+        .hub-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .hub-header .logo-block svg {
+            width: 80px;
+            height: 80px;
+        }
+        .logo-main { fill: var(--logo-color); }
+        .logo-sub { fill: var(--logo-sub-color); }
+        .hub-header .header-text { flex: 1; }
+        .hub-title {
+            font-size: var(--title-size, 1.5rem);
+            font-weight: 700;
+        }
+        .hub-subtitle { font-size: 0.88rem; opacity: 0.6; }
 
-            function getCSSVar(variableName) {
-                return getComputedStyle(document.documentElement).getPropertyValue(variableName);
-            }
+        .hub-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+            gap: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        .hub-card {
+            display: flex;
+            align-items: center;
+            gap: 0.9rem;
+            padding: 0.85rem 1rem;
+            background: var(--sub-box-color);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-card);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            text-decoration: none;
+            color: var(--text-color);
+            will-change: transform;
+            transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+        }
+        .hub-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-card-hover);
+        }
+        .hub-card .card-icon {
+            font-size: 2rem;
+            flex-shrink: 0;
+            width: 42px;
+            text-align: center;
+        }
+        .hub-card .card-body {
+            flex: 1;
+            min-width: 0;
+        }
+        .hub-card .card-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 0.15rem;
+        }
+        .hub-card .card-desc {
+            font-size: 0.78rem;
+            opacity: 0.65;
+        }
+        .hub-card .card-tag {
+            display: inline-block;
+            font-size: 0.7rem;
+            padding: 0.15rem 0.5rem;
+            border-radius: var(--radius-sm);
+            background: var(--ac-btn-color);
+            color: var(--btn-text-color);
+            flex-shrink: 0;
+        }
 
-            class PinItem extends HTMLElement {
-                urlToJump;
-                title;
+        .hub-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            opacity: 0.5;
+            font-size: 0.82rem;
+        }
+        .hub-footer a { color: inherit; }
 
-                connectedCallback() {
-                    this.title = this.getAttribute("title");
-                    this.urlToJump = this.getAttribute("url");
-                    const shadow = this.attachShadow({mode: "open"});
-                    const wrapper = document.createElement("div");
-                    let iconBlock = document.createElement("div");
-                    let iconImg = document.createElement("img");
-                    let titleText = document.createElement("p");
-                    iconBlock.className = "pin-item-block";
-                    iconImg.src = "http://" + getDomainFromUrl(this.urlToJump) + "/favicon.ico";
-                    iconImg.height = 50;
-                    iconImg.width = 50;
-                    iconBlock.style.margin = "20px 0 15px 30px";
+        @media (max-width: 768px) {
+            .hub-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 0.65rem; }
+            .hub-card { padding: 0.7rem 0.8rem; gap: 0.6rem; }
+            .hub-card .card-icon { font-size: 1.6rem; width: 34px; }
+            .hub-card .card-title { font-size: 0.85rem; }
+            .hub-card .card-desc { font-size: 0.72rem; }
+            .hub-header .logo-block svg { width: 60px; height: 60px; }
+        }
+        @media (max-width: 480px) {
+            .hub-grid { grid-template-columns: repeat(2, 1fr); gap: 0.5rem; }
+            .hub-card { padding: 0.6rem 0.65rem; }
+            .hub-card .card-desc { display: none; }
+            .hub-header { gap: 0.65rem; }
+            .hub-header .logo-block svg { width: 50px; height: 50px; }
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" id="themeToggle" aria-label="切换主题">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="currentColor"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58a.996.996 0 00-1.41 0 .996.996 0 000 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37a.996.996 0 00-1.41 0 .996.996 0 000 1.41l1.06 1.06c.39.39 1.03.39 1.41 0a.996.996 0 000-1.41l-1.06-1.06zm1.06-10.96a.996.996 0 000-1.41.996.996 0 00-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36a.996.996 0 000-1.41.996.996 0 00-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="currentColor" style="display:none"><path d="M12 3a9 9 0 109 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 01-4.4 2.26 5.403 5.403 0 01-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>
+    </button>
 
-                    titleText.innerText = this.title;
-                    titleText.style.width = "110px";
-                    titleText.style.marginTop = "2px";
-                    titleText.style.fontSize = "12pt";
-                    titleText.style.textAlign = "center";
-                    titleText.style.color = getCSSVar("--text-color");
-
-                    iconBlock.appendChild(iconImg);
-                    wrapper.appendChild(iconBlock);
-                    wrapper.appendChild(titleText);
-                    shadow.appendChild(wrapper);
-                }
-
-                jump() {
-                    location.href = this.urlToJump;
-                }
-            }
-            customElements.define("pin-item", PinItem);
-        </script>
-    </head>
-    <body>
-        <div class="overlay">
-            <div class="container">
-                <div class="logo-block">
-                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1920" height="1920" viewBox="0 0 1920 1920">
-                        <defs>
-                            <clipPath id="clip-LOGO">
-                                <rect width="1920" height="1920"/>
-                            </clipPath>
-                        </defs>
-                        <g id="LOGO" clip-path="url(#clip-LOGO)">
-                            <g id="logo-2" transform="translate(127.376 68.102)">
-                                <rect class="logo-main" width="150" height="1100" transform="translate(952.628 148.113) rotate(60)"/>
-                                <rect class="logo-main" width="150" height="747" transform="translate(503.802 1271.921) rotate(150)"/>
-                                <rect class="logo-main" width="150" height="1400" transform="translate(1659.528 1356.548) rotate(150)"/>
-                                <rect class="logo-main" width="150" height="1400" transform="translate(1511.65 516.523) rotate(60)"/>
-                                <rect class="logo-main" width="150" height="747" transform="translate(1589.725 646.921) rotate(150)"/>
-                                <rect class="logo-sub" width="150" height="458.837" rx="75" transform="translate(1104.114 1166.766) rotate(60)"/>
-                            </g>
+    <div class="page-scroll">
+    <div class="hub-container">
+        <header class="hub-header">
+            <div class="logo-block">
+                <svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1920" viewBox="0 0 1920 1920">
+                    <defs><clipPath id="clip-LOGO"><rect width="1920" height="1920"/></clipPath></defs>
+                    <g clip-path="url(#clip-LOGO)">
+                        <g transform="translate(127.376 68.102)">
+                            <rect class="logo-main" width="150" height="1100" transform="translate(952.628 148.113) rotate(60)"/>
+                            <rect class="logo-main" width="150" height="747" transform="translate(503.802 1271.921) rotate(150)"/>
+                            <rect class="logo-main" width="150" height="1400" transform="translate(1659.528 1356.548) rotate(150)"/>
+                            <rect class="logo-main" width="150" height="1400" transform="translate(1511.65 516.523) rotate(60)"/>
+                            <rect class="logo-main" width="150" height="747" transform="translate(1589.725 646.921) rotate(150)"/>
+                            <rect class="logo-sub" width="150" height="458.837" rx="75" transform="translate(1104.114 1166.766) rotate(60)"/>
                         </g>
-                    </svg>
-                </div>
-                <div class="search-box" id="sb">
-                    <label>
-                        <input class="search-ipt" type="text" id="i1" autocomplete="off"/>
-                        <button class="search-btn" id="i2">
-                            <svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M1024 981.333333c0 23.466667-19.2 42.666667-42.666667 42.666667-12.8 0-23.466667-4.266667-29.866667-12.8L697.6 757.333333C622.933333 817.066667 529.066667 853.333333 426.666667 853.333333 192 853.333333 0 661.333333 0 426.666667 0 192 192 0 426.666667 0s426.666667 192 426.666667 426.666667c0 102.4-36.266667 196.266667-96 270.933333l253.866667 253.866667C1019.733333 957.866667 1024 968.533333 1024 981.333333zM426.666667 85.333333C238.933333 85.333333 85.333333 238.933333 85.333333 426.666667s153.6 341.333333 341.333333 341.333333 341.333333-153.6 341.333333-341.333333S614.4 85.333333 426.666667 85.333333z"></path>
-                            </svg>
-                        </button>
-                    </label>
-                </div>
-                <div id="pin">
-                    <pin-item class="pin-item" url="https://www.bilibili.com" title="BiliBili"></pin-item>
-                    <pin-item class="pin-item" url="https://www.microsoft.com" title="Microsoft"></pin-item>
-                    <pin-item class="pin-item" url="https://www.github.com" title="GitHub"></pin-item>
-                    <pin-item class="pin-item" url="https://www.google.com" title="Google"></pin-item>
-                    <pin-item class="pin-item" url="https://www.x.com" title="X"></pin-item>
-                    <pin-item class="pin-item" url="https://aistudio.google.com" title="AIStudio"></pin-item>
-                    <pin-item class="pin-item" url="https://harcicyang.github.io/sickof" title="发电"></pin-item>
-                </div>
+                    </g>
+                </svg>
             </div>
+            <div class="header-text">
+                <h1 class="hub-title">Harcic's Hub</h1>
+                <p class="hub-subtitle">鸟为什么会飞？</p>
+            </div>
+        </header>
+
+        <div class="section-label">工具</div>
+        <div class="hub-grid">
+            <a href="/search/" class="hub-card">
+                <div class="card-icon">&#x1F50D;</div>
+                <div class="card-body"><div class="card-title">搜索主页</div><div class="card-desc">聚合搜索引擎入口 & 收藏夹</div></div>
+                <span class="card-tag">Bing</span>
+            </a>
+            <a href="/sickof.html" class="hub-card">
+                <div class="card-icon">&#x26A1;</div>
+                <div class="card-body"><div class="card-title">发电工具箱</div><div class="card-desc">一键生成发电文案</div></div>
+                <span class="card-tag">Meme</span>
+            </a>
         </div>
-    </body>
-    <script>
-        iptn = document.getElementById("i1");
 
-        function fadeAll() {
-            document.getElementById("sb").classList.add("fade");
-            document.getElementById("pin").classList.add("fade");
-        }
+        <div class="section-label">娱乐</div>
+        <div class="hub-grid">
+            <a href="/musics/" class="hub-card">
+                <div class="card-icon">&#x1F3B5;</div>
+                <div class="card-body"><div class="card-title">音乐播放器</div><div class="card-desc">在线音乐播放 & 歌词同步</div></div>
+                <span class="card-tag">Player</span>
+            </a>
+        </div>
 
-        function goSearch() {
-            fadeAll();
-            window.location.href = "https://www.bing.com/search?q=" + iptn.value;
-        }
+        <div class="section-label">内容</div>
+        <div class="hub-grid">
+            <a href="/imgs/" class="hub-card">
+                <div class="card-icon">&#x1F5BC;</div>
+                <div class="card-body"><div class="card-title">图片集</div><div class="card-desc">全部手绘</div></div>
+                <span class="card-tag">Gallery</span>
+            </a>
+        </div>
 
-        iptn.addEventListener("keypress", function (event) {
-            if (event.key === "Enter") {
-                goSearch();
-            }
-        })
-        iptb = document.getElementById("i2");
-        iptb.onclick = function () {
-            goSearch();
-        }
+        <div class="section-label">项目</div>
+        <div class="hub-grid">
+            <a href="/hyper-bot/" class="hub-card">
+                <div class="card-icon">&#x1F916;</div>
+                <div class="card-body"><div class="card-title">Hyper Bot</div><div class="card-desc">QQ 机器人框架文档</div></div>
+                <span class="card-tag">Bot</span>
+            </a>
+        </div>
 
-        pt = document.getElementsByClassName("pin-item");
-        for (let i = 0; i < pt.length; ++i) {
-            const item = pt[i];
-            item.addEventListener("click", function () {
-                fadeAll();
-                item.jump();
-            })
-        }
+        <div class="section-label">整活</div>
+        <div class="hub-grid">
+            <a href="/music.html" class="hub-card">
+                <div class="card-icon">&#x1F3B6;</div>
+                <div class="card-body"><div class="card-title">经典老歌</div><div class="card-desc">经典老歌送给你</div></div>
+                <span class="card-tag">Fun</span>
+            </a>
+            <a href="/jntm.html" class="hub-card">
+                <div class="card-icon">&#x1F4DE;</div>
+                <div class="card-body"><div class="card-title">蔡徐坤来电</div><div class="card-desc">蔡徐坤邀请你语音通话</div></div>
+                <span class="card-tag">Prank</span>
+            </a>
+            <a href="/jvav/" class="hub-card">
+                <div class="card-icon">&#x2615;</div>
+                <div class="card-body"><div class="card-title">Jvav</div><div class="card-desc">一个有趣的项目</div></div>
+                <span class="card-tag">Project</span>
+            </a>
+            <a href="/xss.html" class="hub-card">
+                <div class="card-icon">&#x1F4DD;</div>
+                <div class="card-body"><div class="card-title">论小溯溯</div><div class="card-desc">论小溯溯为什么很棒</div></div>
+                <span class="card-tag">Article</span>
+            </a>
+            <a href="/schools/" class="hub-card">
+                <div class="card-icon">&#x1F393;</div>
+                <div class="card-body"><div class="card-title">杨永信报名</div><div class="card-desc">看看你能上哪个高中</div></div>
+                <span class="card-tag">Prank</span>
+            </a>
+        </div>
 
+        <footer class="hub-footer">
+            <p>&copy; Harcic Yang &mdash; <a href="https://github.com/HarcicYang">GitHub</a></p>
+        </footer>
+    </div>
+    </div>
 
-    </script>
+<script src="/resource/theme.js"></script>
+</body>
 </html>

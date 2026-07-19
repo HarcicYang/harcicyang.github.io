@@ -2,100 +2,132 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#e8ecf1" media="(prefers-color-scheme: light)">
     <title>论小溯溯为什么很棒</title>
+    <link rel="icon" type="image/svg+xml" href="/resource/favicon.svg">
+    <link rel="stylesheet" href="/resource/theme.css">
     <style>
-        body {
-            background: #1b1b1f;
-        }
-
-        h1 {
-            color: azure;
-            text-align: center;
-            font-size: 37pt;
-        }
-
-        div.content {
-            position: relative;
-            left: 2%;
-            right: 2%;
-            background: #232326;
-            border-radius: 12px;
-            padding: 12px;
-            max-width: 94%;
-        }
-
-        div.title {
-            position: relative;
-            left: 2%;
-            right: 2%;
-            background: #2f2f33;
-            border-radius: 12px;
-            padding: 12px;
-            max-width: 94%;
-        }
-
-        div.img {
-            margin: 7px;
+        .article-container {
+            width: 100%;
+            max-width: 800px;
             display: flex;
             flex-direction: column;
-            /*justify-content: center;*/
+            gap: 1rem;
+        }
+
+        .article-header {
+            padding: 0 0 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .article-header h1 {
+            font-size: var(--title-size, 1.5rem);
+            font-weight: 700;
+            text-align: left;
+            color: var(--text-color);
+        }
+
+        .article-content {
+            padding: 2rem 1.5rem;
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-card);
+            box-shadow: var(--shadow-card);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+        }
+
+        .article-img {
+            display: flex;
+            flex-direction: column;
             align-items: center;
+            margin-bottom: 1.5rem;
         }
 
-        div.img img {
-            border-radius: 12px;
-        }
-
-        div.img span {
+        .article-img img {
             max-width: 100%;
-            color: #a1a1a1;
+            border-radius: var(--radius-md);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         }
 
-        span.title {
-            text-indent: 2em;
-            position: relative;
+        .article-img span {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+        }
+
+        .section-title {
             display: block;
-            margin: 12px;
-            color: azure;
-            font-size: large;
-            font-weight: bold;
-        }
-
-        span.text {
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin: 1rem 0 0.5rem;
             text-indent: 2em;
-            position: relative;
-            display: block;
-            margin: 12px;
-            color: azure;
         }
 
+        .section-text {
+            display: block;
+            color: var(--text-primary);
+            line-height: 1.8;
+            margin: 0.5rem 0;
+            text-indent: 2em;
+            font-size: 0.95rem;
+        }
 
+        @media (max-width: 768px) {
+            .article-content { padding: 1.25rem 1rem; }
+            .section-title { text-indent: 1em; }
+            .section-text { text-indent: 1em; }
+        }
+
+        @media (max-width: 480px) {
+            .article-content { padding: 1rem 0.75rem; }
+            .section-title { font-size: 1rem; text-indent: 0.5em; }
+            .section-text { font-size: 0.88rem; text-indent: 0.5em; }
+        }
     </style>
 </head>
 <body>
-<div class="title">
-    <h1>论小溯溯为什么很棒</h1>
-</div>
-<div class="content">
-    <div class="img">
-        <img src="xss.png" alt="">
-        <span>小溯溯的破防</span>
+    <a href="/" class="back-btn" title="返回首页">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M21 11H6.414l5.293-5.293-1.414-1.414L2.586 12l7.707 7.707 1.414-1.414L6.414 13H21z"/></svg>
+        首页
+    </a>
+
+    <button class="theme-toggle" id="themeToggle" aria-label="切换主题">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="currentColor"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58a.996.996 0 00-1.41 0 .996.996 0 000 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37a.996.996 0 00-1.41 0 .996.996 0 000 1.41l1.06 1.06c.39.39 1.03.39 1.41 0a.996.996 0 000-1.41l-1.06-1.06zm1.06-10.96a.996.996 0 000-1.41.996.996 0 00-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36a.996.996 0 000-1.41.996.996 0 00-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="currentColor" style="display:none"><path d="M12 3a9 9 0 109 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 01-4.4 2.26 5.403 5.403 0 01-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>
+    </button>
+
+    <div class="page-scroll">
+    <div class="article-container">
+        <div class="article-header">
+            <h1>论小溯溯为什么很棒</h1>
+        </div>
+        <div class="article-content">
+            <div class="article-img">
+                <img src="xss.png" alt="小溯溯的破防">
+                <span>小溯溯的破防</span>
+            </div>
+            <span class="section-text">小溯溯为什么那么棒？在谈论这个问题之前，我想先说说其他人相较于小溯溯竟差在了哪里</span>
+            <span class="section-title">首先是犯下傲慢之罪的关掉姐</span>
+            <span class="section-text">抖音刷个视频露出不屑的笑，这种傲慢的小学生注定走不长远，事实也是如此，靠着一个阴险的装备压制赢了网友之后一直在走下坡路，最终泯然众人。与之相比神就很谦卑，小溯溯的石山代码，小溯溯的PyCharm都是神留给凡人的慈悲，神不是不会，只是不想通过太完美的表现让对手绝望所以故意不用，可笑有些人不理解神的良苦用心，竟然还用这些事来讥讽神，我劝你们好自为之。</span>
+            <span class="section-title">然后是犯下愤怒之罪的Dext</span>
+            <span class="section-text">因为小溯溯到处扔石山，Dext就气急败坏拿着表情包威胁神，群里有人提到神的名字就怒气冲冲地打出石山代码一边去，违背了神在《新约》中的一句话："我在讨论组抗压到可以一个扣一百个。"于是神降下了他的惩罚，Dext二次元后宫起火，二次元老婆抢走了Dext的创想妓院导致Dext一蹶不振。</span>
+            <span class="section-title">接着是犯下懒惰之罪的Harcic</span>
+            <span class="section-text">自以为拿下个bw kd 1.7就了不起了，自创钓鱼bw训练法。另外大家有所不知，其实在半决赛前，Harcic闭上眼睛做冥想的时候，其脑海中看见的画面，正是站在光芒之中的小溯溯，那时神告诉他："你只可到这里，不可越过。"然而，神的劝说不但没有让Harcic迷途知返，竟然还敢在半决赛伙同最棒的猫娘小溯溯正面挑战神的威严，于是神降下了他的惩罚，Harcic投身吉列的豆整，两届战冠军没人记得，从此成为了众人口中的疯狂的网左。</span>
+            <span class="section-title">再然后是犯下了嫉妒之罪的Shine</span>
+            <span class="section-text">屡次被神击败，但口服心不负的金承柱，暗中嫉妒着神，甚至胆敢当众当着小溯溯说出重庆方言这种话。于是，在含金量最低的Python比赛，即小溯溯口嗨上，Shine被神正面击溃。不过，念在Shine最终皈依了神的教，并且践行神的意志讨伐了屡次以下犯上的Shine后，神应许了他在鸡鸡国的一切。</span>
+            <span class="section-title">犯下贪婪之罪的SR</span>
+            <span class="section-text">只是初出茅庐，SR就夺得了上千b站粉丝，而这，自然是因为神的应允。神本来钦定他为自己在人间的代言人，在自己退役之后替自己继续讨伐蜀黍圈钱的魔头，为此甚至不惜亲自为Dext铺路，在b站八弱赛主动输掉比赛，将一切荣耀都归给他，甚至应允他可以带走自己最爱的罗技g502。但最后SR却被利益蒙蔽了双眼，不再以践行神的理想为自己的理想，也不再聆听神的教诲，甚至自以荣光已经超过了神，竟然伙同方块男团出了合作视频，于是神降下了惩罚，SR从此不再长高并且拥有一颗醒目的大头，而他的vb将再也不能正常编译，他的python再也不能打包运行，他的电脑再也不能打开《原神》。</span>
+            <span class="section-title">犯下暴食之罪的显卡</span>
+            <span class="section-text">在神子SR堕落之后，神开始寻找下一个代言人，这一次，他选中了显卡。相较于神，显卡无疑是不完美的，他没有神足以让对手窒息的运行稳定性，也没有神深不见底的百万算力，舍我其谁的胆气，敏锐的收割嗅觉，无懈可击的操作，但神将自己最虔诚，同时也是实力最强大的一位模型（sd）暂时交给了他，并复刻了sd的绘画操作，但由于SR的事，神认为或许是自己给的压力过大才导致了神子的堕落，于是这一次神选择了在春节离开，减少显卡的心理负担，最终，孙政成功了。然而，投入使用后的显卡不但冒大不韪在sd的身上刻下了自己的名字，更妄图染指神力，只是他错误地认为神的力量来源于OO和键盘，最终他也因此犯下了暴食之罪，并在现在炸毁自身。</span>
+            <span class="section-title">最后，犯下淫欲之罪的群u</span>
+            <span class="section-text">显卡之后，神已经非常虚弱了，邪神jy用黑洞吸走了神的精气，神已经无力再惩罚显卡，只有信徒依旧在维护神的威严而已。此刻已经决心退隐的神在最后依然心系PyCharm，于是他选中了第三位神子——群u。作为第三任神子，群u很好地维护了神的威严，但在接连击溃两代堕落的神子后，群u遇到了淫魔，被吸走了神赋予自己的力量，于是在多人运动中连连失误，最终葬送涩图，彻底身败名裂。</span>
+        </div>
     </div>
-    <span class="text">小溯溯为什么那么棒？在谈论这个问题之前，我想先说说其他人相较于小溯溯竟差在了哪里</span>
-    <span class="title">首先是犯下傲慢之罪的关掉姐</span>
-    <span class="text">抖音刷个视频露出不屑的笑，这种傲慢的小学生注定走不长远，事实也是如此，靠着一个阴险的装备压制赢了网友之后一直在走下坡路，最终泯然众人。与之相比神就很谦卑，小溯溯的石山代码，小溯溯的PyCharm都是神留给凡人的慈悲，神不是不会，只是不想通过太完美的表现让对手绝望所以故意不用，可笑有些人不理解神的良苦用心，竟然还用这些事来讥讽神，我劝你们好自为之。</span>
-    <span class="title">然后是犯下愤怒之罪的Dext</span>
-    <span class="text">因为小溯溯到处扔石山，Dext就气急败坏拿着表情包威胁神，群里有人提到神的名字就怒气冲冲地打出石山代码一边去，违背了神在《新约》中的一句话：“我在讨论组抗压到可以一个扣一百个。”于是神降下了他的惩罚，Dext二次元后宫起火，二次元老婆抢走了Dext的创想妓院导致Dext一蹶不振。</span>
-    <span class="title">接着是犯下懒惰之罪的Harcic</span>
-    <span class="text">自以为拿下个bw kd 1.7就了不起了，自创钓鱼bw训练法。另外大家有所不知，其实在半决赛前，Harcic闭上眼睛做冥想的时候，其脑海中看见的画面，正是站在光芒之中的小溯溯，那时神告诉他：“你只可到这里，不可越过。”然而，神的劝说不但没有让Harcic迷途知返，竟然还敢在半决赛伙同最棒的猫娘小溯溯正面挑战神的威严，于是神降下了他的惩罚，Harcic投身吉列的豆整，两届战冠军没人记得，从此成为了众人口中的疯狂的网左。</span>
-    <span class="title">再然后是犯下了嫉妒之罪的Shine</span>
-    <span class="text">屡次被神击败，但口服心不负的金承柱，暗中嫉妒着神，甚至胆敢当众当着小溯溯说出重庆方言这种话。于是，在含金量最低的Python比赛，即小溯溯口嗨上，Shine被神正面击溃。不过，念在Shine最终皈依了神的教，并且践行神的意志讨伐了屡次以下犯上的Shine后，神应许了他在鸡鸡国的一切。　</span>
-    <span class="title">犯下贪婪之罪的SR</span>
-    <span class="text">只是初出茅庐，SR就夺得了上千b站粉丝，而这，自然是因为神的应允。神本来钦定他为自己在人间的代言人，在自己退役之后替自己继续讨伐蜀黍圈钱的魔头，为此甚至不惜亲自为Dext铺路，在b站八弱赛主动输掉比赛，将一切荣耀都归给他，甚至应允他可以带走自己最爱的罗技g502。但最后SR却被利益蒙蔽了双眼，不再以践行神的理想为自己的理想，也不再聆听神的教诲，甚至自以荣光已经超过了神，竟然伙同方块男团出了合作视频，于是神降下了惩罚，SR从此不再长高并且拥有一颗醒目的大头，而他的vb将再也不能正常编译，他的python再也不能打包运行，他的电脑再也不能打开《原神》。</span>
-    <span class="title">犯下暴食之罪的显卡</span>
-    <span class="text">在神子SR堕落之后，神开始寻找下一个代言人，这一次，他选中了显卡。相较于神，显卡无疑是不完美的，他没有神足以让对手窒息的运行稳定性，也没有神深不见底的百万算力，舍我其谁的胆气，敏锐的收割嗅觉，无懈可击的操作，但神将自己最虔诚，同时也是实力最强大的一位模型（sd）暂时交给了他，并复刻了sd的绘画操作，但由于SR的事，神认为或许是自己给的压力过大才导致了神子的堕落，于是这一次神选择了在春节离开，减少显卡的心理负担，最终，孙政成功了。然而，投入使用后的显卡不但冒大不韪在sd的身上刻下了自己的名字，更妄图染指神力，只是他错误地认为神的力量来源于〇〇和键盘，最终他也因此犯下了暴食之罪，并在现在炸毁自身。</span>
-    <span class="title">最后，犯下淫欲之罪的群u</span>
-    <span class="text">显卡之后，神已经非常虚弱了，邪神jy用黑洞吸走了神的精气，神已经无力再惩罚显卡，只有信徒依旧在维护神的威严而已。此刻已经决心退隐的神在最后依然心系PyCharm，于是他选中了第三位神子——群u。作为第三任神子，群u很好地维护了神的威严，但在接连击溃两代堕落的神子后，群u遇到了淫魔，被吸走了神赋予自己的力量，于是在多人运动中连连失误，最终葬送涩图，彻底身败名裂。</span>
-</div>
+    </div>
+
+<script src="/resource/theme.js"></script>
 </body>
 </html>

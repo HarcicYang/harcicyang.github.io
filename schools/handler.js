@@ -13,6 +13,6 @@ button.onclick = function(){
         window.location.pathname = "/schools/results/1.html";
     }
     else {
-        alert("你要去火星吗？")
+        (window.showToast || alert)("你要去火星吗？")
     }
 }
