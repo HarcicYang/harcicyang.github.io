@@ -47,7 +47,6 @@
             box-shadow: var(--shadow-card-hover);
         }
         .gallery-item img { width: 100%; height: 200px; object-fit: cover; display: block; }
-        .gallery-item .item-name { padding: 0.6rem 0.8rem; text-align: center; font-size: 0.9rem; }
 
         /* Image Viewer (Lightbox) */
         .viewer-overlay {
@@ -158,7 +157,7 @@
             item.className = "gallery-item";
             item.href = "#";
             item.setAttribute("data-index", i);
-            item.innerHTML = '<img src="' + img.src + '" alt="' + img.name + '" loading="lazy"><div class="item-name">' + img.name + '</div>';
+            item.innerHTML = '<img src="' + img.src + '" alt="' + img.name + '" loading="lazy">';
             item.addEventListener("click", function(e) { e.preventDefault(); openViewer(i); });
             grid.appendChild(item);
         });

@@ -1,18 +1,108 @@
 {
   "backgrounds": [
-    "1.webp",
-    "2.webp",
-    "3.webp",
-    "4.webp",
-    "5.webp",
-    "6.webp",
-    "7.webp",
-    "8.webp",
-    "9.webp",
-    "10.webp",
-    "11.webp",
-    "12.webp",
-    "13.webp",
-    "14.webp"
+    {
+      "file": "1.webp",
+      "accent": [
+        153,
+        30,
+        38
+      ]
+    },
+    {
+      "file": "2.webp",
+      "accent": [
+        176,
+        134,
+        110
+      ]
+    },
+    {
+      "file": "3.webp",
+      "accent": [
+        149,
+        131,
+        150
+      ]
+    },
+    {
+      "file": "4.webp",
+      "accent": [
+        74,
+        78,
+        107
+      ]
+    },
+    {
+      "file": "5.webp",
+      "accent": [
+        239,
+        220,
+        238
+      ]
+    },
+    {
+      "file": "6.webp",
+      "accent": [
+        76,
+        63,
+        69
+      ]
+    },
+    {
+      "file": "7.webp",
+      "accent": [
+        96,
+        90,
+        161
+      ]
+    },
+    {
+      "file": "8.webp",
+      "accent": [
+        137,
+        140,
+        152
+      ]
+    },
+    {
+      "file": "9.webp",
+      "accent": [
+        109,
+        85,
+        141
+      ]
+    },
+    {
+      "file": "10.webp",
+      "accent": [
+        157,
+        94,
+        90
+      ]
+    },
+    {
+      "file": "11.webp",
+      "accent": [
+        179,
+        176,
+        183
+      ]
+    },
+    {
+      "file": "12.webp",
+      "accent": [
+        208,
+        130,
+        109
+      ]
+    },
+    {
+      "file": "13.webp",
+      "accent": [
+        25,
+        73,
+        133
+      ]
+    }
   ]
 }

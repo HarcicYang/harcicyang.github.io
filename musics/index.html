@@ -9,8 +9,9 @@
     <script src="https://harcic.is-a.dev/jsmediatags.js"></script>
     <style>
         :root {
-            --primary-color: rgba(56, 130, 235, 0.88);
-            --primary-glow: rgba(56, 130, 235, 0.65);
+            --accent-r: 25; --accent-g: 73; --accent-b: 133;
+            --primary-color: rgba(var(--accent-r, 56), var(--accent-g, 130), var(--accent-b, 235), 0.88);
+            --primary-glow: rgba(var(--accent-r, 56), var(--accent-g, 130), var(--accent-b, 235), 0.65);
             --bg-card: rgba(24, 25, 27, 0.7);
             --bg-card-alt: rgba(24, 25, 27, 0.85);
             --text-primary: rgba(255, 255, 255, 0.78);
@@ -19,16 +20,15 @@
             --shadow-color: rgba(24, 25, 27, 0.55);
             --transition-speed: 0.25s;
             --overlay: rgba(0, 0, 0, 0.55);
-            --bg-image: url("/resource/backgrounds/back.webp");
-            --glow-card: 0 0 12px 5px var(--shadow-color), 0 0 40px rgba(56,130,235,0.05);
-            --glow-card-hover: 0 0 22px 10px var(--shadow-color), 0 0 60px rgba(56,130,235,0.12), 0 8px 24px rgba(0,0,0,0.2);
-            --glow-btn: 0 0 14px 5px var(--primary-glow), 0 0 30px rgba(56,130,235,0.1);
-            --glow-btn-hover: 0 0 22px 10px var(--primary-glow), 0 0 50px rgba(56,130,235,0.2);
+            --bg-image: url("/resource/backgrounds/13.webp");
+            --glow-card: 0 0 12px 5px var(--shadow-color), 0 0 40px rgba(var(--accent-r, 56), var(--accent-g, 130), var(--accent-b, 235), 0.05);
+            --glow-card-hover: 0 0 22px 10px var(--shadow-color), 0 0 60px rgba(var(--accent-r, 56), var(--accent-g, 130), var(--accent-b, 235), 0.12), 0 8px 24px rgba(0,0,0,0.2);
+            --glow-btn: 0 0 14px 5px var(--primary-glow), 0 0 30px rgba(var(--accent-r, 56), var(--accent-g, 130), var(--accent-b, 235), 0.1);
+            --glow-btn-hover: 0 0 22px 10px var(--primary-glow), 0 0 50px rgba(var(--accent-r, 56), var(--accent-g, 130), var(--accent-b, 235), 0.2);
         }
 
         [data-theme="light"] {
-            --primary-color: rgba(56, 130, 235, 0.88);
-            --primary-glow: rgba(56, 130, 235, 0.42);
+            --primary-glow: rgba(var(--accent-r, 56), var(--accent-g, 130), var(--accent-b, 235), 0.42);
             --bg-card: rgba(255, 255, 255, 0.72);
             --bg-card-alt: rgba(255, 255, 255, 0.88);
             --text-primary: rgba(24, 25, 27, 0.78);
@@ -54,7 +54,7 @@
             animation: toggleBurst 0.6s ease-out;
         }
         @keyframes toggleBurst {
-            0%   { box-shadow: 0 0 0 0 rgba(56,130,235,0.6); }
+            0%   { box-shadow: 0 0 0 0 rgba(var(--accent-r, 56), var(--accent-g, 130), var(--accent-b, 235), 0.6); }
             100% { box-shadow: 0 0 40px 25px transparent; }
         }
 
@@ -108,6 +108,14 @@
             background-color: #0a0a0a;
         }
         [data-theme="light"] body::before { background-color: #e8ecf1; }
+
+        /* playing state: heavier blur + darker overlay from cover art */
+        [data-playing] body::before {
+            filter: blur(24px) brightness(0.35);
+        }
+        [data-playing][data-theme="light"] body::before {
+            filter: blur(24px) brightness(0.55);
+        }
 
         .main-container {
             display: flex;
@@ -533,29 +541,23 @@
         }
 
         // 应用动态颜色到背景和强调色
-        function applyDynamicColors(rgb) {
+        function applyDynamicColors(rgb, imgSrc) {
             const [r, g, b] = rgb;
-            
-            // 创建动态背景渐变
-            const gradient = `linear-gradient(135deg, 
-                rgba(${r}, ${g}, ${b}, 0.85) 10%, 
-                rgba(${Math.min(r + 30, 255)}, ${Math.min(g + 30, 255)}, ${Math.min(b + 30, 255)}, 0.35) 37%,
-                rgba(${r}, ${g}, ${b}, 0.65) 95%)`;
-            
-            document.body.style.background = `${gradient}, #0a0a0a`;
-            
-            // 更新CSS变量
-            // document.documentElement.style.setProperty('--primary-color', `rgb(${r}, ${g}, ${b})`);
-            // document.documentElement.style.setProperty('--secondary-color', `rgb(${Math.min(r + 30, 255)}, ${Math.min(g + 30, 255)}, ${Math.min(b + 30, 255)})`);
-            // document.documentElement.style.setProperty('--accent-color', `rgb(${Math.min(r + 50, 255)}, ${Math.min(g + 50, 255)}, ${Math.min(b + 50, 255)})`);
+            var s = document.documentElement.style;
+            s.setProperty("--bg-image", "url(" + imgSrc + ")");
+            s.setProperty("--accent-r", r);
+            s.setProperty("--accent-g", g);
+            s.setProperty("--accent-b", b);
+            s.setProperty("--accent-r2", Math.min(255, r + 30));
+            s.setProperty("--accent-g2", Math.min(255, g + 30));
+            s.setProperty("--accent-b2", Math.min(255, b + 30));
+            document.documentElement.setAttribute("data-playing", "true");
         }
 
-        // 重置背景颜色
+        // 重置为随机背景
         function resetBackgroundColors() {
-            // document.body.style.background = "#0a0a0a";
-            // document.documentElement.style.setProperty('--primary-color', '#77a7d7');
-            // document.documentElement.style.setProperty('--secondary-color', '#8bb8e8');
-            // document.documentElement.style.setProperty('--accent-color', '#a8d0ff');
+            document.documentElement.removeAttribute("data-playing");
+            if (typeof loadBg === "function") loadBg();
         }
 
         async function initPlayer() {
@@ -861,9 +863,8 @@
                     };
                     
                     coverArt.onload = function() {
-                        // 动态提取和应用颜色
                         getDominantColor(coverArt).then(rgb => {
-                            applyDynamicColors(rgb);
+                            applyDynamicColors(rgb, imgSrc);
                         }).catch(error => {
                             console.error('Error extracting dominant color:', error);
                             resetBackgroundColors();
@@ -1038,11 +1039,20 @@
                     var list = data.backgrounds;
                     if (list && list.length) {
                         var pick = list[Math.floor(Math.random() * list.length)];
-                        style.setProperty("--bg-image", "url('/resource/backgrounds/" + pick + "')");
+                        style.setProperty("--bg-image", "url('/resource/backgrounds/" + pick.file + "')");
+                        if (pick.accent && pick.accent.length === 3) {
+                            var r = pick.accent[0], g = pick.accent[1], b = pick.accent[2];
+                            style.setProperty("--accent-r", r);
+                            style.setProperty("--accent-g", g);
+                            style.setProperty("--accent-b", b);
+                            style.setProperty("--accent-r2", Math.min(255, r + 30));
+                            style.setProperty("--accent-g2", Math.min(255, g + 30));
+                            style.setProperty("--accent-b2", Math.min(255, b + 30));
+                        }
                     }
                 })
                 .catch(function() {
-                    style.setProperty("--bg-image", "url('/resource/backgrounds/back.webp')");
+                    style.setProperty("--bg-image", "url('/resource/backgrounds/13.webp')");
                 });
         };
         loadBg();

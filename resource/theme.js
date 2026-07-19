@@ -1,6 +1,22 @@
 /* Shared: theme toggle + random background + page loader + toast */
 (function() {
     var html = document.documentElement;
+    var style = html.style;
+
+    /* --- apply accent colors from array [r, g, b] --- */
+    var applyAccent = function(r, g, b) {
+        style.setProperty("--accent-r", r);
+        style.setProperty("--accent-g", g);
+        style.setProperty("--accent-b", b);
+        /* hover / lighter variant */
+        style.setProperty("--accent-r2", Math.min(255, r + 30));
+        style.setProperty("--accent-g2", Math.min(255, g + 30));
+        style.setProperty("--accent-b2", Math.min(255, b + 30));
+        /* logo sub-color (more saturated) */
+        style.setProperty("--logo-sub-r", Math.min(255, r + (r > 128 ? -20 : 30)));
+        style.setProperty("--logo-sub-g", Math.min(255, g + (g > 128 ? -20 : 30)));
+        style.setProperty("--logo-sub-b", Math.min(255, b + (b > 128 ? -20 : 30)));
+    };
 
     /* --- Toast container --- */
     var toastContainer = document.createElement("div");
@@ -41,15 +57,13 @@
             localStorage.setItem("theme", next);
             sunIcon.style.display = next === "light" ? "none" : "";
             moonIcon.style.display = next === "light" ? "" : "none";
-            /* burst animation */
             toggle.classList.add("burst");
             setTimeout(function() { toggle.classList.remove("burst"); }, 600);
         });
     }
 
-    /* --- Random Background --- */
+    /* --- Random Background + Accent --- */
     var loadBg = function() {
-        var style = html.style;
         var seed = Math.floor(Math.random() * 1000);
         fetch("/resource/backgrounds/list.json")
             .then(function(r) { return r.json(); })
@@ -57,16 +71,20 @@
                 var list = data.backgrounds;
                 if (list && list.length) {
                     var pick = list[Math.floor(Math.random() * list.length)];
-                    style.setProperty("--bg-image", "url('/resource/backgrounds/" + pick + "?v=" + seed + "')");
+                    style.setProperty("--bg-image", "url('/resource/backgrounds/" + pick.file + "?v=" + seed + "')");
+                    if (pick.accent && pick.accent.length === 3) {
+                        applyAccent(pick.accent[0], pick.accent[1], pick.accent[2]);
+                    }
                 }
             })
             .catch(function() {
-                style.setProperty("--bg-image", "url('/resource/backgrounds/back.webp')");
+                style.setProperty("--bg-image", "url('/resource/backgrounds/13.webp')");
+                applyAccent(25, 73, 133);
             });
     };
     loadBg();
 
-    /* --- bfcache recovery (restore bg after back-navigation) --- */
+    /* --- bfcache recovery --- */
     window.addEventListener("pageshow", function(e) {
         if (e.persisted) { loadBg(); }
     });
