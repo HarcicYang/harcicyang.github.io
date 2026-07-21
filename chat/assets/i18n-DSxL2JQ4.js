@@ -1,0 +1,1 @@
+import{r as e,t}from"./i18n-D8jPTaP9.js";export{t as detectLocale,e as setLocale};
