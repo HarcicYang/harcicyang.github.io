@@ -226,6 +226,22 @@ Multiple consecutive user messages form a developing scene. Respond to the lates
     .tab-pane.active { display: flex; flex-direction: column; }
     @media (max-width: 768px) {
       .app-layout { flex-direction: column; }
+      .app-logo {
+        flex-wrap: wrap;
+        gap: 0.25rem 0.75rem;
+        padding: 0.3rem 0.75rem;
+      }
+      .app-logo > .app-tabs {
+        flex: 0 0 100%;
+        justify-content: center;
+        order: 3;
+      }
+      .app-logo > :first-child {
+        flex: 0 1 auto;
+      }
+      .app-logo > :last-child {
+        flex: 0 1 auto;
+      }
       .profile-selector .profile-label { display: none; }
     }
   `,document.head.appendChild(e)}t(`zh-CN`,me),t(`en`,he);var ot=g.get(`language`);n(ot===`auto`?r():ot);var st=g.get(`theme`)||`dark`;document.documentElement.setAttribute(`data-theme`,st);var ct=g.get(`appearance.accentColor`);ct&&qe(ct),_.register(`openai`,e=>v(e)),await M.init(),tt(),M.syncContributions();var $=g.get(`character`);if($){let e=$.data?.name||$.name||`default`;E.setChatId(e),E.load().then(()=>{i.emit(a.CHAT_IMPORT,{})}),S.init(e),i.emit(a.CHARACTER_LOADED,{character:$})}
