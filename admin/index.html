@@ -7,117 +7,90 @@
     <link rel="icon" type="image/svg+xml" href="/resource/favicon.svg">
     <link rel="stylesheet" href="/resource/theme.css">
     <style>
-        :root { --text-color: rgba(255,255,255,0.78); }
-        [data-theme="light"] { --text-color: rgba(24,25,27,0.78); }
-
-        html, body, #nc-root, #nc-root > div {
+        html, body {
             height: 100%;
             background: transparent !important;
+            margin: 0;
+            overflow: hidden;
         }
-        [data-theme="light"] body,
-        [data-theme="light"] #nc-root,
-        [data-theme="light"] #nc-root > div {
-            background: transparent !important;
-        }
-
         body::before {
             content: "";
-            position: fixed;
-            top: 0; left: 0;
+            position: fixed; top: 0; left: 0;
             width: 100%; height: 100%;
-            z-index: -1;
-            pointer-events: none;
+            z-index: -1; pointer-events: none;
             background: linear-gradient(var(--overlay), var(--overlay)), var(--bg-image) center / cover no-repeat;
         }
 
-        /* ---- all panels / cards ---- */
-        #nc-root [class*="css-"],
-        #nc-root [style*="background"] {
-            /* let our overrides handle it */
+        /* Decap CMS root */
+        #nc-root { height: 100%; }
+        #nc-root > div { background: transparent !important; }
+
+        /* ---- reset: rounded corners everywhere ---- */
+        #nc-root *:not(hr):not(.Toastify):not(.Toastify *):not(.Toastify__toast-container) {
+            border-radius: var(--radius-md) !important;
+        }
+        #nc-root button,
+        #nc-root [role="button"],
+        #nc-root [class*="Button"],
+        #nc-root [class*="Toggle"] {
+            border-radius: var(--radius-pill) !important;
+        }
+        #nc-root input[type="text"],
+        #nc-root input[type="search"],
+        #nc-root input[type="email"],
+        #nc-root input[type="url"],
+        #nc-root select {
+            border-radius: var(--radius-pill) !important;
+        }
+        #nc-root textarea {
+            border-radius: var(--radius-md) !important;
         }
 
-        #nc-root header,
-        #nc-root [class*="Header"],
-        #nc-root [class*="AppBar"],
-        #nc-root nav {
+        /* ---- glass panels ---- */
+        #nc-root header, #nc-root nav, #nc-root aside,
+        #nc-root [class*="Card"], #nc-root [class*="Pane"],
+        #nc-root [class*="Panel"], #nc-root [class*="Editor"],
+        #nc-root [class*="Preview"], #nc-root [class*="Widget"],
+        #nc-root [class*="Frame"], #nc-root [class*="ControlPane"],
+        #nc-root [class*="Sidebar"], #nc-root [class*="Container"],
+        #nc-root [class*="Toolbar"], #nc-root [class*="toolbar"] {
             background: var(--box-color) !important;
             backdrop-filter: var(--glass-blur) !important;
             -webkit-backdrop-filter: var(--glass-blur) !important;
-            border-color: rgba(var(--primary-rgb), 0.08) !important;
             box-shadow: var(--shadow-card) !important;
         }
-
-        #nc-root aside,
-        #nc-root [class*="Sidebar"],
-        #nc-root [class*="aside"] {
-            background: var(--box-color) !important;
-            backdrop-filter: var(--glass-blur) !important;
-            -webkit-backdrop-filter: var(--glass-blur) !important;
-            border-color: rgba(var(--primary-rgb), 0.08) !important;
-        }
-
-        #nc-root [class*="Card"],
-        #nc-root [class*="Pane"],
-        #nc-root [class*="Panel"],
-        #nc-root [class*="Editor"],
-        #nc-root [class*="Control"],
-        #nc-root [class*="Preview"],
-        #nc-root [class*="Frame"],
-        #nc-root [class*="Widget"],
-        #nc-root [class*="Container"],
-        #nc-root main > div > div {
-            background: var(--box-color) !important;
-            backdrop-filter: var(--glass-blur) !important;
-            -webkit-backdrop-filter: var(--glass-blur) !important;
-        }
-
-        #nc-root [class*="Toolbar"],
-        #nc-root [class*="toolbar"] {
+        #nc-root header, #nc-root [class*="Toolbar"] {
             background: var(--sub-box-color) !important;
-            backdrop-filter: var(--glass-blur) !important;
-            -webkit-backdrop-filter: var(--glass-blur) !important;
-            border-color: rgba(var(--primary-rgb), 0.1) !important;
+            border-bottom: 1px solid rgba(var(--primary-rgb), 0.08) !important;
         }
 
         /* ---- text ---- */
-        #nc-root, #nc-root *:not(button):not([class*="Button"]) {
-            color: var(--text-color) !important;
-        }
-        #nc-root h1, #nc-root h2, #nc-root h3, #nc-root h4,
-        #nc-root [class*="Heading"],
-        #nc-root [class*="Label"],
-        #nc-root [class*="title"],
-        #nc-root [class*="Title"] {
-            color: var(--text-color) !important;
-        }
+        #nc-root { color: var(--text-color) !important; }
+        #nc-root a { color: var(--ac-btn-color) !important; }
         #nc-root [class*="muted"],
         #nc-root [class*="secondary"],
-        #nc-root [class*="Secondary"],
-        #nc-root [class*="subtitle"],
-        #nc-root [class*="Subtitle"],
-        #nc-root [class*="hint"],
-        #nc-root [class*="Hint"] {
+        #nc-root [class*="hint"] {
             color: var(--text-secondary) !important;
         }
 
         /* ---- buttons ---- */
-        #nc-root button,
-        #nc-root [class*="Button"],
-        #nc-root [role="button"] {
+        #nc-root button:not([class*="Toastify"]),
+        #nc-root [role="button"],
+        #nc-root [class*="Button"] {
             background: var(--box-color) !important;
             color: var(--text-color) !important;
             border: 1px solid rgba(var(--primary-rgb), 0.15) !important;
-            border-radius: var(--radius-pill) !important;
             transition: all var(--transition-fast) !important;
+            cursor: pointer !important;
         }
-        #nc-root button:hover,
-        #nc-root [class*="Button"]:hover,
-        #nc-root [role="button"]:hover {
+        #nc-root button:hover:not([class*="Toastify"]),
+        #nc-root [role="button"]:hover,
+        #nc-root [class*="Button"]:hover {
             background: rgba(var(--primary-rgb), 0.1) !important;
             border-color: var(--ac-btn-color) !important;
         }
-        #nc-root button[class*="primary"],
-        #nc-root button[class*="Primary"],
+        #nc-root button[class*="primary"]:not([class*="Toastify"]),
+        #nc-root button[class*="Primary"]:not([class*="Toastify"]),
         #nc-root [class*="Button"][class*="primary"],
         #nc-root [class*="Button"][class*="Primary"] {
             background: var(--ac-btn-color) !important;
@@ -125,89 +98,44 @@
             color: #fff !important;
             box-shadow: var(--shadow-btn) !important;
         }
-        #nc-root button[class*="primary"]:hover,
-        #nc-root button[class*="Primary"]:hover,
-        #nc-root [class*="Button"][class*="primary"]:hover,
-        #nc-root [class*="Button"][class*="Primary"]:hover {
-            background: var(--ac-btn-color-l) !important;
-            box-shadow: var(--shadow-btn-hover) !important;
-            transform: translateY(-1px);
-        }
 
         /* ---- inputs ---- */
-        #nc-root input,
-        #nc-root textarea,
-        #nc-root select {
+        #nc-root input, #nc-root textarea, #nc-root select,
+        #nc-root [class*="Input"], #nc-root [class*="TextArea"] {
             background: var(--sub-box-color) !important;
             color: var(--text-color) !important;
             border: 1px solid rgba(var(--primary-rgb), 0.15) !important;
-            border-radius: var(--radius-md) !important;
             padding: 0.5rem 0.8rem !important;
-        }
-        #nc-root input:focus,
-        #nc-root textarea:focus,
-        #nc-root select:focus {
-            border-color: var(--ac-btn-color) !important;
-            box-shadow: 0 0 0 2px rgba(var(--primary-rgb), 0.2) !important;
             outline: none !important;
         }
-        #nc-root input::placeholder,
-        #nc-root textarea::placeholder {
+        #nc-root input:focus, #nc-root textarea:focus,
+        #nc-root [class*="Input"]:focus, #nc-root [class*="TextArea"]:focus {
+            border-color: var(--ac-btn-color) !important;
+            box-shadow: 0 0 0 2px rgba(var(--primary-rgb), 0.2) !important;
+        }
+        #nc-root input::placeholder, #nc-root textarea::placeholder {
             color: var(--text-muted) !important;
         }
 
-        /* ---- links ---- */
-        #nc-root a {
-            color: var(--ac-btn-color) !important;
-            text-decoration: none !important;
-        }
-        #nc-root a:hover {
-            text-decoration: underline !important;
-        }
-
-        /* ---- icons ---- */
-        #nc-root svg[class*="Icon"],
-        #nc-root [class*="icon"] {
-            color: var(--text-secondary) !important;
-        }
-
-        /* ---- dividers / borders ---- */
-        #nc-root [class*="Divider"],
-        #nc-root hr {
-            border-color: rgba(var(--primary-rgb), 0.1) !important;
-        }
-
-        /* ---- login page ---- */
-        #nc-root [class*="Login"],
-        #nc-root [class*="login"] {
+        /* ---- login ---- */
+        #nc-root [class*="Login"] {
             background: transparent !important;
         }
         #nc-root [class*="LoginButton"],
         #nc-root [class*="loginButton"] {
             background: var(--ac-btn-color) !important;
             color: #fff !important;
-            border-radius: var(--radius-pill) !important;
-            padding: 0.75rem 2.5rem !important;
+            padding: 0.7rem 2rem !important;
             font-size: 1rem !important;
             box-shadow: var(--shadow-btn) !important;
             border: none !important;
-        }
-        #nc-root [class*="LoginButton"]:hover,
-        #nc-root [class*="loginButton"]:hover {
-            box-shadow: var(--shadow-btn-hover) !important;
-            background: var(--ac-btn-color-l) !important;
-            transform: translateY(-2px);
+            border-radius: var(--radius-pill) !important;
         }
 
-        /* ---- scrollbar ---- */
-        #nc-root ::-webkit-scrollbar { width: 6px; height: 6px; }
-        #nc-root ::-webkit-scrollbar-track { background: transparent; }
-        #nc-root ::-webkit-scrollbar-thumb {
-            background: var(--ac-btn-color);
-            border-radius: 3px;
+        /* ---- Toastify ---- */
+        .Toastify__toast-container {
+            z-index: 99999 !important;
         }
-
-        /* ---- toast notifications ---- */
         .Toastify__toast {
             background: var(--sub-box-color) !important;
             backdrop-filter: var(--glass-blur) !important;
@@ -216,15 +144,27 @@
             border-radius: var(--radius-md) !important;
             box-shadow: var(--shadow-card) !important;
             border: 1px solid rgba(var(--primary-rgb), 0.1) !important;
+            padding: 0.5rem 1rem !important;
+            min-height: auto !important;
         }
-        .Toastify__progress-bar {
-            background: var(--ac-btn-color) !important;
+        .Toastify__toast-body { color: var(--text-color) !important; margin: 0 !important; }
+        .Toastify__progress-bar { background: var(--ac-btn-color) !important; }
+        .Toastify__close-button { color: var(--text-secondary) !important; opacity: 0.6 !important; }
+
+        /* ---- scrollbar ---- */
+        #nc-root ::-webkit-scrollbar { width: 6px; height: 6px; }
+        #nc-root ::-webkit-scrollbar-track { background: transparent; }
+        #nc-root ::-webkit-scrollbar-thumb {
+            background: var(--ac-btn-color); border-radius: 3px;
         }
-        .Toastify__close-button {
-            color: var(--text-secondary) !important;
-            opacity: 0.7 !important;
+
+        /* ---- dialogs / modals ---- */
+        #nc-root [class*="Dialog"], #nc-root [class*="Modal"],
+        #nc-root [class*="Overlay"] {
+            background: rgba(0,0,0,0.55) !important;
+            backdrop-filter: var(--glass-blur) !important;
+            -webkit-backdrop-filter: var(--glass-blur) !important;
         }
-        .Toastify__toast-body { color: var(--text-color) !important; }
     </style>
 </head>
 <body>
