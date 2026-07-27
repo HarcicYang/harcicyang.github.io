@@ -37,29 +37,51 @@ export default async function handler(req, res) {
     });
 
     res.setHeader("Content-Type", "text/html");
-    res.send(`<!doctype html><html><body><script>
+    res.send(`<!doctype html>
+<html>
+<body>
+<p id="status">\\u6b63\\u5728\\u5b8c\\u6210\\u767b\\u5f55...</p>
+<pre id="log"></pre>
+<script>
 (function() {
+  var log = document.getElementById('log');
+  var status = document.getElementById('status');
   var opener = window.opener;
+
+  function addLog(msg) {
+    log.textContent += msg + '\\n';
+  }
+
+  addLog('origin: ' + window.location.origin);
+  addLog('opener: ' + (opener ? 'found' : 'null'));
+
   if (!opener) {
-    document.body.textContent = '\\u6388\\u6743\\u5931\\u8d25\\uff1a\\u672a\\u627e\\u5230\\u4e3b\\u7a97\\u53e3';
+    status.textContent = '\\u6388\\u6743\\u5931\\u8d25\\uff1a\\u672a\\u627e\\u5230\\u4e3b\\u7a97\\u53e3';
     return;
   }
 
-  function send(name, data) {
-    opener.postMessage(data != null ? name + ':' + data : name, '*');
-  }
+  addLog('step 1: sending authorizing:github');
+  opener.postMessage('authorizing:github', '*');
+  addLog('step 1: sent');
 
-  function receiveMessage(e) {
+  window.addEventListener('message', function onMsg(e) {
+    addLog('received: ' + e.data + ' (origin: ' + e.origin + ')');
+
     if (e.data === 'authorizing:github') {
-      send('authorization:github:success', ${JSON.stringify(payload)});
-      window.removeEventListener('message', receiveMessage);
+      addLog('step 2: got ack, sending success');
+      opener.postMessage(
+        'authorization:github:success:' + ${JSON.stringify(payload)},
+        '*'
+      );
+      addLog('step 2: sent, login should complete now');
+      window.removeEventListener('message', onMsg);
+      status.textContent = '\\u767b\\u5f55\\u6210\\u529f\\uff0c\\u60a8\\u53ef\\u4ee5\\u5173\\u95ed\\u6b64\\u7a97\\u53e3\\u4e86';
     }
-  }
-
-  window.addEventListener('message', receiveMessage);
-  send('authorizing:github');
+  });
 })();
-</script><p>\\u6388\\u6743\\u6210\\u529f\\uff0c\\u8bf7\\u8fd4\\u56de\\u7ba1\\u7406\\u9875\\u9762\\u3002</p></body></html>`);
+</script>
+</body>
+</html>`);
   } catch (err) {
     res.status(500).json({ error: "OAuth failed", detail: err.message });
   }
