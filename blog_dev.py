@@ -253,45 +253,94 @@ def render_template(template, **ctx):
 
 
 def render_for_loop(template, item_var, collection_var, items):
-    """Render {% for item in collection %}...{% endfor %}"""
-    pattern = r"\{%\s*for\s+" + re.escape(item_var) + r"\s+in\s+" + re.escape(collection_var) + r"\s*%\}(.*?)\{%\s*endfor\s*%\}"
-    match = re.search(pattern, template, re.DOTALL)
-    if not match:
+    """Render {% for item in collection %}...{% endfor %} with proper nesting support."""
+    # Build regex to find the start tag
+    start_pat = r"\{%\s*for\s+" + re.escape(item_var) + r"\s+in\s+" + re.escape(collection_var) + r"\s*%\}"
+    m_start = re.search(start_pat, template)
+    if not m_start:
         return template
 
-    block = match.group(1)
+    # Find matching {% endfor %} by counting nesting depth
+    pos = m_start.end()
+    depth = 1
+    while depth > 0 and pos < len(template):
+        # Look for next {% for or {% endfor
+        nf = re.search(r"\{%\s*for\b", template[pos:])
+        ne = re.search(r"\{%\s*endfor\s*%\}", template[pos:])
+        if ne is None:
+            break
+        nf_pos = pos + nf.start() if nf else None
+        ne_pos = pos + ne.start()
+        if nf_pos is not None and nf_pos < ne_pos:
+            depth += 1
+            pos = nf_pos + len(nf.group())
+        else:
+            depth -= 1
+            if depth == 0:
+                pos = ne_pos + len(ne.group())
+            else:
+                pos = ne_pos + len(ne.group())
+
+    block = template[m_start.end():pos - len("{% endfor %}")]
+
     rendered = []
     for i, item in enumerate(items):
         part = block
-        # {{ post.property }}
         for k, v in item.items():
             if isinstance(v, str):
                 part = part.replace(f"{{{{ {item_var}.{k} }}}}", v)
             elif isinstance(v, list):
-                # Handle inline tags rendering
-                tag_pattern = r"\{%\s*for\s+tag\s+in\s+" + re.escape(item_var) + r"\.tags\s*%\}(.*?)\{%\s*endfor\s*%\}"
-                tag_match = re.search(tag_pattern, part, re.DOTALL)
-                if tag_match and v:
-                    tag_block = tag_match.group(1)
+                # Handle nested {% for tag in item.tags %}...{% endfor %}
+                tag_start = r"\{%\s*for\s+tag\s+in\s+" + re.escape(item_var) + r"\.tags\s*%\}"
+                tag_m = re.search(tag_start, part)
+                if tag_m and v:
+                    # Find matching {% endfor %}
+                    tp = tag_m.end()
+                    td = 1
+                    while td > 0 and tp < len(part):
+                        ntf = re.search(r"\{%\s*for\b", part[tp:])
+                        nte = re.search(r"\{%\s*endfor\s*%\}", part[tp:])
+                        if nte is None:
+                            break
+                        ntf_p = tp + ntf.start() if ntf else None
+                        nte_p = tp + nte.start()
+                        if ntf_p is not None and ntf_p < nte_p:
+                            td += 1
+                            tp = ntf_p + len(ntf.group())
+                        else:
+                            td -= 1
+                            if td == 0:
+                                tp = nte_p + len(nte.group())
+                            else:
+                                tp = nte_p + len(nte.group())
+                    tag_block = part[tag_m.end():tp - len("{% endfor %}")]
                     tag_rendered = []
                     for j, tag in enumerate(v):
-                        tp = tag_block
-                        tp = tp.replace("{{ tag }}", str(tag))
-                        tp = re.sub(r"\{%\s*unless\s+forloop\.last\s*%\},?\s*\{%\s*endunless\s*%\}", "" if j == len(v) - 1 else ", ", tp)
-                        tag_rendered.append(tp)
-                    part = part[: tag_match.start()] + "".join(tag_rendered) + part[tag_match.end() :]
-                elif tag_match and not v:
-                    part = part[: tag_match.start()] + part[tag_match.end() :]
+                        tp2 = tag_block
+                        tp2 = tp2.replace("{{ tag }}", str(tag))
+                        tp2 = re.sub(
+                            r"\{%\s*unless\s+forloop\.last\s*%\},?\s*\{%\s*endunless\s*%\}",
+                            "" if j == len(v) - 1 else ", ",
+                            tp2,
+                        )
+                        tag_rendered.append(tp2)
+                    part = part[: tag_m.start()] + "".join(tag_rendered) + part[tp:]
 
-        # {{ post.date | date: "%Y-%m-%d" }} — handled as post.date_str above
-        # {{ post.excerpt | strip_html | truncate: 140 }}
+        # Handle date filter
+        part = re.sub(
+            r"{{ " + re.escape(item_var) + r"\.date \| date: \"[^\"]+\" }}",
+            item.get("date_str", ""),
+            part,
+        )
+
+        # Handle excerpt filter
         part = re.sub(
             r"{{ " + re.escape(item_var) + r"\.excerpt \| strip_html \| truncate: \d+ }}",
             item.get("excerpt", "")[:140],
             part,
         )
 
-        # {% if post.tags %} checks
+        # Handle {% if post.tags %}...{% endif %}
         part = re.sub(
             r"\{%\s*if\s+" + re.escape(item_var) + r"\.tags\s*%\}(.*?)\{%\s*endif\s*%\}",
             lambda m, it=item: m.group(1) if it.get("tags") else "",
@@ -299,7 +348,7 @@ def render_for_loop(template, item_var, collection_var, items):
             flags=re.DOTALL,
         )
 
-        # {% if post.excerpt != post.content %}
+        # Handle {% if post.excerpt != post.content %}
         part = re.sub(
             r"\{%\s*if\s+" + re.escape(item_var) + r"\.excerpt\s*!=\s*" + re.escape(item_var) + r"\.content\s*%\}(.*?)\{%\s*endif\s*%\}",
             lambda m, it=item: m.group(1) if it.get("excerpt", "") != it.get("body", "") else "",
@@ -307,7 +356,7 @@ def render_for_loop(template, item_var, collection_var, items):
             flags=re.DOTALL,
         )
 
-        # {% unless forloop.last %},{% endunless %}
+        # Handle {% unless forloop.last %},{% endunless %}
         part = re.sub(
             r"\{%\s*unless\s+forloop\.last\s*%\}(.*?)\{%\s*endunless\s*%\}",
             lambda m, idx=i, total=len(items): m.group(1) if idx < total - 1 else "",
@@ -316,9 +365,7 @@ def render_for_loop(template, item_var, collection_var, items):
 
         rendered.append(part)
 
-    start = match.start()
-    end = match.end()
-    return template[:start] + "".join(rendered) + template[end:]
+    return template[: m_start.start()] + "".join(rendered) + template[pos:]
 
 
 def render_nested_tags(template):
