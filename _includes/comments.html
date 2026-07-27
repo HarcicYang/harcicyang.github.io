@@ -1,25 +1,50 @@
-<!--
-  SETUP: Replace repo-id, category, and category-id below.
-  1. Enable Discussions: repo Settings → General → Features
-  2. Install giscus app: https://github.com/apps/giscus
-  3. Get IDs at: https://giscus.app/ → enter "HarcicYang/harcicyang.github.io"
-  4. (Optional) After deploy, switch data-theme to your custom theme URL
--->
 <div class="giscus-header-label" style="font-size:1rem; font-weight:600; margin-bottom:0.75rem; opacity:0.7;">评论</div>
 <div class="giscus"></div>
-<script src="https://giscus.app/client.js"
-        data-repo="HarcicYang/harcicyang.github.io"
-        data-repo-id="R_kgDOIhz4kw"
-        data-category="General"
-        data-category-id="DIC_kwDOIhz4k84DCEx-"
-        data-mapping="pathname"
-        data-strict="0"
-        data-reactions-enabled="1"
-        data-emit-metadata="0"
-        data-input-position="top"
-        data-theme="https://harcic.is-a.dev/resource/giscus-theme.css"
-        data-lang="zh-CN"
-        data-loading="lazy"
-        crossorigin="anonymous"
-        async>
+<script>
+(function() {
+  var saved = localStorage.getItem("theme") || "dark";
+  var giscusTheme = saved === "light" ? "light" : "transparent_dark";
+
+  var s = document.createElement("script");
+  s.src = "https://giscus.app/client.js";
+  s.setAttribute("data-repo", "HarcicYang/harcicyang.github.io");
+  s.setAttribute("data-repo-id", "R_kgDONTNGlw");
+  s.setAttribute("data-category", "Announcements");
+  s.setAttribute("data-category-id", "DIC_kwDONTNGl84Cl7e5");
+  s.setAttribute("data-mapping", "pathname");
+  s.setAttribute("data-strict", "0");
+  s.setAttribute("data-reactions-enabled", "1");
+  s.setAttribute("data-emit-metadata", "0");
+  s.setAttribute("data-input-position", "bottom");
+  s.setAttribute("data-theme", giscusTheme);
+  s.setAttribute("data-lang", "zh-CN");
+  s.setAttribute("data-loading", "lazy");
+  s.setAttribute("crossorigin", "anonymous");
+  s.async = true;
+  document.querySelector(".giscus").appendChild(s);
+
+  function updateGiscusTheme(theme) {
+    var iframe = document.querySelector("iframe.giscus-frame");
+    if (!iframe) return;
+    var giscusTheme = theme === "light" ? "light" : "transparent_dark";
+    iframe.contentWindow.postMessage(
+      { giscus: { setConfig: { theme: giscusTheme } } },
+      "https://giscus.app"
+    );
+  }
+
+  window.addEventListener("message", function(e) {
+    if (e.origin !== "https://giscus.app") return;
+    if (!(typeof e.data === "object" && e.data.giscus)) return;
+    window.__giscusReady = true;
+  });
+
+  var observer = new MutationObserver(function() {
+    if (document.querySelector("iframe.giscus-frame")) {
+      observer.disconnect();
+      window.__giscusThemeUpdater = updateGiscusTheme;
+    }
+  });
+  observer.observe(document.body, { childList: true, subtree: true });
+})();
 </script>

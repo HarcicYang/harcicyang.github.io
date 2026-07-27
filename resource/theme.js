@@ -59,6 +59,8 @@
             moonIcon.style.display = next === "light" ? "" : "none";
             toggle.classList.add("burst");
             setTimeout(function() { toggle.classList.remove("burst"); }, 600);
+            /* update giscus theme */
+            if (window.__giscusThemeUpdater) window.__giscusThemeUpdater(next);
         });
     }
 
