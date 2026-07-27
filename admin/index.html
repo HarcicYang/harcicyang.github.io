@@ -7,97 +7,205 @@
     <link rel="icon" type="image/svg+xml" href="/resource/favicon.svg">
     <link rel="stylesheet" href="/resource/theme.css">
     <style>
-        body {
-            overflow: hidden;
-            height: 100vh;
-            height: 100dvh;
+        :root { --text-color: rgba(255,255,255,0.78); }
+        [data-theme="light"] { --text-color: rgba(24,25,27,0.78); }
+
+        html, body, #nc-root, #nc-root > div {
+            height: 100%;
+            background: #0a0a0a !important;
         }
+        [data-theme="light"] body,
+        [data-theme="light"] #nc-root,
+        [data-theme="light"] #nc-root > div {
+            background: #e8ecf1 !important;
+        }
+
         body::before {
             content: "";
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            min-height: 100vh; min-height: 100dvh;
             z-index: -1;
             pointer-events: none;
-            background: linear-gradient(var(--overlay), var(--overlay)), var(--bg-image) center center / cover no-repeat;
+            background: linear-gradient(var(--overlay), var(--overlay)), var(--bg-image) center / cover no-repeat;
         }
-        #nc-root {
-            height: 100%;
+
+        /* ---- all panels / cards ---- */
+        #nc-root [class*="css-"],
+        #nc-root [style*="background"] {
+            /* let our overrides handle it */
         }
+
         #nc-root header,
-        #nc-root [class*="AppHeader"],
-        #nc-root [class*="AppHeaderContainer"] {
+        #nc-root [class*="Header"],
+        #nc-root [class*="AppBar"],
+        #nc-root nav {
             background: var(--box-color) !important;
             backdrop-filter: var(--glass-blur) !important;
             -webkit-backdrop-filter: var(--glass-blur) !important;
-            border-bottom: 1px solid rgba(var(--primary-rgb), 0.08) !important;
+            border-color: rgba(var(--primary-rgb), 0.08) !important;
+            box-shadow: var(--shadow-card) !important;
         }
-        #nc-root [class*="SidebarContainer"],
+
+        #nc-root aside,
+        #nc-root [class*="Sidebar"],
+        #nc-root [class*="aside"] {
+            background: var(--box-color) !important;
+            backdrop-filter: var(--glass-blur) !important;
+            -webkit-backdrop-filter: var(--glass-blur) !important;
+            border-color: rgba(var(--primary-rgb), 0.08) !important;
+        }
+
         #nc-root [class*="Card"],
         #nc-root [class*="Pane"],
+        #nc-root [class*="Panel"],
         #nc-root [class*="Editor"],
-        #nc-root [class*="ControlPane"],
-        #nc-root [class*="EditorPreview"] {
+        #nc-root [class*="Control"],
+        #nc-root [class*="Preview"],
+        #nc-root [class*="Frame"],
+        #nc-root [class*="Widget"],
+        #nc-root [class*="Container"],
+        #nc-root main > div > div {
             background: var(--box-color) !important;
             backdrop-filter: var(--glass-blur) !important;
             -webkit-backdrop-filter: var(--glass-blur) !important;
         }
+
         #nc-root [class*="Toolbar"],
-        #nc-root [class*="ToolbarContainer"] {
+        #nc-root [class*="toolbar"] {
             background: var(--sub-box-color) !important;
             backdrop-filter: var(--glass-blur) !important;
             -webkit-backdrop-filter: var(--glass-blur) !important;
+            border-color: rgba(var(--primary-rgb), 0.1) !important;
+        }
+
+        /* ---- text ---- */
+        #nc-root, #nc-root *:not(button):not([class*="Button"]) {
+            color: var(--text-color) !important;
+        }
+        #nc-root h1, #nc-root h2, #nc-root h3, #nc-root h4,
+        #nc-root [class*="Heading"],
+        #nc-root [class*="Label"],
+        #nc-root [class*="title"],
+        #nc-root [class*="Title"] {
+            color: var(--text-color) !important;
+        }
+        #nc-root [class*="muted"],
+        #nc-root [class*="secondary"],
+        #nc-root [class*="Secondary"],
+        #nc-root [class*="subtitle"],
+        #nc-root [class*="Subtitle"],
+        #nc-root [class*="hint"],
+        #nc-root [class*="Hint"] {
+            color: var(--text-secondary) !important;
+        }
+
+        /* ---- buttons ---- */
+        #nc-root button,
+        #nc-root [class*="Button"],
+        #nc-root [role="button"] {
+            background: var(--box-color) !important;
+            color: var(--text-color) !important;
+            border: 1px solid rgba(var(--primary-rgb), 0.15) !important;
+            border-radius: var(--radius-pill) !important;
+            transition: all var(--transition-fast) !important;
+        }
+        #nc-root button:hover,
+        #nc-root [class*="Button"]:hover,
+        #nc-root [role="button"]:hover {
+            background: rgba(var(--primary-rgb), 0.1) !important;
+            border-color: var(--ac-btn-color) !important;
         }
         #nc-root button[class*="primary"],
         #nc-root button[class*="Primary"],
-        #nc-root [class*="Button"][class*="primary"] {
+        #nc-root [class*="Button"][class*="primary"],
+        #nc-root [class*="Button"][class*="Primary"] {
             background: var(--ac-btn-color) !important;
-            border-radius: var(--radius-pill) !important;
-            color: #fff !important;
-        }
-        #nc-root button:not([class*="primary"]):not([class*="Primary"]) {
-            border-radius: var(--radius-pill) !important;
-        }
-        #nc-root input, #nc-root textarea, #nc-root select {
-            border-radius: var(--radius-pill) !important;
-            background: var(--sub-box-color) !important;
-            color: var(--text-color) !important;
-            border-color: rgba(var(--primary-rgb), 0.15) !important;
-        }
-        #nc-root input:focus, #nc-root textarea:focus {
             border-color: var(--ac-btn-color) !important;
-            box-shadow: 0 0 0 2px rgba(var(--primary-rgb), 0.2) !important;
-        }
-        #nc-root a { color: var(--ac-btn-color) !important; }
-        #nc-root [class*="LoginButton"] {
-            background: var(--ac-btn-color) !important;
-            border-radius: var(--radius-pill) !important;
             color: #fff !important;
-            padding: 0.7rem 2rem !important;
-            font-size: 1rem !important;
             box-shadow: var(--shadow-btn) !important;
         }
-        #nc-root [class*="LoginButton"]:hover {
+        #nc-root button[class*="primary"]:hover,
+        #nc-root button[class*="Primary"]:hover,
+        #nc-root [class*="Button"][class*="primary"]:hover,
+        #nc-root [class*="Button"][class*="Primary"]:hover {
+            background: var(--ac-btn-color-l) !important;
             box-shadow: var(--shadow-btn-hover) !important;
+            transform: translateY(-1px);
         }
-        #nc-root [class*="editor"] [class*="Pane"],
-        #nc-root [class*="editor"] [class*="Frame"] {
-            background: var(--box-color) !important;
-        }
-        #nc-root [class*="ToolbarToggle"] {
+
+        /* ---- inputs ---- */
+        #nc-root input,
+        #nc-root textarea,
+        #nc-root select {
+            background: var(--sub-box-color) !important;
             color: var(--text-color) !important;
+            border: 1px solid rgba(var(--primary-rgb), 0.15) !important;
+            border-radius: var(--radius-md) !important;
+            padding: 0.5rem 0.8rem !important;
         }
-        #nc-root [class*="IconButton"] {
-            color: var(--text-secondary) !important;
+        #nc-root input:focus,
+        #nc-root textarea:focus,
+        #nc-root select:focus {
+            border-color: var(--ac-btn-color) !important;
+            box-shadow: 0 0 0 2px rgba(var(--primary-rgb), 0.2) !important;
+            outline: none !important;
         }
-        #nc-root [class*="StatusIndicator"] {
+        #nc-root input::placeholder,
+        #nc-root textarea::placeholder {
             color: var(--text-muted) !important;
         }
-        /* scrollbar */
-        #nc-root ::-webkit-scrollbar { width: 7px; }
+
+        /* ---- links ---- */
+        #nc-root a {
+            color: var(--ac-btn-color) !important;
+            text-decoration: none !important;
+        }
+        #nc-root a:hover {
+            text-decoration: underline !important;
+        }
+
+        /* ---- icons ---- */
+        #nc-root svg[class*="Icon"],
+        #nc-root [class*="icon"] {
+            color: var(--text-secondary) !important;
+        }
+
+        /* ---- dividers / borders ---- */
+        #nc-root [class*="Divider"],
+        #nc-root hr {
+            border-color: rgba(var(--primary-rgb), 0.1) !important;
+        }
+
+        /* ---- login page ---- */
+        #nc-root [class*="Login"],
+        #nc-root [class*="login"] {
+            background: transparent !important;
+        }
+        #nc-root [class*="LoginButton"],
+        #nc-root [class*="loginButton"] {
+            background: var(--ac-btn-color) !important;
+            color: #fff !important;
+            border-radius: var(--radius-pill) !important;
+            padding: 0.75rem 2.5rem !important;
+            font-size: 1rem !important;
+            box-shadow: var(--shadow-btn) !important;
+            border: none !important;
+        }
+        #nc-root [class*="LoginButton"]:hover,
+        #nc-root [class*="loginButton"]:hover {
+            box-shadow: var(--shadow-btn-hover) !important;
+            background: var(--ac-btn-color-l) !important;
+            transform: translateY(-2px);
+        }
+
+        /* ---- scrollbar ---- */
+        #nc-root ::-webkit-scrollbar { width: 6px; height: 6px; }
         #nc-root ::-webkit-scrollbar-track { background: transparent; }
-        #nc-root ::-webkit-scrollbar-thumb { background: var(--ac-btn-color); border-radius: 4px; }
+        #nc-root ::-webkit-scrollbar-thumb {
+            background: var(--ac-btn-color);
+            border-radius: 3px;
+        }
     </style>
 </head>
 <body>
