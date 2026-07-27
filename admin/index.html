@@ -12,12 +12,12 @@
 
         html, body, #nc-root, #nc-root > div {
             height: 100%;
-            background: #0a0a0a !important;
+            background: transparent !important;
         }
         [data-theme="light"] body,
         [data-theme="light"] #nc-root,
         [data-theme="light"] #nc-root > div {
-            background: #e8ecf1 !important;
+            background: transparent !important;
         }
 
         body::before {
@@ -206,6 +206,25 @@
             background: var(--ac-btn-color);
             border-radius: 3px;
         }
+
+        /* ---- toast notifications ---- */
+        .Toastify__toast {
+            background: var(--sub-box-color) !important;
+            backdrop-filter: var(--glass-blur) !important;
+            -webkit-backdrop-filter: var(--glass-blur) !important;
+            color: var(--text-color) !important;
+            border-radius: var(--radius-md) !important;
+            box-shadow: var(--shadow-card) !important;
+            border: 1px solid rgba(var(--primary-rgb), 0.1) !important;
+        }
+        .Toastify__progress-bar {
+            background: var(--ac-btn-color) !important;
+        }
+        .Toastify__close-button {
+            color: var(--text-secondary) !important;
+            opacity: 0.7 !important;
+        }
+        .Toastify__toast-body { color: var(--text-color) !important; }
     </style>
 </head>
 <body>
