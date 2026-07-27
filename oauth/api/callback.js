@@ -1,6 +1,3 @@
-// Decap CMS GitHub OAuth callback for Vercel
-// Set OAUTH_CLIENT_ID and OAUTH_CLIENT_SECRET in Vercel env vars
-
 export default async function handler(req, res) {
   const { OAUTH_CLIENT_ID, OAUTH_CLIENT_SECRET } = process.env;
   const origin = req.headers.origin || "https://harcic.is-a.dev";
@@ -46,22 +43,26 @@ export default async function handler(req, res) {
       }
     );
     const tokenData = await tokenRes.json();
+    const token = tokenData.access_token;
 
-    // Decap CMS expects: { token: "...", provider: "github" }
-    const payload = JSON.stringify({
-      token: tokenData.access_token,
-      provider: "github",
-    }).replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+    if (!token) {
+      return res.status(400).json({
+        error: "Failed to get access token",
+        detail: tokenData,
+      });
+    }
+
+    const payload = JSON.stringify({ token, provider: "github" });
 
     res.setHeader("Content-Type", "text/html");
-    res.send(`<!DOCTYPE html>
-<html><body><script>
+    res.send(`<!doctype html><html><body><script>
 (function() {
-  var msg = 'authorization:github:success:' + '${payload}';
-  window.opener.postMessage(msg, '*');
-  window.close();
+  window.opener.postMessage(
+    "authorization:github:success:" + ${JSON.stringify(payload)},
+    "*"
+  );
 })();
-</script></body></html>`);
+</script><p>授权成功，正在跳回管理页面…</p></body></html>`);
   } catch (err) {
     res.status(500).json({ error: "OAuth failed", detail: err.message });
   }
