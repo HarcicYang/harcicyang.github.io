@@ -5,8 +5,103 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Content Manager — Harcic's Blog</title>
     <link rel="icon" type="image/svg+xml" href="/resource/favicon.svg">
+    <link rel="stylesheet" href="/resource/theme.css">
+    <style>
+        body {
+            overflow: hidden;
+            height: 100vh;
+            height: 100dvh;
+        }
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            min-height: 100vh; min-height: 100dvh;
+            z-index: -1;
+            pointer-events: none;
+            background: linear-gradient(var(--overlay), var(--overlay)), var(--bg-image) center center / cover no-repeat;
+        }
+        #nc-root {
+            height: 100%;
+        }
+        #nc-root header,
+        #nc-root [class*="AppHeader"],
+        #nc-root [class*="AppHeaderContainer"] {
+            background: var(--box-color) !important;
+            backdrop-filter: var(--glass-blur) !important;
+            -webkit-backdrop-filter: var(--glass-blur) !important;
+            border-bottom: 1px solid rgba(var(--primary-rgb), 0.08) !important;
+        }
+        #nc-root [class*="SidebarContainer"],
+        #nc-root [class*="Card"],
+        #nc-root [class*="Pane"],
+        #nc-root [class*="Editor"],
+        #nc-root [class*="ControlPane"],
+        #nc-root [class*="EditorPreview"] {
+            background: var(--box-color) !important;
+            backdrop-filter: var(--glass-blur) !important;
+            -webkit-backdrop-filter: var(--glass-blur) !important;
+        }
+        #nc-root [class*="Toolbar"],
+        #nc-root [class*="ToolbarContainer"] {
+            background: var(--sub-box-color) !important;
+            backdrop-filter: var(--glass-blur) !important;
+            -webkit-backdrop-filter: var(--glass-blur) !important;
+        }
+        #nc-root button[class*="primary"],
+        #nc-root button[class*="Primary"],
+        #nc-root [class*="Button"][class*="primary"] {
+            background: var(--ac-btn-color) !important;
+            border-radius: var(--radius-pill) !important;
+            color: #fff !important;
+        }
+        #nc-root button:not([class*="primary"]):not([class*="Primary"]) {
+            border-radius: var(--radius-pill) !important;
+        }
+        #nc-root input, #nc-root textarea, #nc-root select {
+            border-radius: var(--radius-pill) !important;
+            background: var(--sub-box-color) !important;
+            color: var(--text-color) !important;
+            border-color: rgba(var(--primary-rgb), 0.15) !important;
+        }
+        #nc-root input:focus, #nc-root textarea:focus {
+            border-color: var(--ac-btn-color) !important;
+            box-shadow: 0 0 0 2px rgba(var(--primary-rgb), 0.2) !important;
+        }
+        #nc-root a { color: var(--ac-btn-color) !important; }
+        #nc-root [class*="LoginButton"] {
+            background: var(--ac-btn-color) !important;
+            border-radius: var(--radius-pill) !important;
+            color: #fff !important;
+            padding: 0.7rem 2rem !important;
+            font-size: 1rem !important;
+            box-shadow: var(--shadow-btn) !important;
+        }
+        #nc-root [class*="LoginButton"]:hover {
+            box-shadow: var(--shadow-btn-hover) !important;
+        }
+        #nc-root [class*="editor"] [class*="Pane"],
+        #nc-root [class*="editor"] [class*="Frame"] {
+            background: var(--box-color) !important;
+        }
+        #nc-root [class*="ToolbarToggle"] {
+            color: var(--text-color) !important;
+        }
+        #nc-root [class*="IconButton"] {
+            color: var(--text-secondary) !important;
+        }
+        #nc-root [class*="StatusIndicator"] {
+            color: var(--text-muted) !important;
+        }
+        /* scrollbar */
+        #nc-root ::-webkit-scrollbar { width: 7px; }
+        #nc-root ::-webkit-scrollbar-track { background: transparent; }
+        #nc-root ::-webkit-scrollbar-thumb { background: var(--ac-btn-color); border-radius: 4px; }
+    </style>
 </head>
 <body>
+    <script src="/resource/theme.js"></script>
     <script src="https://unpkg.com/decap-cms@^3/dist/decap-cms.js"></script>
 </body>
 </html>

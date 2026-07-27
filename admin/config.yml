@@ -2,7 +2,8 @@ backend:
   name: github
   repo: HarcicYang/harcicyang.github.io
   branch: main
-  base_url: https://decap-server.vercel.app
+  # Replace YOUR_APP below with your Vercel app name after deploying the oauth/ folder.
+  # base_url: https://YOUR_APP.vercel.app
 
 media_folder: "resource/uploads"
 public_folder: "/resource/uploads"
