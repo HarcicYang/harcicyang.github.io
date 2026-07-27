@@ -1,0 +1,126 @@
+/* giscus custom theme — glassmorphism */
+main {
+  --color-prettylights-syntax-comment: #768390;
+  --color-prettylights-syntax-constant: #6cb6ff;
+  --color-prettylights-syntax-entity: #dcbdfb;
+  --color-prettylights-syntax-storage-modifier-import: #adbac7;
+  --color-prettylights-syntax-entity-tag: #8ddb8c;
+  --color-prettylights-syntax-keyword: #f47067;
+  --color-prettylights-syntax-string: #96d0ff;
+  --color-prettylights-syntax-variable: #f69d50;
+  --color-prettylights-syntax-brackethighlighter-unmatched: #e5534b;
+  --color-prettylights-syntax-invalid-illegal-text: #cdd9e5;
+  --color-prettylights-syntax-invalid-illegal-bg: #922323;
+  --color-prettylights-syntax-carriage-return-text: #cdd9e5;
+  --color-prettylights-syntax-carriage-return-bg: #ad2e2c;
+  --color-prettylights-syntax-string-regexp: #8ddb8c;
+  --color-prettylights-syntax-markup-list: #eac55f;
+  --color-prettylights-syntax-markup-heading: #316dca;
+  --color-prettylights-syntax-markup-italic: #adbac7;
+  --color-prettylights-syntax-markup-bold: #adbac7;
+  --color-prettylights-syntax-markup-deleted-text: #ffd8d3;
+  --color-prettylights-syntax-markup-deleted-bg: #78191b;
+  --color-prettylights-syntax-markup-inserted-text: #b4f1b4;
+  --color-prettylights-syntax-markup-inserted-bg: #1b4721;
+  --color-prettylights-syntax-markup-changed-text: #ffddb0;
+  --color-prettylights-syntax-markup-changed-bg: #682d0f;
+  --color-prettylights-syntax-markup-ignored-text: #adbac7;
+  --color-prettylights-syntax-markup-ignored-bg: #255ab2;
+  --color-prettylights-syntax-meta-diff-range: #dcbdfb;
+  --color-prettylights-syntax-brackethighlighter-angle: #768390;
+  --color-prettylights-syntax-sublimer-linter-gutter-mark: #545d68;
+  --color-prettylights-syntax-constant-other-reference-link: #96d0ff;
+  --color-btn-text: #adbac7;
+  --color-btn-bg: transparent;
+  --color-btn-border: rgba(205,217,229,0.1);
+  --color-btn-shadow: 0 0 transparent;
+  --color-btn-inset-shadow: 0 0 transparent;
+  --color-btn-hover-bg: rgba(205,217,229,0.08);
+  --color-btn-hover-border: rgba(205,217,229,0.15);
+  --color-btn-active-bg: rgba(205,217,229,0.12);
+  --color-btn-active-border: rgba(205,217,229,0.18);
+  --color-btn-selected-bg: rgba(205,217,229,0.08);
+  --color-btn-primary-text: #fff;
+  --color-btn-primary-bg: rgba(25,73,133,0.88);
+  --color-btn-primary-border: rgba(25,73,133,0.5);
+  --color-btn-primary-shadow: 0 0 transparent;
+  --color-btn-primary-inset-shadow: 0 0 transparent;
+  --color-btn-primary-hover-bg: rgba(55,103,163,0.88);
+  --color-btn-primary-hover-border: rgba(55,103,163,0.6);
+  --color-btn-primary-selected-bg: rgba(55,103,163,0.88);
+  --color-btn-primary-disabled-bg: rgba(25,73,133,0.4);
+  --color-fg-default: #adbac7;
+  --color-fg-muted: #768390;
+  --color-fg-subtle: #545d68;
+  --color-fg-on-emphasis: #cdd9e5;
+  --color-canvas-default: transparent;
+  --color-canvas-overlay: rgba(24,25,27,0.85);
+  --color-canvas-inset: transparent;
+  --color-canvas-subtle: rgba(24,25,27,0.4);
+  --color-border-default: rgba(205,217,229,0.1);
+  --color-border-muted: rgba(205,217,229,0.06);
+  --color-neutral-muted: rgba(205,217,229,0.05);
+  --color-accent-fg: rgba(25,73,133,1);
+  --color-accent-emphasis: rgba(25,73,133,1);
+  --color-accent-muted: rgba(25,73,133,0.2);
+  --color-accent-subtle: rgba(25,73,133,0.08);
+  --color-success-fg: #57ab5a;
+  --color-attention-fg: #c69026;
+  --color-danger-fg: #e5534b;
+  --color-primer-shadow-inset: 0 0 transparent;
+  --color-scale-gray-7: #373e47;
+  --color-scale-blue-8: #143d79;
+
+  --color-social-reaction-bg-hover: var(--color-scale-gray-7);
+  --color-social-reaction-bg-reacted-hover: var(--color-scale-blue-8);
+}
+
+main .pagination-loader-container {
+  background-image: url("https://github.com/images/modules/pulls/progressive-disclosure-line-dark.svg");
+}
+
+/* override transparent background */
+.gsc-reactions {
+  background: transparent !important;
+}
+.gsc-comment {
+  background: transparent !important;
+}
+.gsc-timeline {
+  background: transparent !important;
+}
+
+/* make buttons rounded like glass-btn */
+.gsc-reactions-button,
+.btn,
+.BtnGroup-item,
+button {
+  border-radius: 9999px !important;
+}
+
+/* input field styling */
+.form-control,
+.form-select,
+input[type="text"],
+textarea {
+  background: rgba(24,25,27,0.85) !important;
+  border-color: rgba(205,217,229,0.1) !important;
+  border-radius: 8px !important;
+  color: #adbac7 !important;
+}
+.form-control:focus,
+input[type="text"]:focus,
+textarea:focus {
+  border-color: rgba(25,73,133,0.5) !important;
+  box-shadow: 0 0 0 2px rgba(25,73,133,0.2) !important;
+}
+
+.gsc-header {
+  border-bottom-color: rgba(205,217,229,0.06) !important;
+}
+.gsc-comment-box {
+  border-color: rgba(205,217,229,0.08) !important;
+}
+.gsc-comment-box-tabs {
+  border-bottom-color: rgba(205,217,229,0.06) !important;
+}

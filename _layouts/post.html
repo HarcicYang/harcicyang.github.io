@@ -101,13 +101,18 @@
         }
 
         .comments-section {
+            margin-top: 1rem;
+            margin-bottom: 2rem;
+            padding: 1.5rem 2rem;
             background: var(--box-color);
             border-radius: var(--radius-lg);
             box-shadow: var(--shadow-card);
             backdrop-filter: var(--glass-blur);
             -webkit-backdrop-filter: var(--glass-blur);
-            padding: 1.5rem 2rem;
-            margin-bottom: 2rem;
+            border: 1px solid rgba(var(--primary-rgb), 0.06);
+        }
+        .comments-section .giscus {
+            margin-top: 0.5rem;
         }
 
         @media (max-width: 768px) {
