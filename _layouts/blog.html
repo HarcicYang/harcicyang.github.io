@@ -225,7 +225,7 @@
         <div class="section-label" id="postsLabel">文章</div>
         <div class="post-list" id="postList">
             {% for post in site.posts %}
-            <a href="{{ post.url | relative_url }}" class="post-card fade-in">
+            <a href="{{ post.url }}" class="post-card fade-in">
                 <div class="post-card-title">{{ post.title }}</div>
                 <div class="post-card-meta">
                     <span>{{ post.date | date: "%Y-%m-%d" }}</span>
