@@ -1,5 +1,5 @@
 // Decap CMS GitHub OAuth callback for Vercel
-// Deploy: put OAUTH_CLIENT_ID and OAUTH_CLIENT_SECRET in Vercel env vars
+// Set OAUTH_CLIENT_ID and OAUTH_CLIENT_SECRET in Vercel env vars
 
 export default async function handler(req, res) {
   const { OAUTH_CLIENT_ID, OAUTH_CLIENT_SECRET } = process.env;
@@ -12,7 +12,6 @@ export default async function handler(req, res) {
     return res.status(200).end();
   }
 
-  // /auth — redirect to GitHub
   if (req.url.startsWith("/auth")) {
     const params = new URLSearchParams({
       client_id: OAUTH_CLIENT_ID,
@@ -25,7 +24,6 @@ export default async function handler(req, res) {
     return res.end();
   }
 
-  // /callback — exchange code for token
   const code = req.query?.code || req.body?.code;
   if (!code) {
     return res.status(400).json({ error: "Missing code" });
@@ -47,27 +45,24 @@ export default async function handler(req, res) {
         }),
       }
     );
-    const data = await tokenRes.json();
+    const tokenData = await tokenRes.json();
+
+    // Decap CMS expects: { token: "...", provider: "github" }
+    const payload = JSON.stringify({
+      token: tokenData.access_token,
+      provider: "github",
+    }).replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+
     res.setHeader("Content-Type", "text/html");
-    res.send(`
-<!DOCTYPE html>
+    res.send(`<!DOCTYPE html>
 <html><body><script>
 (function() {
-  window.addEventListener("message", function(e) {
-    if (e.data === "authorizing:github") {
-      e.source.postMessage(
-        "authorization:github:success:${JSON.stringify(data)}",
-        e.origin
-      );
-    }
-  });
-  window.opener && window.opener.postMessage(
-    "authorizing:github",
-    "*"
-  );
+  var msg = 'authorization:github:success:' + '${payload}';
+  window.opener.postMessage(msg, '*');
+  window.close();
 })();
 </script></body></html>`);
   } catch (err) {
-    res.status(500).json({ error: "OAuth failed" });
+    res.status(500).json({ error: "OAuth failed", detail: err.message });
   }
 }
