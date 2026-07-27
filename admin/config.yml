@@ -1,0 +1,48 @@
+backend:
+  name: github
+  repo: HarcicYang/harcicyang.github.io
+  branch: main
+  base_url: https://decap-server.vercel.app
+
+media_folder: "resource/uploads"
+public_folder: "/resource/uploads"
+
+site_url: "https://harcic.is-a.dev"
+display_url: "https://harcic.is-a.dev"
+logo_url: "/resource/favicon.svg"
+
+locale: "zh_Hans"
+
+collections:
+  - name: "posts"
+    label: "文章"
+    label_singular: "文章"
+    folder: "_posts"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    editor:
+      preview: false
+    fields:
+      - label: "布局"
+        name: "layout"
+        widget: "hidden"
+        default: "post"
+      - label: "标题"
+        name: "title"
+        widget: "string"
+        tagname: "h1"
+      - label: "发布日期"
+        name: "date"
+        widget: "datetime"
+        format: "YYYY-MM-DD HH:mm:ss Z"
+      - label: "标签"
+        name: "tags"
+        widget: "list"
+        default: []
+        field:
+          label: "标签"
+          name: "tag"
+          widget: "string"
+      - label: "正文"
+        name: "body"
+        widget: "markdown"

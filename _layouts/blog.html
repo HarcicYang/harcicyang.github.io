@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#e8ecf1" media="(prefers-color-scheme: light)">
+    <title>{% if page.title %}{{ page.title }} — {% endif %}Harcic's Blog</title>
+    <link rel="icon" type="image/svg+xml" href="/resource/favicon.svg">
+    <link rel="stylesheet" href="/resource/theme.css">
+    <link rel="stylesheet" href="/resource/syntax.css">
+    <style>
+        .blog-container { width: 100%; max-width: 780px; }
+        .intro-card {
+            display: flex;
+            gap: 1.5rem;
+            align-items: flex-start;
+            background: var(--box-color);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-card);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            padding: 1.8rem 2rem;
+            margin-bottom: 1.5rem;
+        }
+        .intro-avatar {
+            flex-shrink: 0;
+        }
+        .intro-avatar img {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.25);
+        }
+        .intro-body { flex: 1; min-width: 0; }
+        .intro-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+        .intro-quote {
+            font-size: 0.92rem;
+            opacity: 0.7;
+            margin-bottom: 0.8rem;
+            font-style: italic;
+        }
+        .intro-links {
+            display: flex;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+        }
+        .intro-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.35rem 0.85rem;
+            border-radius: var(--radius-pill);
+            background: rgba(var(--primary-rgb), 0.1);
+            color: var(--ac-btn-color);
+            font-size: 0.82rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: background var(--transition-fast), transform var(--transition-fast);
+        }
+        .intro-link:hover { background: rgba(var(--primary-rgb), 0.2); transform: translateY(-1px); }
+        .intro-link svg { width: 16px; height: 16px; flex-shrink: 0; fill: currentColor; }
+
+        .search-bar {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            align-items: center;
+        }
+        .search-input-wrap {
+            flex: 1;
+            position: relative;
+        }
+        .search-input-wrap svg {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 18px;
+            height: 18px;
+            fill: var(--text-secondary);
+            pointer-events: none;
+        }
+        .search-input {
+            width: 100%;
+            padding: 0.6rem 1rem 0.6rem 2.6rem;
+        }
+        .search-results {
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+        .search-results .search-info {
+            font-size: 0.82rem;
+            opacity: 0.55;
+            margin-bottom: 0.75rem;
+        }
+
+        .section-label { margin-top: 0 !important; }
+
+        .post-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        .post-card {
+            display: block;
+            text-decoration: none;
+            color: var(--text-color);
+            background: var(--box-color);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-card);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            padding: 1.2rem 1.5rem;
+            will-change: transform;
+            transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+        }
+        .post-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-card-hover);
+        }
+        .post-card-title {
+            font-size: 1.08rem;
+            font-weight: 600;
+            margin-bottom: 0.35rem;
+        }
+        .post-card-meta {
+            font-size: 0.8rem;
+            opacity: 0.5;
+            display: flex;
+            gap: 0.5rem 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .post-card-excerpt {
+            font-size: 0.88rem;
+            opacity: 0.65;
+            margin-top: 0.5rem;
+            line-height: 1.55;
+        }
+        .post-card-tags {
+            display: flex;
+            gap: 0.35rem;
+            flex-wrap: wrap;
+            margin-top: 0.6rem;
+        }
+        .post-card-tag {
+            padding: 0.15rem 0.55rem;
+            border-radius: var(--radius-pill);
+            background: rgba(var(--primary-rgb), 0.1);
+            color: var(--ac-btn-color);
+            font-size: 0.72rem;
+            font-weight: 500;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            opacity: 0.4;
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 768px) {
+            .intro-card { flex-direction: column; align-items: center; text-align: center; padding: 1.25rem 1.25rem; }
+            .intro-avatar img { width: 72px; height: 72px; }
+            .intro-name { font-size: 1.2rem; }
+            .intro-links { justify-content: center; }
+            .post-card { padding: 1rem 1.15rem; }
+        }
+    </style>
+</head>
+<body>
+    <a href="/" class="back-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+        Harcic's Hub
+    </a>
+
+    <button class="theme-toggle" id="themeToggle" aria-label="切换主题">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="currentColor"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58a.996.996 0 00-1.41 0 .996.996 0 000 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37a.996.996 0 00-1.41 0 .996.996 0 000 1.41l1.06 1.06c.39.39 1.03.39 1.41 0a.996.996 0 000-1.41l-1.06-1.06zm1.06-10.96a.996.996 0 000-1.41.996.996 0 00-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36a.996.996 0 000-1.41.996.996 0 00-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="currentColor" style="display:none"><path d="M12 3a9 9 0 109 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 01-4.4 2.26 5.403 5.403 0 01-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>
+    </button>
+
+    <div class="page-scroll">
+    <div class="blog-container">
+        <!-- Intro Card -->
+        <div class="intro-card fade-in">
+            <div class="intro-avatar">
+                <img src="/resource/head.webp" alt="Harcic Yang" width="90" height="90">
+            </div>
+            <div class="intro-body">
+                <div class="intro-name">Harcic Yang</div>
+                <div class="intro-quote">鸟为什么会飞？因为他们「必须」飞上天际。</div>
+                <div class="intro-links">
+                    <a href="https://github.com/HarcicYang" class="intro-link" target="_blank" rel="noopener">
+                        <svg viewBox="0 0 24 24"><path d="M10.226 17.284c-2.965-.36-5.054-2.493-5.054-5.256 0-1.123.404-2.336 1.078-3.144-.292-.741-.247-2.314.09-2.965.898-.112 2.111.36 2.83 1.01.853-.269 1.752-.404 2.853-.404 1.1 0 1.999.135 2.807.382.696-.629 1.932-1.1 2.83-.988.315.606.36 2.179.067 2.942.72.854 1.101 2 1.101 3.167 0 2.763-2.089 4.852-5.098 5.234.763.494 1.28 1.572 1.28 2.807v2.336c0 .674.561 1.056 1.235.786 4.066-1.55 7.255-5.615 7.255-10.646C23.5 6.188 18.334 1 11.978 1 5.62 1 .5 6.188.5 12.545c0 4.986 3.167 9.12 7.435 10.669.606.225 1.19-.18 1.19-.786V20.63a2.9 2.9 0 0 1-1.078.224c-1.483 0-2.359-.808-2.987-2.313-.247-.607-.517-.966-1.034-1.033-.27-.023-.359-.135-.359-.27 0-.27.45-.471.898-.471.652 0 1.213.404 1.797 1.235.45.651.921.943 1.483.943.561 0 .92-.202 1.437-.719.382-.381.674-.718.944-.943"/></svg>
+                        GitHub
+                    </a>
+                    <a href="https://space.bilibili.com/686607596" class="intro-link" target="_blank" rel="noopener">
+                        <svg viewBox="0 0 1024 1024"><path d="M450.803 456.506l-120.67 23.104 10.333 45.288 119.454-23.103-9.117-45.289zm65.044 120.06c-29.483 63.221-55.926 15.503-55.926 15.503l-19.754 12.768s38.902 53.192 75.986 12.765c43.77 40.427 77.204-13.069 77.204-13.069l-17.935-11.55c.001-.305-31.306 44.983-59.575-16.416zm59.576-74.773L695.182 524.896l10.03-45.288-120.365-23.104-9.423 45.289zm237.784-88.926c-1.906-84.363-75.487-100.541-75.487-100.541s-57.409-.316-131.945-.952l54.238-52.332s8.563-10.785-6.027-22.834c-14.592-12.051-15.543-6.66-20.615-3.487-4.442 3.17-69.463 66.92-80.88 78.34-29.494 0-60.262-.32-90.075-.32h10.467s-77.706-76.754-82.781-80.241c-5.076-3.489-5.71-8.561-20.617 3.487-14.59 12.052-6.027 22.835-6.027 22.835l55.504 53.92c-60.261 0-112.28.319-136.383 1.268-78.025 22.521-71.997 100.86-71.997 100.86s.95 168.1 0 253.103c8.563 85.002 73.9 98.636 73.9 98.636s26.007.635 45.357.635c1.9 5.392 3.486 32.034 33.303 32.034 29.495 0 33.3-32.034 33.3-32.034s217.264-.95 235.34-.95c.954 9.197 5.395 33.62 35.208 33.304 29.495-.636 31.714-35.205 31.714-35.205s10.152-.952 40.281 0c70.414-13.006 74.535-95.469 74.535-95.469s-1.265-169.689-.313-254.056zM752.629 681.83c0 13.32-10.468 24.103-23.471 24.103H300.98c-13.003 0-23.47-10.783-23.47-24.103V397.962c0-13.322 10.468-24.106 23.47-24.106h428.177c13.003 0 23.47 10.784 23.47 24.106v283.869z"/></svg>
+                        Bilibili
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search -->
+        <div class="search-bar">
+            <div class="search-input-wrap">
+                <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                <input type="text" class="glass-input search-input" id="searchInput" placeholder="搜索文章..." autocomplete="off">
+            </div>
+        </div>
+
+        <!-- Search Results -->
+        <div class="search-results" id="searchResults">
+            <div class="search-info" id="searchInfo"></div>
+            <div class="post-list" id="searchResultsList"></div>
+        </div>
+
+        <!-- Articles -->
+        <div class="section-label" id="postsLabel">文章</div>
+        <div class="post-list" id="postList">
+            {% for post in site.posts %}
+            <a href="{{ post.url | relative_url }}" class="post-card fade-in">
+                <div class="post-card-title">{{ post.title }}</div>
+                <div class="post-card-meta">
+                    <span>{{ post.date | date: "%Y-%m-%d" }}</span>
+                </div>
+                {% if post.excerpt != post.content %}
+                <div class="post-card-excerpt">{{ post.excerpt | strip_html | truncate: 140 }}</div>
+                {% endif %}
+                {% if post.tags %}
+                <div class="post-card-tags">
+                    {% for tag in post.tags %}
+                    <span class="post-card-tag">{{ tag }}</span>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </a>
+            {% endfor %}
+            {% if site.posts.size == 0 %}
+            <div class="empty-state">还没有文章。通过 Decap CMS 后台撰写第一篇吧。</div>
+            {% endif %}
+        </div>
+    </div>
+    </div>
+
+    <script src="/resource/theme.js"></script>
+    <script>
+    (function() {
+        var searchInput = document.getElementById("searchInput");
+        var searchResults = document.getElementById("searchResults");
+        var searchInfo = document.getElementById("searchInfo");
+        var searchResultsList = document.getElementById("searchResultsList");
+        var postList = document.getElementById("postList");
+        var postsLabel = document.getElementById("postsLabel");
+        var posts = [];
+        var loaded = false;
+
+        function loadPosts() {
+            if (loaded) return Promise.resolve(posts);
+            return fetch("/blog/search.json")
+                .then(function(r) { return r.json(); })
+                .then(function(data) {
+                    posts = data;
+                    loaded = true;
+                    return posts;
+                });
+        }
+
+        function renderResults(results, query) {
+            searchResultsList.innerHTML = "";
+            if (results.length === 0) {
+                searchResultsList.innerHTML = "<div class='empty-state'>未找到匹配「" + query + "」的文章</div>";
+                searchInfo.textContent = "";
+            } else {
+                searchInfo.textContent = "找到 " + results.length + " 篇匹配「" + query + "」的文章";
+                results.forEach(function(post) {
+                    var card = document.createElement("a");
+                    card.className = "post-card fade-in";
+                    card.href = post.url;
+                    card.innerHTML =
+                        '<div class="post-card-title">' + post.title + '</div>' +
+                        '<div class="post-card-meta"><span>' + post.date + '</span></div>' +
+                        (post.excerpt ? '<div class="post-card-excerpt">' + post.excerpt + '</div>' : '') +
+                        (post.tags && post.tags.length ? '<div class="post-card-tags">' + post.tags.map(function(t) { return '<span class="post-card-tag">' + t + '</span>'; }).join("") + '</div>' : '');
+                    searchResultsList.appendChild(card);
+                });
+            }
+            searchResults.style.display = "block";
+            postList.style.display = "none";
+            postsLabel.style.display = "none";
+        }
+
+        function showAll() {
+            searchResults.style.display = "none";
+            postList.style.display = "";
+            postsLabel.style.display = "";
+            searchInput.value = "";
+        }
+
+        searchInput.addEventListener("input", function() {
+            var q = this.value.trim().toLowerCase();
+            if (q.length === 0) {
+                showAll();
+                return;
+            }
+            if (q.length < 2) return;
+            loadPosts().then(function(all) {
+                var results = all.filter(function(p) {
+                    return p.title.toLowerCase().indexOf(q) !== -1 ||
+                           (p.excerpt && p.excerpt.toLowerCase().indexOf(q) !== -1) ||
+                           (p.tags && p.tags.some(function(t) { return t.toLowerCase().indexOf(q) !== -1; }));
+                });
+                renderResults(results, this.value.trim());
+            }.bind(this));
+        });
+
+        searchInput.addEventListener("keydown", function(e) {
+            if (e.key === "Escape") { showAll(); searchInput.blur(); }
+        });
+    })();
+    </script>
+</body>
+</html>

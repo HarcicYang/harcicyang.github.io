@@ -1,0 +1,32 @@
+title: Harcic's Blog
+author: Harcic Yang
+description: 鸟为什么会飞？因为他们「必须」飞上天际。
+baseurl: ""
+url: "https://harcic.is-a.dev"
+
+exclude:
+  - .venv
+  - .idea
+  - dev.py
+  - AGENTS.md
+  - "*.srs"
+  - "*.m4a"
+  - "*.mp3"
+
+include:
+  - blog
+
+permalink: /blog/:year/:month/:day/:title/
+
+defaults:
+  - scope:
+      path: "_posts"
+    values:
+      layout: post
+
+markdown: kramdown
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+
+plugins: []
