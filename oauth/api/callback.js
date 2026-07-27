@@ -1,27 +1,7 @@
 export default async function handler(req, res) {
   const { OAUTH_CLIENT_ID, OAUTH_CLIENT_SECRET } = process.env;
-  const origin = req.headers.origin || "https://harcic.is-a.dev";
 
-  res.setHeader("Access-Control-Allow-Origin", origin);
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-
-  if (req.method === "OPTIONS") {
-    return res.status(200).end();
-  }
-
-  if (req.url.startsWith("/auth")) {
-    const params = new URLSearchParams({
-      client_id: OAUTH_CLIENT_ID,
-      scope: "repo,user",
-      redirect_uri: `https://${req.headers.host}/callback`,
-    });
-    res.writeHead(302, {
-      Location: `https://github.com/login/oauth/authorize?${params}`,
-    });
-    return res.end();
-  }
-
-  const code = req.query?.code || req.body?.code;
+  const code = req.query?.code;
   if (!code) {
     return res.status(400).json({ error: "Missing code" });
   }
@@ -43,26 +23,43 @@ export default async function handler(req, res) {
       }
     );
     const tokenData = await tokenRes.json();
-    const token = tokenData.access_token;
 
-    if (!token) {
+    if (!tokenData.access_token) {
       return res.status(400).json({
-        error: "Failed to get access token",
+        error: "No access token",
         detail: tokenData,
       });
     }
 
-    const payload = JSON.stringify({ token, provider: "github" });
+    const payload = JSON.stringify({
+      token: tokenData.access_token,
+      provider: "github",
+    });
 
     res.setHeader("Content-Type", "text/html");
     res.send(`<!doctype html><html><body><script>
 (function() {
-  window.opener.postMessage(
-    "authorization:github:success:" + ${JSON.stringify(payload)},
-    "*"
-  );
+  var opener = window.opener;
+  if (!opener) {
+    document.body.textContent = '\\u6388\\u6743\\u5931\\u8d25\\uff1a\\u672a\\u627e\\u5230\\u4e3b\\u7a97\\u53e3';
+    return;
+  }
+
+  function send(name, data) {
+    opener.postMessage(data != null ? name + ':' + data : name, '*');
+  }
+
+  function receiveMessage(e) {
+    if (e.data === 'authorizing:github') {
+      send('authorization:github:success', ${JSON.stringify(payload)});
+      window.removeEventListener('message', receiveMessage);
+    }
+  }
+
+  window.addEventListener('message', receiveMessage);
+  send('authorizing:github');
 })();
-</script><p>授权成功，正在跳回管理页面…</p></body></html>`);
+</script><p>\\u6388\\u6743\\u6210\\u529f\\uff0c\\u8bf7\\u8fd4\\u56de\\u7ba1\\u7406\\u9875\\u9762\\u3002</p></body></html>`);
   } catch (err) {
     res.status(500).json({ error: "OAuth failed", detail: err.message });
   }
