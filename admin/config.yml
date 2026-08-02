@@ -7,9 +7,9 @@ backend:
 media_folder: "resource/uploads"
 public_folder: "/resource/uploads"
 
-site_url: "https://harcic.is-a.dev"d
+site_url: "https://harcic.is-a.dev"
 display_url: "https://harcic.is-a.dev"
-logo_url: "/resource/favicon.svg"b
+logo_url: "/resource/favicon.svg"
 
 locale: "zh_Hans"
 
