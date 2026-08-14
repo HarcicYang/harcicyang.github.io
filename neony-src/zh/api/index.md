@@ -26,7 +26,7 @@
 
 Neony 处于 pre-beta。部分名称仍保留已弃用别名（如 `active_key` →
 `selected_key`）；各章节会在文中标注。逐版本变更见项目
-[CHANGELOG](https://github.com/HarcicYang/Neony/blob/ef0ede3/CHANGELOG.md)。
+[CHANGELOG](https://github.com/HarcicYang/Neony/blob/a2744bd/CHANGELOG.md)。
 
 尚未拆出的精确签名，旧的合并入口暂时保留在 [`api.zh.md`](/zh/api/)，
 作为稳定链接目标，供读者与外部链接过渡使用。

@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       ref:
-        description: 'Neony 仓库的 ref（分支 / tag / commit sha）'
+        description: 'Neony 的 ref（留空 = 自动选最新 release tag；也可填分支 / tag / commit sha）'
         required: false
-        default: 'master'
+        default: ''
 
 permissions:
   contents: write

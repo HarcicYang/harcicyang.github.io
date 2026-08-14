@@ -199,10 +199,11 @@ def git(args, cwd):
     ).stdout.strip()
 
 
-def local_commit_info(source):
-    sha = git(["rev-parse", "HEAD"], source)
-    date = git(["log", "-1", "--format=%cI"], source)[:10]
-    message = git(["log", "-1", "--format=%s"], source)
+def local_commit_info(source, ref=None):
+    rev = ref or "HEAD"
+    sha = git(["rev-parse", rev], source)
+    date = git(["log", "-1", "--format=%cI", rev], source)[:10]
+    message = git(["log", "-1", "--format=%s", rev], source)
     return {"sha": sha, "date": date, "message": message}
 
 
@@ -338,7 +339,9 @@ def process_doc(src_path, stem, lang, ref, cur_dir):
 def main():
     ap = argparse.ArgumentParser(description="Sync Neony docs -> neony-src/")
     ap.add_argument("--source", help="local Neony checkout path (default: fetch from GitHub)")
-    ap.add_argument("--ref", default="master", help="GitHub ref to sync (default: master)")
+    ap.add_argument("--ref", default=None,
+                    help="Neony ref to sync (branch / tag / commit; GitHub mode: "
+                         "defaults to the latest release tag)")
     ap.add_argument("--out", default="neony-src", help="VitePress source dir (default: neony-src)")
     ap.add_argument("--repo-root", default=None,
                     help="override repo-root for link mapping (default: derived from source)")
@@ -348,24 +351,54 @@ def main():
 
     out_dir = os.path.abspath(args.out)
     tmp_root = None
+    current_tag = None
 
     if args.source:
-        repo_root = os.path.abspath(args.source)
+        src_root = os.path.abspath(args.source)
+        repo_root = src_root
         docs_dir = os.path.join(repo_root, "docs")
-        if not os.path.isdir(docs_dir):
-            sys.exit(f"error: no docs/ directory under {repo_root}")
-        current = local_commit_info(repo_root)
-        history = local_docs_history(repo_root, args.history_limit)
         tags = local_tags(repo_root)
-        log(f"Local source: {repo_root} @ {current['sha'][:7]}")
+        if args.ref:
+            # read the given ref from git without touching the working tree
+            tmp_root = tempfile.mkdtemp(prefix="neony-sync-")
+            tarpath = os.path.join(tmp_root, "neony.tar")
+            with open(tarpath, "wb") as fh:
+                subprocess.run(
+                    ["git", "-C", src_root, "archive", "--format=tar", args.ref, "docs"],
+                    stdout=fh, check=True,
+                )
+            with tarfile.open(tarpath, "r:") as tf:
+                tf.extractall(tmp_root)
+            repo_root = tmp_root
+            docs_dir = os.path.join(repo_root, "docs")
+            current = local_commit_info(src_root, ref=args.ref)
+            current_tag = args.ref if args.ref in {t["name"] for t in tags} else None
+            log(f"Local source: {args.ref} @ {current['sha'][:7]}")
+        else:
+            if not os.path.isdir(docs_dir):
+                sys.exit(f"error: no docs/ directory under {repo_root}")
+            current = local_commit_info(repo_root)
+            log(f"Local source: {repo_root} @ {current['sha'][:7]} (working tree)")
+        history = local_docs_history(src_root, args.history_limit)
     else:
+        tags = github_tags(args.token)
         ref = args.ref
+        if not ref:
+            # default: the latest release tag, falling back to master
+            if tags:
+                ref = tags[0]["name"]
+                current_tag = ref
+                log(f"Auto-selecting latest tag: {ref}")
+            else:
+                ref = "master"
+                log("No tags found, using master")
+        else:
+            current_tag = ref if ref in {t["name"] for t in tags} else None
         tmp_root = fetch_tarball(ref, args.token)
         repo_root = tmp_root
         docs_dir = os.path.join(repo_root, "docs")
         current = github_commit_info(ref, args.token)
         history = github_docs_history(args.token, args.history_limit)
-        tags = github_tags(args.token)
         log(f"GitHub source: {REPO}@{ref} -> {current['sha'][:7]}")
 
     # collect docs: dict lang -> {stem: (abs path, rel path from repo root)}
@@ -434,7 +467,8 @@ def main():
         "current": {
             "sha": current["sha"],
             "short": current_short,
-            "ref": args.ref if not args.source else None,
+            "tag": current_tag,  # None unless synced from a release tag
+            "ref": args.ref,
             "date": current["date"],
             "message": clip(current["message"]),
         },

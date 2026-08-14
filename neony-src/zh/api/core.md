@@ -266,4 +266,4 @@ app.tray = Tray(
 - `on_left_click` — `menu_on_left_click=False` 时左键松开触发
   （典型用途：切换窗口）。
 - 平台注意：**Linux 需要 libayatana-appindicator**；tooltip 不支持、
-  菜单创建后不可替换。参见 [`demo_tray.py`](https://github.com/HarcicYang/Neony/blob/ef0ede3/demo_tray.py)。
+  菜单创建后不可替换。参见 [`demo_tray.py`](https://github.com/HarcicYang/Neony/blob/a2744bd/demo_tray.py)。

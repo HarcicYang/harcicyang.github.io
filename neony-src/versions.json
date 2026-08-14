@@ -1,44 +1,57 @@
 {
   "current": {
-    "sha": "ef0ede38fb9709a40a9e72e2214e31dfcaa82582",
-    "short": "ef0ede3",
+    "sha": "a2744bdf8e749f9726fa70386443e06ba5fb87a8",
+    "short": "a2744bd",
+    "tag": "v0.2.0.post1",
     "ref": null,
     "date": "2026-08-14",
-    "message": "docs: fix missing blank lines between parag…"
+    "message": "chore(all): dump version"
   },
   "tags": [
     {
+      "name": "v0.2.0.post1",
+      "sha": "a2744bdf8e749f9726fa70386443e06ba5fb87a8",
+      "short": "a2744bd",
+      "date": "2026-08-14"
+    },
+    {
       "name": "v0.2.0",
-      "sha": "ac00570",
+      "sha": "ac0057063ab9ca0f809b88000b70029e93148561",
       "short": "ac00570",
-      "date": "2026-08-13"
+      "date": "2026-08-12"
     },
     {
       "name": "v0.1.2",
-      "sha": "e4cced4",
+      "sha": "e4cced451a20a41ba817ddbb69d175008c5fb21a",
       "short": "e4cced4",
-      "date": "2026-08-09"
+      "date": "2026-08-08"
     },
     {
       "name": "v0.1.1.dev1",
-      "sha": "4f3458b",
+      "sha": "4f3458bec0ff7ed66088e084dfa5d310a22a03ce",
       "short": "4f3458b",
       "date": "2026-08-05"
     },
     {
       "name": "v0.1.1",
-      "sha": "15676bb",
+      "sha": "15676bb6810d0a0833abc73a932e07ab596422d9",
       "short": "15676bb",
       "date": "2026-08-04"
     },
     {
       "name": "v0.1.0",
-      "sha": "3cb4298",
+      "sha": "3cb42980e82bb98550f64e56d2402ab8dd0578d3",
       "short": "3cb4298",
       "date": "2026-08-03"
     }
   ],
   "history": [
+    {
+      "sha": "ef0ede38fb9709a40a9e72e2214e31dfcaa82582",
+      "short": "ef0ede3",
+      "date": "2026-08-14",
+      "message": "docs: fix missing blank lines between parag…"
+    },
     {
       "sha": "b74435212293d691c59b441b5e40f75fb0805c81",
       "short": "b744352",
@@ -60,7 +73,7 @@
     {
       "sha": "a4040abd6f242e8a358b195e85f27cbc8c42f41c",
       "short": "a4040ab",
-      "date": "2026-08-13",
+      "date": "2026-08-12",
       "message": "feat(dialogs): system-native file pickers; …"
     },
     {
@@ -86,12 +99,6 @@
       "short": "9ddf2a3",
       "date": "2026-08-11",
       "message": "feat(component): Data views (List, DataTabl…"
-    },
-    {
-      "sha": "577e74ab7edd847ce809e67a390fd614f6db8e10",
-      "short": "577e74a",
-      "date": "2026-08-09",
-      "message": "refactor!(theme): immutable presets, regist…"
     }
   ]
 }

@@ -20,19 +20,25 @@ const versions = (() => {
   }
 })()
 
+const currentLabel = versions.current
+  ? versions.current.tag || `v${versions.current.short}`
+  : null
+
 function versionNavItems() {
   const items = []
   if (versions.current) {
     items.push({
-      text: `最新版 (${versions.current.short})`,
+      text: `最新版 (${versions.current.tag || versions.current.short})`,
       link: '/',
     })
     items.push({
-      text: `GitHub 上查看 @${versions.current.short}`,
-      link: `https://github.com/HarcicYang/Neony/tree/${versions.current.sha}/docs`,
+      text: `GitHub 上查看 @${versions.current.tag || versions.current.short}`,
+      link: versions.current.tag
+        ? `https://github.com/HarcicYang/Neony/tree/${versions.current.tag}/docs`
+        : `https://github.com/HarcicYang/Neony/tree/${versions.current.sha}/docs`,
     })
   }
-  // release tags (v0.2.0, v0.1.2, ...) — jump to the tag's docs on GitHub
+  // release tags (v0.2.0.post1, v0.2.0, ...) — jump to the tag's docs on GitHub
   for (const t of versions.tags || []) {
     items.push({
       text: `🏷️ ${t.name}${t.date ? ` · ${t.date}` : ''}`,
@@ -105,12 +111,12 @@ const enSidebar = [
 ]
 
 const versionDropdownEn = {
-  text: versions.current ? `v${versions.current.short}` : 'Versions',
+  text: currentLabel || 'Versions',
   items: versionNavItems(),
 }
 
 const versionDropdownZh = {
-  text: versions.current ? `v${versions.current.short}` : '版本',
+  text: currentLabel || '版本',
   items: versionNavItems(),
 }
 
