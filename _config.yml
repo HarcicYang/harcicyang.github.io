@@ -12,6 +12,7 @@ exclude:
   - "*.srs"
   - "*.m4a"
   - "*.mp3"
+  - neony-src
 
 include:
   - blog

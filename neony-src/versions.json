@@ -1,0 +1,65 @@
+{
+  "current": {
+    "sha": "b74435212293d691c59b441b5e40f75fb0805c81",
+    "short": "b744352",
+    "ref": null,
+    "date": "2026-08-14",
+    "message": "docs: align README and API docs with the cu…"
+  },
+  "history": [
+    {
+      "sha": "a5f2858b3f7426891cf5090c8f5b932ff9337608",
+      "short": "a5f2858",
+      "date": "2026-08-14",
+      "message": "docs: split API reference into chapters and…"
+    },
+    {
+      "sha": "0bada3eb1fdad017dfeabb5fa54923c24bc260d9",
+      "short": "0bada3e",
+      "date": "2026-08-14",
+      "message": "docs: add bilingual getting-started documen…"
+    },
+    {
+      "sha": "a4040abd6f242e8a358b195e85f27cbc8c42f41c",
+      "short": "a4040ab",
+      "date": "2026-08-13",
+      "message": "feat(dialogs): system-native file pickers; …"
+    },
+    {
+      "sha": "5746be2798e4498c576e5ed1b27c636ce9d50eeb",
+      "short": "5746be2",
+      "date": "2026-08-12",
+      "message": "feat(...): scroll events, drag reorder, fil…"
+    },
+    {
+      "sha": "882beb55dd617d1458243bbf4ecbb85d69c2c4c6",
+      "short": "882beb5",
+      "date": "2026-08-11",
+      "message": "feat(i18n): framework i18n — chainable tr p…"
+    },
+    {
+      "sha": "f29baf3e50890120c65b7c9565eda05c513d1419",
+      "short": "f29baf3",
+      "date": "2026-08-11",
+      "message": "refactor(gallery): split demo_gallery.py in…"
+    },
+    {
+      "sha": "9ddf2a390c26f1b317e768dc48855289e58fa8c1",
+      "short": "9ddf2a3",
+      "date": "2026-08-11",
+      "message": "feat(component): Data views (List, DataTabl…"
+    },
+    {
+      "sha": "577e74ab7edd847ce809e67a390fd614f6db8e10",
+      "short": "577e74a",
+      "date": "2026-08-09",
+      "message": "refactor!(theme): immutable presets, regist…"
+    },
+    {
+      "sha": "522391da325dd8f5ba0c6781b2fed7fb1a1a67eb",
+      "short": "522391d",
+      "date": "2026-08-08",
+      "message": "feat(scroll): custom scroll indicator — pre…"
+    }
+  ]
+}

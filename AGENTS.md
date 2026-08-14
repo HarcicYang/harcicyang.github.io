@@ -19,6 +19,25 @@ A Python venv exists at `.venv/`.
 - `resource/theme.js` — shared theme toggle script.
 - Subdirectories (`chat/`, `musics/`, `search/`, `imgs/`, `schools/`, `jvav/`, `hyper-bot/`) are self-contained sub-pages, each with their own `index.html`.
 
+## Neony docs (`/neony/`)
+
+VitePress-built bilingual documentation site for the Neony framework, at `/neony/` (English, root locale) and `/neony/zh/` (Chinese).
+
+```bash
+cd neony-src && pnpm install && pnpm dev   # VitePress dev server (default :5173)
+python3 scripts/sync_neony_docs.py --source ../Neony   # regenerate sources from local Neony
+rm -rf neony && pnpm build                 # build output into repo-root neony/
+```
+
+- `neony-src/` — VitePress source: `en` docs live at the source root (root locale), `zh/` for Chinese. Sources are **generated** by `scripts/sync_neony_docs.py` from the Neony repo `docs/` — never edit generated `.md` files directly; edit Neony and re-sync.
+- `neony/` — committed build output (VitePress `outDir`, base `/neony/`), served as-is by GitHub Pages.
+- `neony-src/versions.json` — current + recent commit list, drives the "version" nav dropdown (history links to GitHub).
+- `_config.yml` excludes `neony-src` (Jekyll must not render the sources).
+
+Gotchas:
+- Sync is manual: GitHub Actions workflow `Sync Neony Docs` (`workflow_dispatch`, ref input) fetches the Neony tarball, regenerates sources, rebuilds, and commits `neony/` + `neony-src/`. Local builds need `rm -rf neony` first (VitePress won't empty an outDir outside its root).
+- The site theme (`localStorage['theme']`) is synced into VitePress via `neony-src/.vitepress/theme/index.ts`.
+
 ## Blog (`/blog/`)
 
 Jekyll-powered blog with Decap CMS and giscus comments. GitHub Pages auto-builds Jekyll from the repo root.

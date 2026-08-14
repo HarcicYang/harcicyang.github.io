@@ -1,0 +1,58 @@
+name: Sync Neony Docs
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: 'Neony 仓库的 ref（分支 / tag / commit sha）'
+        required: false
+        default: 'master'
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+          cache-dependency-path: neony-src/pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+        working-directory: neony-src
+
+      - name: Sync docs from Neony
+        run: python3 scripts/sync_neony_docs.py --ref "${{ inputs.ref }}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Clean old build output
+        run: rm -rf neony
+
+      - name: Build VitePress site
+        run: pnpm build
+        working-directory: neony-src
+
+      - name: Commit and push
+        run: |
+          SHORT=$(python3 -c "import json;print(json.load(open('neony-src/versions.json'))['current']['short'])")
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add neony neony-src
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "docs(neony): sync from HarcicYang/Neony@${SHORT}"
+            git push
+          fi
