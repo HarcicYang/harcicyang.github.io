@@ -1,12 +1,50 @@
 {
   "current": {
-    "sha": "b74435212293d691c59b441b5e40f75fb0805c81",
-    "short": "b744352",
+    "sha": "ef0ede38fb9709a40a9e72e2214e31dfcaa82582",
+    "short": "ef0ede3",
     "ref": null,
     "date": "2026-08-14",
-    "message": "docs: align README and API docs with the cu…"
+    "message": "docs: fix missing blank lines between parag…"
   },
+  "tags": [
+    {
+      "name": "v0.2.0",
+      "sha": "ac00570",
+      "short": "ac00570",
+      "date": "2026-08-13"
+    },
+    {
+      "name": "v0.1.2",
+      "sha": "e4cced4",
+      "short": "e4cced4",
+      "date": "2026-08-09"
+    },
+    {
+      "name": "v0.1.1.dev1",
+      "sha": "4f3458b",
+      "short": "4f3458b",
+      "date": "2026-08-05"
+    },
+    {
+      "name": "v0.1.1",
+      "sha": "15676bb",
+      "short": "15676bb",
+      "date": "2026-08-04"
+    },
+    {
+      "name": "v0.1.0",
+      "sha": "3cb4298",
+      "short": "3cb4298",
+      "date": "2026-08-03"
+    }
+  ],
   "history": [
+    {
+      "sha": "b74435212293d691c59b441b5e40f75fb0805c81",
+      "short": "b744352",
+      "date": "2026-08-14",
+      "message": "docs: align README and API docs with the cu…"
+    },
     {
       "sha": "a5f2858b3f7426891cf5090c8f5b932ff9337608",
       "short": "a5f2858",
@@ -54,12 +92,6 @@
       "short": "577e74a",
       "date": "2026-08-09",
       "message": "refactor!(theme): immutable presets, regist…"
-    },
-    {
-      "sha": "522391da325dd8f5ba0c6781b2fed7fb1a1a67eb",
-      "short": "522391d",
-      "date": "2026-08-08",
-      "message": "feat(scroll): custom scroll indicator — pre…"
     }
   ]
 }

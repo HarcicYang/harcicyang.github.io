@@ -281,4 +281,4 @@ app.tray = Tray(
 - Platform notes: **Linux needs libayatana-appindicator**; the tooltip
   is unsupported there and the menu cannot be replaced after creation.
 
-  See [`demo_tray.py`](https://github.com/HarcicYang/Neony/blob/b744352/demo_tray.py).
+  See [`demo_tray.py`](https://github.com/HarcicYang/Neony/blob/ef0ede3/demo_tray.py).

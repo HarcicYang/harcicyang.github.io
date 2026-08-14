@@ -32,6 +32,13 @@ function versionNavItems() {
       link: `https://github.com/HarcicYang/Neony/tree/${versions.current.sha}/docs`,
     })
   }
+  // release tags (v0.2.0, v0.1.2, ...) — jump to the tag's docs on GitHub
+  for (const t of versions.tags || []) {
+    items.push({
+      text: `🏷️ ${t.name}${t.date ? ` · ${t.date}` : ''}`,
+      link: `https://github.com/HarcicYang/Neony/tree/${t.name}/docs`,
+    })
+  }
   for (const v of versions.history) {
     items.push({
       text: `${v.short} · ${v.date} · ${v.message}`,

@@ -174,6 +174,24 @@ def github_docs_history(token=None, limit=10):
     return out
 
 
+def github_tags(token=None, limit=20):
+    """Neony release tags, newest first (sorted by tag date)."""
+    data = http_json(
+        f"https://api.github.com/repos/{REPO}/tags?per_page={limit}", token,
+    )
+    tags = []
+    for item in data:
+        sha = item["commit"]["sha"]
+        try:
+            info = http_json(f"https://api.github.com/repos/{REPO}/commits/{sha}", token)
+            date = info["commit"]["author"]["date"][:10]
+        except Exception:
+            date = ""
+        tags.append({"name": item["name"], "sha": sha, "short": sha[:7], "date": date})
+    tags.sort(key=lambda t: t["date"], reverse=True)
+    return tags
+
+
 def git(args, cwd):
     return subprocess.run(
         ["git", "-C", cwd, *args],
@@ -195,6 +213,23 @@ def local_docs_history(source, limit=10):
         sha, date, message = line.split("|", 2)
         out.append({"sha": sha, "date": date[:10], "message": message})
     return out
+
+
+def local_tags(source, limit=20):
+    """Neony release tags, newest first (creatordate)."""
+    lines = git(
+        ["for-each-ref", "refs/tags", f"--count={limit}", "--sort=-creatordate",
+         "--format=%(refname:short)|%(objectname:short)|%(*objectname:short)|%(creatordate:short)"],
+        source,
+    )
+    tags = []
+    for line in lines.splitlines():
+        name, obj, peeled, date = line.split("|", 3)
+        if not name:
+            continue
+        sha = peeled or obj
+        tags.append({"name": name, "sha": sha, "short": sha[:7], "date": date[:10]})
+    return tags
 
 
 def clip(msg, n=44):
@@ -321,6 +356,7 @@ def main():
             sys.exit(f"error: no docs/ directory under {repo_root}")
         current = local_commit_info(repo_root)
         history = local_docs_history(repo_root, args.history_limit)
+        tags = local_tags(repo_root)
         log(f"Local source: {repo_root} @ {current['sha'][:7]}")
     else:
         ref = args.ref
@@ -329,6 +365,7 @@ def main():
         docs_dir = os.path.join(repo_root, "docs")
         current = github_commit_info(ref, args.token)
         history = github_docs_history(args.token, args.history_limit)
+        tags = github_tags(args.token)
         log(f"GitHub source: {REPO}@{ref} -> {current['sha'][:7]}")
 
     # collect docs: dict lang -> {stem: (abs path, rel path from repo root)}
@@ -401,6 +438,7 @@ def main():
             "date": current["date"],
             "message": clip(current["message"]),
         },
+        "tags": tags,
         "history": [
             {"sha": h["sha"], "short": h["sha"][:7],
              "date": h["date"], "message": clip(h["message"])}
@@ -412,7 +450,7 @@ def main():
         json.dump(versions, fh, ensure_ascii=False, indent=2)
         fh.write("\n")
     log(f"versions.json: current {current_short} @ {current['date']}, "
-        f"{len(versions['history'])} history entries")
+        f"{len(tags)} tags, {len(versions['history'])} history entries")
 
     if tmp_root:
         shutil.rmtree(tmp_root, ignore_errors=True)
