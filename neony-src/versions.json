@@ -1,13 +1,25 @@
 {
   "current": {
-    "sha": "a2744bdf8e749f9726fa70386443e06ba5fb87a8",
-    "short": "a2744bd",
-    "tag": "v0.2.0.post1",
-    "ref": null,
-    "date": "2026-08-14",
+    "sha": "204829a8f907b9cd641511a5f36b15e677609246",
+    "short": "204829a",
+    "tag": "v0.2.1",
+    "ref": "",
+    "date": "2026-08-18",
     "message": "chore(all): dump version"
   },
   "tags": [
+    {
+      "name": "v0.2.1",
+      "sha": "204829a8f907b9cd641511a5f36b15e677609246",
+      "short": "204829a",
+      "date": "2026-08-18"
+    },
+    {
+      "name": "v0.2.0.post2",
+      "sha": "d54bf391553c0d71592b34c82d8db565266a2b95",
+      "short": "d54bf39",
+      "date": "2026-08-16"
+    },
     {
       "name": "v0.2.0.post1",
       "sha": "a2744bdf8e749f9726fa70386443e06ba5fb87a8",
@@ -46,6 +58,12 @@
     }
   ],
   "history": [
+    {
+      "sha": "ef001d4c48e515b048beffe01fc9fbc38fa1a813",
+      "short": "ef001d4",
+      "date": "2026-08-18",
+      "message": "feat(componenets, events): plenty of compon…"
+    },
     {
       "sha": "ef0ede38fb9709a40a9e72e2214e31dfcaa82582",
       "short": "ef0ede3",
@@ -93,12 +111,6 @@
       "short": "f29baf3",
       "date": "2026-08-11",
       "message": "refactor(gallery): split demo_gallery.py in…"
-    },
-    {
-      "sha": "9ddf2a390c26f1b317e768dc48855289e58fa8c1",
-      "short": "9ddf2a3",
-      "date": "2026-08-11",
-      "message": "feat(component): Data views (List, DataTabl…"
     }
   ]
 }
