@@ -3,7 +3,7 @@
 
 This tutorial takes you from an empty Python file to a small reactive desktop
 window. It uses the same public imports and patterns as
-[`demo_hello.py`](https://github.com/HarcicYang/Neony/blob/204829a/demo_hello.py).
+[`demo_hello.py`](https://github.com/HarcicYang/Neony/blob/6eb92de/demo_hello.py).
 
 ## 1. Install the prerequisites
 
@@ -61,7 +61,7 @@ python hello.py
 ```
 
 The same example is maintained as
-[`demo_hello.py`](https://github.com/HarcicYang/Neony/blob/204829a/demo_hello.py); use that file when you want to compare the
+[`demo_hello.py`](https://github.com/HarcicYang/Neony/blob/6eb92de/demo_hello.py); use that file when you want to compare the
 tutorial with the repository's tested example.
 
 ## 3. Understand the tree
@@ -78,7 +78,7 @@ Common layout controls are:
 - `fill=True` for chrome or layouts that should occupy the window height;
 - `grow` on a flex component when it should consume remaining space.
 
-The [`demo_builder.py`](https://github.com/HarcicYang/Neony/blob/204829a/demo_builder.py) example shows a centered page with a
+The [`demo_builder.py`](https://github.com/HarcicYang/Neony/blob/6eb92de/demo_builder.py) example shows a centered page with a
 raw styled `Div` alongside framework components.
 
 ## 4. Handle user events
@@ -122,7 +122,7 @@ element.bind_visible(signal)
 Use `Computed` for derived values and `effect()` for side effects. Use an
 ordinary `on_*` handler when you need event context or multi-step behavior.
 
-[`demo_reactive.py`](https://github.com/HarcicYang/Neony/blob/204829a/demo_reactive.py) demonstrates Signal, Computed, Effect,
+[`demo_reactive.py`](https://github.com/HarcicYang/Neony/blob/6eb92de/demo_reactive.py) demonstrates Signal, Computed, Effect,
 `bind_value`, `bind_style`, and `bind_visible` together.
 
 ## 6. Style the application
@@ -152,10 +152,10 @@ keyframes.
 
 - Need installation help? Read [Installation and platforms](/guides/installation-platforms).
 - Need state synchronization? Read `guides/reactive.en.md` when available and
-  start with [`demo_reactive.py`](https://github.com/HarcicYang/Neony/blob/204829a/demo_reactive.py).
+  start with [`demo_reactive.py`](https://github.com/HarcicYang/Neony/blob/6eb92de/demo_reactive.py).
 - Need frameless windows? Read the API's `Page`, `WindowConfig`, and `TitleBar`
-  sections, then run [`demo_custom_window.py`](https://github.com/HarcicYang/Neony/blob/204829a/demo_custom_window.py).
-- Need two windows? Run [`demo_multi_window.py`](https://github.com/HarcicYang/Neony/blob/204829a/demo_multi_window.py).
+  sections, then run [`demo_custom_window.py`](https://github.com/HarcicYang/Neony/blob/6eb92de/demo_custom_window.py).
+- Need two windows? Run [`demo_multi_window.py`](https://github.com/HarcicYang/Neony/blob/6eb92de/demo_multi_window.py).
 - Need the component gallery? Run:
 
   ```bash
@@ -163,4 +163,4 @@ keyframes.
   ```
 
 For exact signatures, use the [API reference](/api/). For repository
-changes, read [Contributing](https://github.com/HarcicYang/Neony/blob/204829a/CONTRIBUTING.md).
+changes, read [Contributing](https://github.com/HarcicYang/Neony/blob/6eb92de/CONTRIBUTING.md).

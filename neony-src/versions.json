@@ -1,13 +1,19 @@
 {
   "current": {
-    "sha": "204829a8f907b9cd641511a5f36b15e677609246",
-    "short": "204829a",
-    "tag": "v0.2.1",
+    "sha": "6eb92de62695f1b5bb0d68cbcbf4fbb8ad696e1f",
+    "short": "6eb92de",
+    "tag": "v0.2.2",
     "ref": "",
-    "date": "2026-08-18",
-    "message": "chore(all): dump version"
+    "date": "2026-08-20",
+    "message": "fix(overlays): coordinate chat menu actions"
   },
   "tags": [
+    {
+      "name": "v0.2.2",
+      "sha": "6eb92de62695f1b5bb0d68cbcbf4fbb8ad696e1f",
+      "short": "6eb92de",
+      "date": "2026-08-20"
+    },
     {
       "name": "v0.2.1",
       "sha": "204829a8f907b9cd641511a5f36b15e677609246",
@@ -59,6 +65,12 @@
   ],
   "history": [
     {
+      "sha": "519499208adae29514ad45b3d2c6db576b8b0096",
+      "short": "5194992",
+      "date": "2026-08-20",
+      "message": "feat(page): use VStack for default layout"
+    },
+    {
       "sha": "ef001d4c48e515b048beffe01fc9fbc38fa1a813",
       "short": "ef001d4",
       "date": "2026-08-18",
@@ -105,12 +117,6 @@
       "short": "882beb5",
       "date": "2026-08-11",
       "message": "feat(i18n): framework i18n — chainable tr p…"
-    },
-    {
-      "sha": "f29baf3e50890120c65b7c9565eda05c513d1419",
-      "short": "f29baf3",
-      "date": "2026-08-11",
-      "message": "refactor(gallery): split demo_gallery.py in…"
     }
   ]
 }

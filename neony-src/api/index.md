@@ -31,7 +31,7 @@ language versions so code can be copied directly.
 
 Neony is pre-beta. Some names still carry deprecated aliases (e.g.
 `active_key` → `selected_key`); the chapters note them inline. See the
-project's [CHANGELOG](https://github.com/HarcicYang/Neony/blob/204829a/CHANGELOG.md) for the per-version story.
+project's [CHANGELOG](https://github.com/HarcicYang/Neony/blob/6eb92de/CHANGELOG.md) for the per-version story.
 
 For an exact signature not yet split out, the previous monolithic entry
 is retained temporarily at [`api.en.md`](/api/) as a stable link
