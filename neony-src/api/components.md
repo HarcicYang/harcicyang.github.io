@@ -368,7 +368,9 @@ img.src = data_url("other.svg")  # any URL string
 ```
 
 A themed frame around a single `<img>`. `src` is an **already-built URL**
-— pass it `file_url(path)` for a local file, `data_url(path)` to embed the
+— pass it `file_url(path)` for a local file, `local_url(path)` to stream
+it over the built-in `neony://local` protocol (works where `file://` is
+blocked), `data_url(path)` to embed the
 bytes, or any `https://` URL; the component does no path conversion itself
 (keeping that boundary in the caller's hands). A rounded, overflow-hidden
 frame wraps the image so `object-fit` can crop to the radius and a
@@ -376,6 +378,45 @@ placeholder tint shows before the bytes arrive. `width`/`height` accept
 `str` (`"40%"`) or `int` (→ `"40px"`). `fit` is `object-fit`
 (`cover`/`contain`/`fill`/`none`/`scale-down`); pass `radius="50%"` for a
 circle. `src` and `alt` are settable after construction.
+
+### `Video`
+
+```python
+from neony.application.urls import local_url
+
+clip = Video(local_url(Path("clip.mp4").resolve()), width=560, radius="12px")
+await clip.play()
+await clip.seek(12.5)
+await clip.set_volume(0.4)
+```
+
+A fully managed, themed video player. Native controls are never shown —
+playback runs through the built-in transport row (play/pause, position
+slider with scrubbing, time labels, mute, volume) built from regular
+Neony widgets and updated reactively from media events. Sources are
+owned by the component: pass `local_url(path)` to stream over the
+built-in `neony://local` protocol — the runtime hydrates it
+(fetch → Blob URL → load) because WebKitGTK's media pipeline cannot
+resolve custom schemes — or hand it any `https://`/`data:` URL for the
+native path; switching between the two at runtime is handled for you
+(`bind_src(signal)` keeps it declarative). Commands: `play()`, `pause()`,
+`seek(seconds)`, `set_muted(bool)`, `toggle_muted()`, `set_volume(0..1)`.
+Events: `on_play`, `on_pause`, `on_ended`, `on_timeupdate`, `on_error`.
+Reactive reads: `playing`, `position`, `duration`, `muted`, `volume`.
+Options: `poster`, `width`/`height` (`int` → px), `radius`, `autoplay`,
+`loop`, `muted`, `preload`.
+
+### `Audio`
+
+```python
+song = Audio(local_url(Path("song.mp3").resolve()), width=420)
+song.on_ended(lambda event: playlist.advance())
+await song.toggle_muted()
+```
+
+The same managed player engine as [`Video`](#video) as a compact control
+card. Same ownership model, transport row, commands, events and options
+(minus the picture surface); `width` sizes the card.
 
 ### `Avatar`
 
@@ -517,8 +558,9 @@ count one per text character and one per inline image.
 
 - `content() -> list[TextSegment | ImageSegment]` — ordered content.
 - `set_content(segments)` — replace programmatically.
-- `insert_text(text, *, at_caret=True)` / `insert_image(src, *, at_caret=True, alt="", width=None, height=None)`.
+- `insert_text(text, *, at_caret=True)` / `insert_image(src, *, at_caret=True, alt="", width=None, height=None)`. Images display at `40×40px` by default; custom dimensions are capped at `320×240px`, with width also constrained to the editor container.
 - `caret_position()` / `selection_range()` / `set_caret(position)` / `focus()`.
+- When an image is pasted, RichText reads image bytes from the system clipboard and replaces the browser-created `blob:` image; no extra configuration is required, and the image display cap still applies.
 - Events: `on_change` (`event.value` is the segment list), `on_submit`
   (Enter; the default newline is suppressed), `on_input`, `on_click`,
   `on_paste_files` (raw synthetic paste event), `on_paste_image`

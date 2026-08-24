@@ -326,13 +326,49 @@ img.src = data_url("other.svg")  # 任意 URL 字符串
 ```
 
 包裹单个 `<img>` 的主题化框架。`src` 是**已拼好的 URL**——本地文件传
-`file_url(path)`，嵌入字节传 `data_url(path)`，或任意 `https://` URL；
+`file_url(path)`，经内置 `neony://local` 协议流式加载传 `local_url(path)`
+（`file://` 被拦截时可用），嵌入字节传 `data_url(path)`，或任意 `https://` URL；
 组件自身不做任何路径转换（这个边界交给调用方）。圆角、overflow-hidden
 的框架包裹图片，让 `object-fit` 能裁切到圆角，字节到达前显示占位色。
 
 `width`/`height` 接受 `str`（`"40%"`）或 `int`（→ `"40px"`）。`fit` 即
 `object-fit`（`cover`/`contain`/`fill`/`none`/`scale-down`）；传
 `radius="50%"` 得到圆形。`src` 与 `alt` 构造后可改。
+
+### `Video`
+
+```python
+from neony.application.urls import local_url
+
+clip = Video(local_url(Path("clip.mp4").resolve()), width=560, radius="12px")
+await clip.play()
+await clip.seek(12.5)
+await clip.set_volume(0.4)
+```
+
+全托管的主题化视频播放器。原生控件永不显示——播放完全由内置传输条驱动
+（播放/暂停、可拖动进度条、时间标签、静音、音量），传输条由常规 Neony
+组件构成，并从媒体事件响应式更新。源由组件全权管理：本地文件传
+`local_url(path)` 走内置 `neony://local` 协议——运行时自动水合
+（fetch → Blob URL → load），因为 WebKitGTK 的媒体管线无法解析自定义
+scheme；或传任意 `https://`/`data:` URL 走原生路径；两者在运行期切换也
+已处理妥当（`bind_src(signal)` 声明式跟随）。命令：`play()`、`pause()`、
+`seek(seconds)`、`set_muted(bool)`、`toggle_muted()`、`set_volume(0..1)`。
+事件：`on_play`、`on_pause`、`on_ended`、`on_timeupdate`、`on_error`。
+响应式读取：`playing`、`position`、`duration`、`muted`、`volume`。
+选项：`poster`、`width`/`height`（`int` → px）、`radius`、`autoplay`、
+`loop`、`muted`、`preload`。
+
+### `Audio`
+
+```python
+song = Audio(local_url(Path("song.mp3").resolve()), width=420)
+song.on_ended(lambda event: playlist.advance())
+await song.toggle_muted()
+```
+
+与 [`Video`](#video) 同一套托管播放引擎的紧凑控制卡片形态。所有权模型、
+传输条、命令、事件与选项完全一致（少了画面区域）；`width` 控制卡片宽度。
 
 ### `Avatar`
 
@@ -456,8 +492,9 @@ Neony 渲染中保持稳定。扁平位置按一个文字字符记 1、一张行
 
 - `content() -> list[TextSegment | ImageSegment]` — 有序内容。
 - `set_content(segments)` — 编程式替换。
-- `insert_text(text, *, at_caret=True)` / `insert_image(src, *, at_caret=True, alt="", width=None, height=None)`。
+- `insert_text(text, *, at_caret=True)` / `insert_image(src, *, at_caret=True, alt="", width=None, height=None)`。图片默认显示为 `40×40px`；自定义尺寸的显示上限为 `320×240px`，宽度同时不超过编辑器容器。
 - `caret_position()` / `selection_range()` / `set_caret(position)` / `focus()`。
+- 粘贴图片时，RichText 会读取系统剪贴板中的图片字节，并替换浏览器自动插入的 `blob:` 图片；无需额外配置即可保留图片数据并应用图片尺寸限制。
 - 事件：`on_change`（`event.value` 为分段列表）、`on_submit`
   （Enter；默认换行被拦截）、`on_input`、`on_click`、
   `on_paste_files`（原始合成粘贴事件）、`on_paste_image`
