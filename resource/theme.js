@@ -17,6 +17,17 @@
         style.setProperty("--logo-sub-g", Math.min(255, g + (g > 128 ? -20 : 30)));
         style.setProperty("--logo-sub-b", Math.min(255, b + (b > 128 ? -20 : 30)));
     };
+    var accentDark = [25, 73, 133];
+    var accentLight = [18, 61, 112];
+    var applyAccentFromTheme = function() {
+        var colors = html.getAttribute("data-theme") === "light" ? accentLight : accentDark;
+        applyAccent(colors[0], colors[1], colors[2]);
+    };
+    var setAccentPair = function(dark, light) {
+        accentDark = dark;
+        accentLight = light;
+        applyAccentFromTheme();
+    };
 
     /* --- Toast container --- */
     var toastContainer = document.createElement("div");
@@ -57,6 +68,7 @@
             localStorage.setItem("theme", next);
             sunIcon.style.display = next === "light" ? "none" : "";
             moonIcon.style.display = next === "light" ? "" : "none";
+            applyAccentFromTheme();
             toggle.classList.add("burst");
             setTimeout(function() { toggle.classList.remove("burst"); }, 600);
             /* update giscus theme */
@@ -74,14 +86,16 @@
                 if (list && list.length) {
                     var pick = list[Math.floor(Math.random() * list.length)];
                     style.setProperty("--bg-image", "url('/resource/backgrounds/" + pick.file + "?v=" + seed + "')");
-                    if (pick.accent && pick.accent.length === 3) {
-                        applyAccent(pick.accent[0], pick.accent[1], pick.accent[2]);
+                    if (pick.accentDark && pick.accentDark.length === 3 && pick.accentLight && pick.accentLight.length === 3) {
+                        setAccentPair(pick.accentDark, pick.accentLight);
+                    } else if (pick.accent && pick.accent.length === 3) {
+                        setAccentPair(pick.accent, pick.accent);
                     }
                 }
             })
             .catch(function() {
                 style.setProperty("--bg-image", "url('/resource/backgrounds/13.webp')");
-                applyAccent(25, 73, 133);
+                setAccentPair([25, 73, 133], [18, 61, 112]);
             });
     };
     loadBg();

@@ -52,9 +52,18 @@ Key files:
 - `_layouts/blog.html` — blog homepage layout (intro card + post list + search)
 - `_layouts/post.html` — single post layout (content + giscus)
 - `_includes/comments.html` — giscus script (configure repo + category IDs)
+- `Gemfile` — local blog dependencies (Jekyll + `jekyll-commonmark-ghpages`; run `bundle install` before `bundle exec`)
 - `blog/index.html` — entrypoint with `layout: blog` front matter
 - `blog/search.json` — Liquid-generated search index consumed by client-side JS
 - `admin/` — Decap CMS admin panel (needs GitHub OAuth proxy at `https://decap-server.vercel.app`)
+- `resource/blog-renderer.js` — post-page enhancements (collapsible auto TOC + GFM alerts + Mermaid)
+
+Rendering notes:
+- `_config.yml` uses `CommonMarkGhPages` with `autolink`; bare URLs are auto-linked at build time.
+- Use `<details markdown="1">` so content inside `<details>` is rendered as Markdown and the closing tag is respected.
+- `> [!NOTE]`, `> [!TIP]`, `> [!IMPORTANT]`, `> [!WARNING]`, and `> [!CAUTION]` are converted by `resource/blog-renderer.js`.
+- ` ```mermaid ` code fences are rendered client-side by `resource/blog-renderer.js` (CDN-loaded Mermaid).
+- `resource/blog-renderer.js` builds the `#post-toc` outline from `.post-body` headings with stable ids; clicking a TOC link opens ancestor `<details>` blocks before jumping. The TOC sidebar is collapsible: desktop uses an in-panel collapse control plus a fixed reopen button, while mobile uses a fixed `.toc-toggle` button and a left drawer that defaults to collapsed.
 
 Gotchas:
 - `dev.py` serves raw files (no Liquid processing) — use `jekyll serve` for blog

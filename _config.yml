@@ -25,9 +25,17 @@ defaults:
     values:
       layout: post
 
-markdown: kramdown
-kramdown:
-  input: GFM
-  syntax_highlighter: rouge
+markdown: CommonMarkGhPages
+commonmark:
+  options:
+    - UNSAFE
+    - GITHUB_PRE_LANG
+  extensions:
+    - table
+    - strikethrough
+    - autolink
+    - tagfilter
+    - tasklist
 
-plugins: []
+plugins:
+  - jekyll-commonmark-ghpages

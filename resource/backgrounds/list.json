@@ -2,115 +2,73 @@
   "backgrounds": [
     {
       "file": "1.webp",
-      "accent": [
-        153,
-        30,
-        38
-      ]
+      "accentDark": [153, 30, 38],
+      "accentLight": [131, 22, 29]
     },
     {
       "file": "2.webp",
-      "accent": [
-        176,
-        134,
-        110
-      ]
+      "accentDark": [143, 94, 68],
+      "accentLight": [127, 79, 54]
     },
     {
       "file": "3.webp",
-      "accent": [
-        149,
-        131,
-        150
-      ]
+      "accentDark": [107, 89, 109],
+      "accentLight": [93, 76, 96]
     },
     {
       "file": "4.webp",
-      "accent": [
-        74,
-        78,
-        107
-      ]
+      "accentDark": [117, 126, 189],
+      "accentLight": [58, 60, 85]
     },
     {
       "file": "5.webp",
-      "accent": [
-        239,
-        220,
-        238
-      ]
+      "accentDark": [158, 91, 144],
+      "accentLight": [144, 77, 130]
     },
     {
       "file": "6.webp",
-      "accent": [
-        76,
-        63,
-        69
-      ]
+      "accentDark": [189, 117, 150],
+      "accentLight": [84, 70, 76]
     },
     {
       "file": "7.webp",
-      "accent": [
-        96,
-        90,
-        161
-      ]
+      "accentDark": [96, 90, 161],
+      "accentLight": [79, 71, 132]
     },
     {
       "file": "8.webp",
-      "accent": [
-        137,
-        140,
-        152
-      ]
+      "accentDark": [103, 104, 116],
+      "accentLight": [94, 95, 107]
     },
     {
       "file": "9.webp",
-      "accent": [
-        109,
-        85,
-        141
-      ]
+      "accentDark": [109, 85, 141],
+      "accentLight": [88, 67, 114]
     },
     {
       "file": "10.webp",
-      "accent": [
-        157,
-        94,
-        90
-      ]
+      "accentDark": [157, 94, 90],
+      "accentLight": [132, 68, 62]
     },
     {
       "file": "11.webp",
-      "accent": [
-        179,
-        176,
-        183
-      ]
+      "accentDark": [112, 108, 118],
+      "accentLight": [102, 98, 109]
     },
     {
       "file": "12.webp",
-      "accent": [
-        208,
-        130,
-        109
-      ]
+      "accentDark": [168, 98, 76],
+      "accentLight": [153, 88, 67]
     },
     {
       "file": "13.webp",
-      "accent": [
-        25,
-        73,
-        133
-      ]
+      "accentDark": [25, 73, 133],
+      "accentLight": [18, 61, 112]
     },
     {
       "file": "14.webp",
-      "accent": [
-        66,
-        58,
-        68
-      ]
+      "accentDark": [174, 117, 189],
+      "accentLight": [94, 82, 99]
     }
   ]
 }

@@ -28,6 +28,7 @@
         }
 
         [data-theme="light"] {
+            --accent-r: 18; --accent-g: 61; --accent-b: 112;
             --primary-glow: rgba(var(--accent-r, 56), var(--accent-g, 130), var(--accent-b, 235), 0.42);
             --bg-card: rgba(255, 255, 255, 0.72);
             --bg-card-alt: rgba(255, 255, 255, 0.88);
@@ -545,12 +546,7 @@
             const [r, g, b] = rgb;
             var s = document.documentElement.style;
             s.setProperty("--bg-image", "url(" + imgSrc + ")");
-            s.setProperty("--accent-r", r);
-            s.setProperty("--accent-g", g);
-            s.setProperty("--accent-b", b);
-            s.setProperty("--accent-r2", Math.min(255, r + 30));
-            s.setProperty("--accent-g2", Math.min(255, g + 30));
-            s.setProperty("--accent-b2", Math.min(255, b + 30));
+            applyAccentPair([r, g, b], [r, g, b]);
             document.documentElement.setAttribute("data-playing", "true");
         }
 
@@ -1009,6 +1005,24 @@
             }
         })();
 
+        var currentAccentDark = [25, 73, 133];
+        var currentAccentLight = [18, 61, 112];
+        function applyAccentFromTheme() {
+            var style = document.documentElement.style;
+            var colors = document.documentElement.getAttribute("data-theme") === "light" ? currentAccentLight : currentAccentDark;
+            style.setProperty("--accent-r", colors[0]);
+            style.setProperty("--accent-g", colors[1]);
+            style.setProperty("--accent-b", colors[2]);
+            style.setProperty("--accent-r2", Math.min(255, colors[0] + 30));
+            style.setProperty("--accent-g2", Math.min(255, colors[1] + 30));
+            style.setProperty("--accent-b2", Math.min(255, colors[2] + 30));
+        }
+        function applyAccentPair(dark, light) {
+            currentAccentDark = dark;
+            currentAccentLight = light;
+            applyAccentFromTheme();
+        }
+
         (function() {
             const toggle = document.getElementById("themeToggle");
             const sunIcon = toggle.querySelector(".icon-sun");
@@ -1026,6 +1040,7 @@
                 localStorage.setItem("theme", next);
                 sunIcon.style.display = next === "light" ? "none" : "";
                 moonIcon.style.display = next === "light" ? "" : "none";
+                applyAccentFromTheme();
                 toggle.classList.add("burst");
                 setTimeout(() => toggle.classList.remove("burst"), 600);
             });
@@ -1040,19 +1055,16 @@
                     if (list && list.length) {
                         var pick = list[Math.floor(Math.random() * list.length)];
                         style.setProperty("--bg-image", "url('/resource/backgrounds/" + pick.file + "')");
-                        if (pick.accent && pick.accent.length === 3) {
-                            var r = pick.accent[0], g = pick.accent[1], b = pick.accent[2];
-                            style.setProperty("--accent-r", r);
-                            style.setProperty("--accent-g", g);
-                            style.setProperty("--accent-b", b);
-                            style.setProperty("--accent-r2", Math.min(255, r + 30));
-                            style.setProperty("--accent-g2", Math.min(255, g + 30));
-                            style.setProperty("--accent-b2", Math.min(255, b + 30));
+                        if (pick.accentDark && pick.accentDark.length === 3 && pick.accentLight && pick.accentLight.length === 3) {
+                            applyAccentPair(pick.accentDark, pick.accentLight);
+                        } else if (pick.accent && pick.accent.length === 3) {
+                            applyAccentPair(pick.accent, pick.accent);
                         }
                     }
                 })
                 .catch(function() {
                     style.setProperty("--bg-image", "url('/resource/backgrounds/13.webp')");
+                    applyAccentPair([25, 73, 133], [18, 61, 112]);
                 });
         };
         loadBg();

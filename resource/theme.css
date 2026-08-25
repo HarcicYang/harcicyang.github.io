@@ -46,6 +46,9 @@
 }
 
 [data-theme="light"] {
+    --accent-r: 18; --accent-g: 61; --accent-b: 112;
+    --accent-r2: 48; --accent-g2: 91; --accent-b2: 142;
+    --logo-sub-r: 0; --logo-sub-g: 41; --logo-sub-b: 92;
     --box-color: rgba(255, 255, 255, 0.72);
     --sub-box-color: rgba(255, 255, 255, 0.88);
     --box-shadow-color: rgba(180, 190, 210, 0.55);

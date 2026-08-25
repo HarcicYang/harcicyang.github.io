@@ -2,4 +2,7 @@
 
 source "https://rubygems.org"
 
-# gem "rails"
+gem "jekyll", "~> 3.10"
+gem "jekyll-commonmark-ghpages", "~> 0.5"
+gem "base64"
+gem "bigdecimal"
