@@ -13,8 +13,8 @@ language versions so code can be copied directly.
   `WindowConfig` / `WebViewConfig`, `Page`, lifecycle, multi-window,
   navigation policies, `Tray`.
 - [Components](/api/components) — form controls, text & tabs, overlays
-  & feedback, content components, and the `Reorder` drag-and-reorder
-  component.
+  & feedback, content components, cascading `Menu` / `MenuBranch` /
+  `CascadingDropdown`, and the `Reorder` drag-and-reorder component.
 - [Layout & chrome](/api/layout-chrome) — `VStack` / `HStack` / `Flex` /
   `Separator` / `GlassPanel`, `TitleBar`, `Sidebar` / `Pane` /
   `SidebarGroup`, `Tree`, `List`, `DataTable`, `Icon`.
@@ -24,15 +24,15 @@ language versions so code can be copied directly.
   `untrack`, `SharedSignal`, declarative bindings, `bind_value`,
   dirty-subtree tracking.
 - [Platform & i18n](/api/platform-i18n) — internationalization,
-  theming, and the platform-native surfaces (window controls, native
-  file dialogs, system tray).
+  theming, motion tokens, and the platform-native surfaces (window
+  controls, native file dialogs, system tray).
 
 ## Stability
 
 Neony is pre-beta. Some names still carry deprecated aliases (e.g.
 `active_key` → `selected_key`); the chapters note them inline. See the
-project's [CHANGELOG](https://github.com/HarcicYang/Neony/blob/3080218/CHANGELOG.md) for the per-version story.
+project's [CHANGELOG](https://github.com/HarcicYang/Neony/blob/cb851af/CHANGELOG.md) for the per-version story.
 
-For an exact signature not yet split out, the previous monolithic entry
-is retained temporarily at [`api.en.md`](/api/) as a stable link
-target while readers and external links migrate.
+The previous monolithic entry is retained at
+[`api.en.md`](/api/) as a stable link target that redirects to
+these chapters; new content lives in the split chapters above.

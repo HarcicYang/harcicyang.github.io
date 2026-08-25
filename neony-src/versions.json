@@ -1,13 +1,19 @@
 {
   "current": {
-    "sha": "308021832cb3ced243dd917ee7768e937f2f399e",
-    "short": "3080218",
-    "tag": "v0.2.4.post1",
+    "sha": "cb851af2682c2008154b5b2744bf790328f500f5",
+    "short": "cb851af",
+    "tag": "v0.3.0",
     "ref": "",
-    "date": "2026-08-24",
-    "message": "fix(media): hevc transcode fallback, detach…"
+    "date": "2026-08-25",
+    "message": "chore: bump version & update docs"
   },
   "tags": [
+    {
+      "name": "v0.3.0",
+      "sha": "cb851af2682c2008154b5b2744bf790328f500f5",
+      "short": "cb851af",
+      "date": "2026-08-25"
+    },
     {
       "name": "v0.2.4.post1",
       "sha": "308021832cb3ced243dd917ee7768e937f2f399e",
