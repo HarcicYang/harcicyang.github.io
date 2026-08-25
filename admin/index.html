@@ -6,6 +6,11 @@
     <title>Content Manager — Harcic's Blog</title>
     <link rel="icon" type="image/svg+xml" href="/resource/favicon.svg">
     <link rel="stylesheet" href="/resource/theme.css">
+    <script>
+        if (!window.isSecureContext) {
+            location.replace("https://" + location.host + location.pathname + location.search);
+        }
+    </script>
     <style>
         html, body { height: 100%; background: transparent !important; margin: 0; }
         body::before {
