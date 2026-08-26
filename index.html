@@ -9,97 +9,596 @@
     <link rel="icon" type="image/svg+xml" href="/resource/favicon.svg">
     <link rel="stylesheet" href="/resource/theme.css">
     <style>
-        .hub-container {
+        .hub-shell {
             width: 100%;
-            max-width: 850px;
+            height: 100vh;
+            height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
         }
-        .hub-header {
+        :root { --about-mask: rgba(0, 0, 0, 0.4); }
+        [data-theme="light"] { --about-mask: rgba(255, 255, 255, 0.52); }
+
+        .hub-frame {
+            position: relative;
+            flex: 1;
+            min-height: 0;
+            display: flex;
+            isolation: isolate;
+        }
+
+        .hub-board {
+            flex: 0 0 auto;
+            display: flex;
+            align-items: stretch;
+            justify-content: center;
+            gap: clamp(0.7rem, 1.8vw, 1.35rem);
+            width: max-content;
+            min-width: 100%;
+            min-height: calc(100% + clamp(280px, 38vh, 420px));
+            padding: clamp(4.2rem, 11vh, 6rem) clamp(14rem, 50vw, 48rem) clamp(4.5rem, 12vh, 7rem);
+            box-sizing: border-box;
+        }
+
+        .hub-top {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 1.35rem 5rem 0.55rem 1.5rem;
             display: flex;
             align-items: center;
-            gap: 1rem;
-            margin-bottom: 2rem;
+            gap: 1.4rem;
         }
-        .hub-header .logo-block svg {
-            width: 80px;
-            height: 80px;
+        .hub-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            min-width: 0;
+        }
+        .hub-brand svg {
+            width: 46px;
+            height: 46px;
+            display: block;
+            flex: 0 0 auto;
         }
         .logo-main { fill: var(--logo-color); }
         .logo-sub { fill: var(--logo-sub-color); }
-        .hub-header .header-text { flex: 1; }
+        .hub-brand-copy { min-width: 0; }
         .hub-title {
-            font-size: var(--title-size, 1.5rem);
+            font-size: 1.1rem;
             font-weight: 700;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
-        .hub-subtitle { font-size: 0.88rem; opacity: 0.6; }
+        .hub-subtitle {
+            font-size: 0.75rem;
+            opacity: 0.6;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
 
-        .hub-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-            gap: 0.9rem;
-            margin-bottom: 1rem;
-        }
-        .hub-card {
-            display: flex;
-            align-items: center;
-            gap: 0.9rem;
-            padding: 0.85rem 1rem;
-            background: var(--sub-box-color);
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-card);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            text-decoration: none;
-            color: var(--text-color);
-            will-change: transform;
-            transition: transform var(--transition-normal), box-shadow var(--transition-normal);
-        }
-        .hub-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-card-hover);
-        }
-        .hub-card .card-icon {
-            font-size: 2rem;
-            flex-shrink: 0;
-            width: 42px;
-            text-align: center;
-        }
-        .hub-card .card-body {
+        .hub-rail {
             flex: 1;
             min-width: 0;
+            display: flex;
+            gap: 0.45rem;
+            overflow-x: auto;
+            overflow-y: hidden;
+            scroll-snap-type: x proximity;
+            scroll-behavior: smooth;
+            padding: 0.25rem 0 0.35rem;
+            scrollbar-width: none;
+            mask-image:
+                linear-gradient(to right, #000 calc(100% - 14px), transparent);
+            -webkit-mask-image:
+                linear-gradient(to right, #000 calc(100% - 14px), transparent);
         }
-        .hub-card .card-title {
-            font-size: 0.95rem;
-            font-weight: 600;
-            margin-bottom: 0.15rem;
+        .hub-rail::-webkit-scrollbar { display: none; }
+        .hub-tab {
+            flex: 0 0 auto;
+            scroll-snap-align: start;
+            padding: 0.55rem 1rem;
+            border: 0;
+            border-radius: var(--radius-pill);
+            background: var(--box-color);
+            color: var(--text-secondary);
+            font-size: 0.83rem;
+            font-weight: 500;
+            cursor: pointer;
+            white-space: nowrap;
+            box-shadow:
+                0 1px 2px rgba(15, 18, 25, 0.06),
+                0 12px 28px -18px var(--box-shadow-color);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            will-change: transform, color, background;
+            transition: color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
         }
-        .hub-card .card-desc {
+        .hub-tab:hover {
+            color: var(--text-color);
+            transform: translateY(-1px);
+        }
+        .hub-tab.is-active {
+            background: var(--ac-btn-color);
+            color: var(--btn-text-color);
+            box-shadow:
+                0 1px 2px rgba(15, 18, 25, 0.08),
+                0 16px 34px -18px var(--ac-btn-shadow-color);
+        }
+
+        .hub-count {
+            flex: 0 0 auto;
+            min-width: 3.6rem;
+            text-align: right;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            font-size: 0.86rem;
+            font-variant-numeric: tabular-nums;
+            opacity: 0.58;
+        }
+
+        .hub-stage {
+            flex: 1;
+            min-width: 0;
+            min-height: 0;
+            display: flex;
+            align-items: flex-start;
+            overflow: auto;
+            scroll-snap-type: none;
+            scroll-behavior: auto;
+            scrollbar-width: none;
+            outline: none;
+            touch-action: pan-x pan-y;
+        }
+        .hub-stage::-webkit-scrollbar { display: none; }
+        .hub-stage:focus-visible { box-shadow: inset 0 0 0 2px var(--ac-btn-color-l); }
+        .hub-frame::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            background: var(--about-mask);
+            opacity: 0;
+            transition: opacity 0.55s ease;
+        }
+        .hub-frame:has(#aboutPanel.is-current)::before { opacity: 1; }
+        .hub-frame::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: 6;
+            pointer-events: none;
+            box-shadow:
+                inset 0 0 110px rgba(0, 0, 0, 0.16),
+                inset 0 0 10px rgba(0, 0, 0, 0.06);
+        }
+
+        .hub-panel {
+            position: relative;
+            flex: 0 0 clamp(260px, 22vw, 320px);
+            width: clamp(260px, 22vw, 320px);
+            display: flex;
+            align-items: stretch;
+        }
+        .panel-inner {
+            width: 100%;
+            max-width: none;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+            padding: 0.55rem 0.35rem 1rem;
+            opacity: 1;
+            transform: none;
+            transition: background-color 0.55s ease, box-shadow 0.55s ease;
+        }
+        .hub-panel.is-current .panel-inner {
+            background-color: rgba(var(--accent-r), var(--accent-g), var(--accent-b), 0.1);
+            box-shadow:
+                0 0 0 1px rgba(var(--accent-r), var(--accent-g), var(--accent-b), 0.14),
+                0 0 30px -8px rgba(var(--accent-r), var(--accent-g), var(--accent-b), 0.3);
+        }
+
+        .panel-head {
+            position: sticky;
+            top: 1.1rem;
+            z-index: 4;
+            display: flex;
+            align-items: baseline;
+            gap: 0.6rem;
+            flex-shrink: 0;
+            margin-bottom: 0.85rem;
+            padding: 0.45rem 0.25rem 0.65rem;
+            background: linear-gradient(to bottom, var(--box-color) 38%, rgba(0, 0, 0, 0));
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        .panel-head::before {
+            content: "";
+            position: absolute;
+            left: -0.35rem;
+            right: -0.35rem;
+            top: -0.55rem;
+            height: 2px;
+            background: rgba(var(--accent-r), var(--accent-g), var(--accent-b), 0.24);
+            pointer-events: none;
+            transition: background-color 0.55s ease;
+        }
+        .hub-panel.is-current .panel-head::before { background: var(--ac-btn-color); }
+        .panel-number {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
             font-size: 0.78rem;
-            opacity: 0.65;
+            color: var(--ac-btn-color);
+            opacity: 0.85;
         }
-
-        .hub-footer {
-            text-align: center;
-            margin-top: 1.5rem;
-            padding: 1.5rem;
+        .panel-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .panel-count {
+            margin-left: auto;
+            font-size: 0.68rem;
             opacity: 0.5;
-            font-size: 0.82rem;
         }
-        .hub-footer a { color: inherit; }
 
-        @media (max-width: 768px) {
-            .hub-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 0.65rem; }
-            .hub-card { padding: 0.7rem 0.8rem; gap: 0.6rem; }
-            .hub-card .card-icon { font-size: 1.6rem; width: 34px; }
-            .hub-card .card-title { font-size: 0.85rem; }
-            .hub-card .card-desc { font-size: 0.72rem; }
-            .hub-header .logo-block svg { width: 60px; height: 60px; }
+        .panel-body {
+            flex: 1;
+            min-height: 0;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            justify-content: center;
         }
-        @media (max-width: 480px) {
-            .hub-grid { grid-template-columns: repeat(2, 1fr); gap: 0.5rem; }
-            .hub-card { padding: 0.6rem 0.65rem; }
-            .hub-card .card-desc { display: none; }
-            .hub-header { gap: 0.65rem; }
-            .hub-header .logo-block svg { width: 50px; height: 50px; }
+        .about-body {
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: center;
+            gap: 1rem;
+            width: 100%;
+            max-width: 100%;
+            padding: 0.25rem 0.35rem 0.5rem;
+        }
+        .about-mark {
+            flex: 0 0 auto;
+            width: 46px;
+            height: 46px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius-md);
+            background: color-mix(in srgb, var(--ac-btn-color) 84%, transparent);
+            box-shadow:
+                0 0 0 1px rgba(var(--accent-r), var(--accent-g), var(--accent-b), 0.18),
+                0 12px 28px -14px rgba(var(--accent-r), var(--accent-g), var(--accent-b), 0.38),
+                0 0 20px rgba(var(--accent-r), var(--accent-g), var(--accent-b), 0.12);
+            color: var(--btn-text-color);
+            font-size: 1.35rem;
+            font-weight: 800;
+            transition: box-shadow 0.55s ease;
+        }
+        .hub-panel.is-current .about-mark {
+            box-shadow:
+                0 0 0 1px rgba(var(--accent-r), var(--accent-g), var(--accent-b), 0.26),
+                0 14px 32px -14px rgba(var(--accent-r), var(--accent-g), var(--accent-b), 0.5),
+                0 0 30px rgba(var(--accent-r), var(--accent-g), var(--accent-b), 0.24);
+        }
+        .about-copy {
+            display: flex;
+            flex-direction: column;
+            gap: 0.28rem;
+            min-width: 0;
+        }
+        .about-lead {
+            font-size: 0.96rem;
+            font-weight: 700;
+            color: var(--text-color);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .about-desc {
+            margin: 0;
+            font-size: 0.76rem;
+            line-height: 1.65;
+            color: var(--text-muted);
+            overflow-wrap: anywhere;
+        }
+        .about-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+        }
+        .about-tags span {
+            padding: 0.32rem 0.62rem;
+            border-radius: 999px;
+            background: color-mix(in srgb, var(--sub-box-color) 78%, transparent);
+            color: var(--text-secondary);
+            font-size: 0.68rem;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+        .module-track {
+            flex: 1;
+            flex-basis: 0;
+            min-height: 0;
+            min-width: 0;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 0.55rem;
+            overflow: visible;
+            scroll-snap-type: none;
+            scroll-behavior: auto;
+            overscroll-behavior: contain;
+            scrollbar-width: none;
+            touch-action: auto;
+            padding: 0;
+        }
+        .module-track::-webkit-scrollbar { display: none; }
+
+        .module-card {
+            position: relative;
+            z-index: 0;
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+            flex: 0 0 auto;
+            min-height: 64px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 0.65rem;
+            padding: 0.6rem 0.7rem;
+            border-radius: var(--radius-md);
+            background: color-mix(in srgb, var(--sub-box-color) 76%, transparent);
+            backdrop-filter: blur(28px) saturate(1.7) brightness(1.18);
+            -webkit-backdrop-filter: blur(28px) saturate(1.7) brightness(1.18);
+            box-shadow:
+                0 1px 1px rgba(15, 18, 25, 0.04),
+                0 8px 20px -16px rgba(15, 18, 25, 0.16),
+                0 0 18px rgba(var(--accent-r), var(--accent-g), var(--accent-b), 0.04);
+            border: 1px solid transparent;
+            text-decoration: none;
+            color: var(--text-color);
+            opacity: 1;
+            transform-origin: center;
+            will-change: transform, opacity;
+            transition:
+                opacity 0.42s ease,
+                transform 0.56s cubic-bezier(0.22, 1, 0.36, 1),
+                background-color 0.45s ease,
+                color 0.45s ease,
+                box-shadow 0.56s cubic-bezier(0.22, 1, 0.36, 1),
+                border-color 0.45s ease;
+        }
+        .module-card::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 26%;
+            bottom: 26%;
+            width: 2px;
+            border-radius: 0 3px 3px 0;
+            background: var(--ac-btn-color);
+            box-shadow:
+                0 0 8px rgba(var(--accent-r), var(--accent-g), var(--accent-b), 0.24),
+                0 0 18px rgba(var(--accent-r), var(--accent-g), var(--accent-b), 0.14);
+            transform: scaleY(0);
+            transition: transform 0.56s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.42s ease;
+        }
+        .module-card:hover {
+            z-index: 1;
+            opacity: 1;
+            transform: translateY(-1px);
+            box-shadow:
+                0 1px 2px rgba(15, 18, 25, 0.05),
+                0 10px 24px -18px rgba(15, 18, 25, 0.2);
+        }
+        .module-card.is-active {
+            z-index: 2;
+            opacity: 1;
+            transform: translateY(0);
+            background-color: color-mix(in srgb, var(--ac-btn-color) 84%, transparent);
+            border-color: var(--ac-btn-color-l);
+            color: var(--btn-text-color);
+            box-shadow:
+                0 0 0 1px rgba(var(--accent-r), var(--accent-g), var(--accent-b), 0.2),
+                0 2px 6px rgba(var(--accent-r), var(--accent-g), var(--accent-b), 0.18),
+                0 18px 38px -16px rgba(var(--accent-r), var(--accent-g), var(--accent-b), 0.4),
+                0 0 24px rgba(var(--accent-r), var(--accent-g), var(--accent-b), 0.24),
+                0 0 64px rgba(var(--accent-r), var(--accent-g), var(--accent-b), 0.12);
+        }
+        .module-card.is-active::before {
+            background: var(--btn-text-color);
+            transform: scaleY(1);
+        }
+        .module-card.is-active .module-index {
+            color: var(--btn-text-color);
+            opacity: 0.72;
+        }
+        .module-card.is-active .module-title {
+            text-shadow: 0 0 14px rgba(255, 255, 255, 0.28);
+        }
+        .module-card.is-active .module-icon {
+            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.5));
+        }
+        .module-card.is-active .module-desc {
+            color: var(--btn-text-color);
+            opacity: 0.82;
+        }
+
+        .module-index {
+            position: static;
+            flex: 0 0 auto;
+            min-width: 1.25rem;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            font-size: 0.72rem;
+            opacity: 0.48;
+        }
+        .module-icon {
+            flex: 0 0 auto;
+            width: 38px;
+            min-width: 38px;
+            text-align: center;
+            font-size: 1.7rem;
+            line-height: 1;
+            transition: filter 0.45s ease;
+        }
+        .module-copy {
+            flex: 1;
+            width: auto;
+            max-width: none;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 0.15rem;
+            padding-right: 1.7rem;
+            overflow: hidden;
+        }
+        .module-title {
+            font-size: 0.88rem;
+            font-weight: 600;
+            line-height: 1.35;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            transition: text-shadow 0.45s ease;
+        }
+        .module-desc {
+            font-size: 0.7rem;
+            line-height: 1.45;
+            opacity: 0.62;
+            white-space: nowrap;
+            overflow-wrap: anywhere;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .module-go {
+            position: absolute;
+            right: 0.7rem;
+            top: 50%;
+            flex: 0 0 auto;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            transform: translateY(-50%);
+            transition: color 0.38s ease, transform 0.56s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .module-go svg {
+            width: 16px;
+            height: 16px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .module-card:hover .module-go {
+            color: var(--ac-btn-color-l);
+            transform: translate(3px, -50%);
+        }
+        .module-card.is-active .module-go {
+            color: var(--btn-text-color);
+            transform: translate(3px, -50%);
+        }
+
+        .module-meter {
+            flex: 0 0 18px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 0.45rem;
+            padding-top: 0.3rem;
+        }
+        .module-dot {
+            width: 8px;
+            height: 8px;
+            align-self: center;
+            border: 0;
+            padding: 0;
+            border-radius: 50%;
+            background: var(--text-muted);
+            cursor: pointer;
+            transition: transform 0.4s ease, background-color 0.4s ease, box-shadow 0.4s ease;
+        }
+        .module-dot:hover { transform: scale(1.3); }
+        .module-dot.is-active {
+            background: var(--ac-btn-color);
+            box-shadow:
+                0 0 0 4px rgba(var(--accent-r), var(--accent-g), var(--accent-b), 0.14),
+                0 8px 16px -10px var(--ac-btn-shadow-color);
+            transform: scale(1.55);
+        }
+
+        @media (max-width: 900px) {
+            .hub-top { gap: 1rem; }
+            .hub-count { display: none; }
+            .module-card { gap: 0.6rem; padding: 0.55rem 0.65rem; min-height: 62px; }
+            .panel-title { font-size: 1.2rem; }
+        }
+        @media (max-width: 640px) {
+            .hub-top {
+                flex-wrap: wrap;
+                gap: 0.75rem;
+                padding: 3.45rem 1rem 0.5rem;
+            }
+            .hub-brand svg { width: 38px; height: 38px; }
+            .hub-title { font-size: 1.02rem; }
+            .hub-subtitle { font-size: 0.72rem; }
+            .hub-rail { order: 3; flex-basis: 100%; padding-bottom: 0.25rem; }
+            .hub-board { gap: 0.75rem; padding: 1.1rem max(1rem, calc(50vw - 120px)) 3rem; }
+            .hub-panel { flex-basis: clamp(180px, 76vw, 240px); width: clamp(180px, 76vw, 240px); }
+            .panel-inner { padding: 0.5rem 0.3rem 0.9rem; }
+            .panel-head::before { left: -0.3rem; right: -0.3rem; top: -0.5rem; }
+            .panel-head { gap: 0.55rem; margin-bottom: 0.75rem; }
+            .panel-title { font-size: 1.12rem; }
+            .panel-count { font-size: 0.64rem; }
+            .about-body { gap: 0.85rem; }
+            .about-mark { width: 40px; height: 40px; font-size: 1.15rem; }
+            .about-desc { font-size: 0.72rem; }
+            .about-tags span { font-size: 0.64rem; padding: 0.28rem 0.55rem; }
+            .module-track { padding-right: 0.35rem; }
+            .module-meter { gap: 0.4rem; }
+            .module-dot { width: 7px; height: 7px; }
+            .module-card { gap: 0.55rem; padding: 0.55rem 0.6rem; min-height: 60px; }
+            .module-icon { width: 32px; min-width: 32px; font-size: 1.45rem; }
+            .module-index { display: none; }
+            .module-copy { padding-right: 1.55rem; }
+            .module-title { font-size: 0.82rem; }
+            .module-desc { font-size: 0.68rem; }
+            .module-go { right: 0.65rem; width: 30px; height: 30px; }
+        }
+        @media (max-height: 720px) {
+            .module-card { min-height: 58px; padding: 0.5rem 0.6rem; }
+            .panel-head { margin-bottom: 0.7rem; }
+            .hub-board { padding-top: 1rem; }
+        }
+        @media (max-width: 440px) {
+            .module-card { min-height: 58px; padding: 0.5rem 0.6rem; }
+            .module-desc { display: none; }
+        }
+        @media (max-width: 380px) {
+            .module-go { display: none; }
+            .module-copy { padding-right: 0; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .hub-stage, .module-track { scroll-behavior: auto; }
+            .hub-rail { scroll-behavior: auto; }
+            .panel-inner, .module-card, .hub-tab, .module-dot, .module-go, .hub-frame::before {
+                transition-duration: 0.01ms;
+            }
         }
     </style>
 </head>
@@ -109,10 +608,9 @@
         <svg class="icon-moon" viewBox="0 0 24 24" fill="currentColor" style="display:none"><path d="M12 3a9 9 0 109 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 01-4.4 2.26 5.403 5.403 0 01-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>
     </button>
 
-    <div class="page-scroll">
-    <div class="hub-container">
-        <header class="hub-header">
-            <div class="logo-block">
+    <div class="hub-shell">
+        <header class="hub-top">
+            <div class="hub-brand">
                 <svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1920" viewBox="0 0 1920 1920">
                     <defs><clipPath id="clip-LOGO"><rect width="1920" height="1920"/></clipPath></defs>
                     <g clip-path="url(#clip-LOGO)">
@@ -126,106 +624,622 @@
                         </g>
                     </g>
                 </svg>
+                <div class="hub-brand-copy">
+                    <h1 class="hub-title">Harcic's Hub</h1>
+                    <p class="hub-subtitle">鸟为什么会飞？</p>
+                </div>
             </div>
-            <div class="header-text">
-                <h1 class="hub-title">Harcic's Hub</h1>
-                <p class="hub-subtitle">鸟为什么会飞？</p>
-            </div>
+
+            <nav class="hub-rail" id="hubRail" aria-label="分区导航">
+                <button class="hub-tab" type="button" data-section="0" data-number="00">00 关于本站</button>
+                <button class="hub-tab is-active" type="button" data-section="1" data-number="01" aria-current="true">01 工具</button>
+                <button class="hub-tab" type="button" data-section="2" data-number="02">02 内容</button>
+                <button class="hub-tab" type="button" data-section="3" data-number="03">03 项目</button>
+                <button class="hub-tab" type="button" data-section="4" data-number="04">04 整活</button>
+            </nav>
+
+            <div class="hub-count" id="hubCount" aria-live="polite">01 / 04</div>
         </header>
 
-        <div class="section-label">工具</div>
-        <div class="hub-grid">
-            <a href="/search/" class="hub-card">
-                <div class="card-icon">&#x1F50D;</div>
-                <div class="card-body"><div class="card-title">搜索主页</div><div class="card-desc">聚合搜索引擎入口 & 收藏夹</div></div>
+        <div class="hub-frame">
+            <main class="hub-stage" id="hubStage" tabindex="0" aria-label="主页分区滚动">
+                <div class="hub-board">
+            <section class="hub-panel" id="aboutPanel" aria-labelledby="panel-title-0">
+                <div class="panel-inner">
+                    <header class="panel-head">
+                        <span class="panel-number">00</span>
+                        <h2 class="panel-title" id="panel-title-0">关于本站</h2>
+                        <span class="panel-count">导航总览</span>
+                    </header>
+                    <div class="panel-body about-body">
+                        <div class="about-mark" aria-hidden="true">H</div>
+                        <div class="about-copy">
+                            <span class="about-lead">Harcic's Hub</span>
+                            <p class="about-desc">记录、工具、实验与整活的入口都收在这里。</p>
+                        </div>
+                        <div class="about-tags" aria-label="站点关键词">
+                            <span>索引</span>
+                            <span>创作</span>
+                            <span>实验</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-            </a>
-            <a href="/sickof.html" class="hub-card">
-                <div class="card-icon">&#x26A1;</div>
-                <div class="card-body"><div class="card-title">发电工具箱</div><div class="card-desc">一键生成发电文案</div></div>
+            <section class="hub-panel is-current" aria-labelledby="panel-title-1">
+                <div class="panel-inner">
+                    <header class="panel-head">
+                        <span class="panel-number">01</span>
+                        <h2 class="panel-title" id="panel-title-1">工具</h2>
+                        <span class="panel-count">3 个模块</span>
+                    </header>
+                    <div class="panel-body">
+                        <div class="module-track">
+                            <a class="module-card is-active" href="/search/">
+                                <span class="module-index">01</span>
+                                <span class="module-icon">&#x1F50D;</span>
+                                <span class="module-copy">
+                                    <span class="module-title">搜索主页</span>
+                                    <span class="module-desc">聚合搜索引擎入口 & 收藏夹</span>
+                                </span>
+                                <span class="module-go" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></span>
+                            </a>
+                            <a class="module-card" href="/sickof.html">
+                                <span class="module-index">02</span>
+                                <span class="module-icon">&#x26A1;</span>
+                                <span class="module-copy">
+                                    <span class="module-title">发电工具箱</span>
+                                    <span class="module-desc">一键生成发电文案</span>
+                                </span>
+                                <span class="module-go" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></span>
+                            </a>
+                            <a class="module-card" href="/musics/">
+                                <span class="module-index">03</span>
+                                <span class="module-icon">&#x1F3B5;</span>
+                                <span class="module-copy">
+                                    <span class="module-title">音乐播放器</span>
+                                    <span class="module-desc">在线音乐播放 & 歌词同步</span>
+                                </span>
+                                <span class="module-go" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></span>
+                            </a>
+                        </div>
+                        <div class="module-meter" aria-label="模块切换">
+                            <button class="module-dot is-active" type="button" aria-label="搜索主页"></button>
+                            <button class="module-dot" type="button" aria-label="发电工具箱"></button>
+                            <button class="module-dot" type="button" aria-label="音乐播放器"></button>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-            </a>
+            <section class="hub-panel" aria-labelledby="panel-title-2">
+                <div class="panel-inner">
+                    <header class="panel-head">
+                        <span class="panel-number">02</span>
+                        <h2 class="panel-title" id="panel-title-2">内容</h2>
+                        <span class="panel-count">2 个模块</span>
+                    </header>
+                    <div class="panel-body">
+                        <div class="module-track">
+                            <a class="module-card is-active" href="/blog/">
+                                <span class="module-index">01</span>
+                                <span class="module-icon">&#x1F4DD;</span>
+                                <span class="module-copy">
+                                    <span class="module-title">博客</span>
+                                    <span class="module-desc">文章 & 随笔</span>
+                                </span>
+                                <span class="module-go" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></span>
+                            </a>
+                            <a class="module-card" href="/imgs/">
+                                <span class="module-index">02</span>
+                                <span class="module-icon">&#x1F5BC;</span>
+                                <span class="module-copy">
+                                    <span class="module-title">图片集</span>
+                                    <span class="module-desc">全部手绘</span>
+                                </span>
+                                <span class="module-go" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></span>
+                            </a>
+                        </div>
+                        <div class="module-meter" aria-label="模块切换">
+                            <button class="module-dot is-active" type="button" aria-label="博客"></button>
+                            <button class="module-dot" type="button" aria-label="图片集"></button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="hub-panel" aria-labelledby="panel-title-3">
+                <div class="panel-inner">
+                    <header class="panel-head">
+                        <span class="panel-number">03</span>
+                        <h2 class="panel-title" id="panel-title-3">项目</h2>
+                        <span class="panel-count">3 个模块</span>
+                    </header>
+                    <div class="panel-body">
+                        <div class="module-track">
+                            <a class="module-card is-active" href="/hyper-bot/">
+                                <span class="module-index">01</span>
+                                <span class="module-icon">&#x1F916;</span>
+                                <span class="module-copy">
+                                    <span class="module-title">Hyper Bot</span>
+                                    <span class="module-desc">QQ 机器人框架文档</span>
+                                </span>
+                                <span class="module-go" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></span>
+                            </a>
+                            <a class="module-card" href="/neony/">
+                                <span class="module-index">02</span>
+                                <span class="module-icon">&#x1F4D6;</span>
+                                <span class="module-copy">
+                                    <span class="module-title">Neony 文档</span>
+                                    <span class="module-desc">Python 桌面 UI 框架文档</span>
+                                </span>
+                                <span class="module-go" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></span>
+                            </a>
+                            <a class="module-card" href="/chat/">
+                                <span class="module-index">03</span>
+                                <span class="module-icon">&#x1F4AC;</span>
+                                <span class="module-copy">
+                                    <span class="module-title">Charindexe</span>
+                                    <span class="module-desc">在线聊天</span>
+                                </span>
+                                <span class="module-go" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></span>
+                            </a>
+                        </div>
+                        <div class="module-meter" aria-label="模块切换">
+                            <button class="module-dot is-active" type="button" aria-label="Hyper Bot"></button>
+                            <button class="module-dot" type="button" aria-label="Neony 文档"></button>
+                            <button class="module-dot" type="button" aria-label="Charindexe"></button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="hub-panel" aria-labelledby="panel-title-4">
+                <div class="panel-inner">
+                    <header class="panel-head">
+                        <span class="panel-number">04</span>
+                        <h2 class="panel-title" id="panel-title-4">整活</h2>
+                        <span class="panel-count">5 个模块</span>
+                    </header>
+                    <div class="panel-body">
+                        <div class="module-track">
+                            <a class="module-card is-active" href="/music.html">
+                                <span class="module-index">01</span>
+                                <span class="module-icon">&#x1F3B6;</span>
+                                <span class="module-copy">
+                                    <span class="module-title">经典老歌</span>
+                                    <span class="module-desc">经典老歌送给你</span>
+                                </span>
+                                <span class="module-go" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></span>
+                            </a>
+                            <a class="module-card" href="/jntm.html">
+                                <span class="module-index">02</span>
+                                <span class="module-icon">&#x1F4DE;</span>
+                                <span class="module-copy">
+                                    <span class="module-title">蔡徐坤来电</span>
+                                    <span class="module-desc">蔡徐坤邀请你语音通话</span>
+                                </span>
+                                <span class="module-go" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></span>
+                            </a>
+                            <a class="module-card" href="/jvav/">
+                                <span class="module-index">03</span>
+                                <span class="module-icon">&#x2615;</span>
+                                <span class="module-copy">
+                                    <span class="module-title">Jvav</span>
+                                    <span class="module-desc">一个有趣的项目</span>
+                                </span>
+                                <span class="module-go" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></span>
+                            </a>
+                            <a class="module-card" href="/xss.html">
+                                <span class="module-index">04</span>
+                                <span class="module-icon">&#x1F4DD;</span>
+                                <span class="module-copy">
+                                    <span class="module-title">论小溯溯</span>
+                                    <span class="module-desc">论小溯溯为什么很棒</span>
+                                </span>
+                                <span class="module-go" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></span>
+                            </a>
+                            <a class="module-card" href="/schools/">
+                                <span class="module-index">05</span>
+                                <span class="module-icon">&#x1F393;</span>
+                                <span class="module-copy">
+                                    <span class="module-title">杨永信报名</span>
+                                    <span class="module-desc">看看你能上哪个高中</span>
+                                </span>
+                                <span class="module-go" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></span>
+                            </a>
+                        </div>
+                        <div class="module-meter" aria-label="模块切换">
+                            <button class="module-dot is-active" type="button" aria-label="经典老歌"></button>
+                            <button class="module-dot" type="button" aria-label="蔡徐坤来电"></button>
+                            <button class="module-dot" type="button" aria-label="Jvav"></button>
+                            <button class="module-dot" type="button" aria-label="论小溯溯"></button>
+                            <button class="module-dot" type="button" aria-label="杨永信报名"></button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+                </div>
+            </main>
         </div>
-
-        <div class="section-label">娱乐</div>
-        <div class="hub-grid">
-            <a href="/musics/" class="hub-card">
-                <div class="card-icon">&#x1F3B5;</div>
-                <div class="card-body"><div class="card-title">音乐播放器</div><div class="card-desc">在线音乐播放 & 歌词同步</div></div>
-
-            </a>
-        </div>
-
-        <div class="section-label">内容</div>
-        <div class="hub-grid">
-            <a href="/blog/" class="hub-card">
-                <div class="card-icon">&#x1F4DD;</div>
-                <div class="card-body"><div class="card-title">博客</div><div class="card-desc">文章 & 随笔</div></div>
-
-            </a>
-            <a href="/imgs/" class="hub-card">
-                <div class="card-icon">&#x1F5BC;</div>
-                <div class="card-body"><div class="card-title">图片集</div><div class="card-desc">全部手绘</div></div>
-
-            </a>
-        </div>
-
-        <div class="section-label">项目</div>
-        <div class="hub-grid">
-            <a href="/hyper-bot/" class="hub-card">
-                <div class="card-icon">&#x1F916;</div>
-                <div class="card-body"><div class="card-title">Hyper Bot</div><div class="card-desc">QQ 机器人框架文档</div></div>
-
-            </a>
-            <a href="/neony/" class="hub-card">
-                <div class="card-icon">&#x1F4D6;</div>
-                <div class="card-body"><div class="card-title">Neony 文档</div><div class="card-desc">Python 桌面 UI 框架文档</div></div>
-            </a>
-        </div>
-
-        <div class="section-label">测试</div>
-        <div class="hub-grid">
-            <a href="/chat/" class="hub-card">
-                <div class="card-icon">&#x1F4AC;</div>
-                <div class="card-body"><div class="card-title">Charindexe</div><div class="card-desc">在线聊天</div></div>
-            </a>
-        </div>
-
-        <div class="section-label">整活</div>
-        <div class="hub-grid">
-            <a href="/music.html" class="hub-card">
-                <div class="card-icon">&#x1F3B6;</div>
-                <div class="card-body"><div class="card-title">经典老歌</div><div class="card-desc">经典老歌送给你</div></div>
-
-            </a>
-            <a href="/jntm.html" class="hub-card">
-                <div class="card-icon">&#x1F4DE;</div>
-                <div class="card-body"><div class="card-title">蔡徐坤来电</div><div class="card-desc">蔡徐坤邀请你语音通话</div></div>
-
-            </a>
-            <a href="/jvav/" class="hub-card">
-                <div class="card-icon">&#x2615;</div>
-                <div class="card-body"><div class="card-title">Jvav</div><div class="card-desc">一个有趣的项目</div></div>
-
-            </a>
-            <a href="/xss.html" class="hub-card">
-                <div class="card-icon">&#x1F4DD;</div>
-                <div class="card-body"><div class="card-title">论小溯溯</div><div class="card-desc">论小溯溯为什么很棒</div></div>
-
-            </a>
-            <a href="/schools/" class="hub-card">
-                <div class="card-icon">&#x1F393;</div>
-                <div class="card-body"><div class="card-title">杨永信报名</div><div class="card-desc">看看你能上哪个高中</div></div>
-
-            </a>
-        </div>
-
-        <footer class="hub-footer">
-            <p>&copy; Harcic Yang &mdash; <a href="https://github.com/HarcicYang">GitHub</a></p>
-        </footer>
     </div>
-    </div>
 
-<script src="/resource/theme.js"></script>
+    <script src="/resource/theme.js"></script>
+    <script>
+        (function() {
+            var stage = document.getElementById("hubStage");
+            var rail = document.getElementById("hubRail");
+            var panels = Array.prototype.slice.call(document.querySelectorAll(".hub-panel"));
+            var tabs = Array.prototype.slice.call(document.querySelectorAll(".hub-tab"));
+            var cardsByPanel = panels.map(function(panel) {
+                return Array.prototype.slice.call(panel.querySelectorAll(".module-card"));
+            });
+            var dotsByPanel = panels.map(function(panel) {
+                return Array.prototype.slice.call(panel.querySelectorAll(".module-dot"));
+            });
+            var countEl = document.getElementById("hubCount");
+            var currentSection = 1;
+            var currentModule = 0;
+            var wheelAccumX = 0;
+            var wheelAccumY = 0;
+            var scrollQueued = false;
+            var wheelChaining = !(window.matchMedia && window.matchMedia("(pointer: coarse)").matches);
+            var wheelAxis = null;
+            var lastWheelEventAt = 0;
+            var lastWheelSampleAt = 0;
+
+            function clamp(value, min, max) {
+                return Math.max(min, Math.min(max, value));
+            }
+            function pad(value) {
+                return value < 10 ? "0" + value : String(value);
+            }
+            function normalizeWheelDelta(value, mode) {
+                if (mode === 1) return value * 16;
+                if (mode === 2) return value * Math.max(1, stage.clientHeight);
+                return value;
+            }
+            function wheelFastFactor() {
+                var now = performance.now();
+                var dt = Math.max(1, now - (lastWheelSampleAt || now));
+                lastWheelSampleAt = now;
+                var hurry = clamp(1 - (dt - 20) / 180, 0.25, 1);
+                return 1 - hurry * 0.5;
+            }
+            function easeInOutQuint(t) {
+                return t < 0.5 ? 16 * Math.pow(t, 5) : 1 - Math.pow(-2 * t + 2, 5) / 2;
+            }
+
+            function scrollDuration(distance, fast) {
+                var duration = Math.max(360, Math.min(760, Math.abs(distance) * 0.55));
+                if (fast) duration = Math.max(170, Math.min(440, duration * fast));
+                return duration;
+            }
+
+            function animateScrollTo(scroller, targetLeft, targetTop, duration) {
+                if (scroller.__scrollRaf) cancelAnimationFrame(scroller.__scrollRaf);
+                var fromLeft = scroller.scrollLeft;
+                var fromTop = scroller.scrollTop;
+                var deltaLeft = targetLeft === null ? 0 : targetLeft - fromLeft;
+                var deltaTop = targetTop === null ? 0 : targetTop - fromTop;
+                var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+                function settle() {
+                    if (targetLeft !== null) scroller.scrollLeft = targetLeft;
+                    if (targetTop !== null) scroller.scrollTop = targetTop;
+                    scroller.__scrollRaf = 0;
+                    scroller.__scrollAnimating = false;
+                    updateFocusFromScroll();
+                }
+
+                if (reduced) {
+                    settle();
+                    return;
+                }
+
+                scroller.__scrollAnimating = true;
+                var start = performance.now();
+                function frame(now) {
+                    var progress = Math.min(1, (now - start) / duration);
+                    var eased = easeInOutQuint(progress);
+                    if (targetLeft !== null) scroller.scrollLeft = fromLeft + deltaLeft * eased;
+                    if (targetTop !== null) scroller.scrollTop = fromTop + deltaTop * eased;
+                    if (progress < 1) {
+                        scroller.__scrollRaf = requestAnimationFrame(frame);
+                    } else {
+                        settle();
+                    }
+                }
+                scroller.__scrollRaf = requestAnimationFrame(frame);
+            }
+
+            function refreshState() {
+                var moduleCount = Math.max(1, cardsByPanel[currentSection].length);
+                currentModule = clamp(currentModule, 0, moduleCount - 1);
+                tabs.forEach(function(tab, i) {
+                    var isCurrent = i === currentSection;
+                    tab.classList.toggle("is-active", isCurrent);
+                    if (isCurrent) {
+                        tab.setAttribute("aria-current", "true");
+                    } else {
+                        tab.removeAttribute("aria-current");
+                    }
+                });
+                panels.forEach(function(panel, i) {
+                    panel.classList.toggle("is-current", i === currentSection);
+                });
+                if (countEl) {
+                    var tab = tabs[currentSection];
+                    var number = tab && tab.dataset && tab.dataset.number !== undefined
+                        ? parseInt(tab.dataset.number, 10)
+                        : currentSection;
+                    countEl.textContent = pad(number) + " / " + pad(panels.length);
+                }
+                panels.forEach(function(panel, si) {
+                    cardsByPanel[si].forEach(function(card, mi) {
+                        card.classList.toggle("is-active", si === currentSection && mi === currentModule);
+                    });
+                    dotsByPanel[si].forEach(function(dot, mi) {
+                        dot.classList.toggle("is-active", si === currentSection && mi === currentModule);
+                    });
+                });
+                var tab = tabs[currentSection];
+                if (tab) tab.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+            }
+
+            function focusTarget() {
+                var card = cardsByPanel[currentSection][currentModule];
+                var focusElement = card || panels[currentSection];
+                if (!focusElement) return null;
+                var rect = focusElement.getBoundingClientRect();
+                var stageRect = stage.getBoundingClientRect();
+                return {
+                    left: clamp(
+                        stage.scrollLeft + rect.left - stageRect.left + rect.width / 2 - stage.clientWidth / 2,
+                        0,
+                        Math.max(0, stage.scrollWidth - stage.clientWidth)
+                    ),
+                    top: clamp(
+                        stage.scrollTop + rect.top - stageRect.top + rect.height / 2 - stage.clientHeight / 2,
+                        0,
+                        Math.max(0, stage.scrollHeight - stage.clientHeight)
+                    )
+                };
+            }
+
+            function scrollToFocus(animate, fast) {
+                var target = focusTarget();
+                if (!target) return;
+                if (animate) {
+                    var distance = Math.max(Math.abs(target.left - stage.scrollLeft), Math.abs(target.top - stage.scrollTop));
+                    animateScrollTo(stage, target.left, target.top, scrollDuration(distance, fast));
+                } else {
+                    stage.scrollLeft = target.left;
+                    stage.scrollTop = target.top;
+                    updateFocusFromScroll();
+                }
+            }
+
+            function goToSection(index, animate, fast) {
+                index = clamp(index, 0, panels.length - 1);
+                if (index !== currentSection) currentModule = 0;
+                currentSection = index;
+                refreshState();
+                scrollToFocus(animate, fast);
+            }
+
+            function goToModule(index, animate, fast) {
+                var moduleCount = Math.max(1, cardsByPanel[currentSection].length);
+                currentModule = clamp(index, 0, moduleCount - 1);
+                refreshState();
+                scrollToFocus(animate, fast);
+            }
+
+            function goToModuleAcross(index, animate) {
+                var moduleCount = Math.max(1, cardsByPanel[currentSection].length);
+                if (index >= moduleCount) {
+                    var targetSection = currentSection + 1;
+                    if (targetSection >= panels.length) return;
+                    currentSection = targetSection;
+                    currentModule = 0;
+                    refreshState();
+                    scrollToFocus(animate);
+                    return;
+                }
+                if (index < 0) {
+                    var targetSection = currentSection - 1;
+                    if (targetSection < 0) return;
+                    currentSection = targetSection;
+                    currentModule = Math.max(0, cardsByPanel[targetSection].length - 1);
+                    refreshState();
+                    scrollToFocus(animate);
+                    return;
+                }
+                goToModule(index, animate);
+            }
+
+            function openActiveModule() {
+                var card = cardsByPanel[currentSection][currentModule];
+                if (card && card.href) window.location.href = card.href;
+            }
+
+            function updateFocusFromScroll() {
+                if (stage.__scrollAnimating) return;
+                var stageRect = stage.getBoundingClientRect();
+                var centerX = stageRect.left + stage.clientWidth / 2;
+                var centerY = stageRect.top + stage.clientHeight / 2;
+                var bestSection = currentSection;
+                var bestModule = currentModule;
+                var bestDistance = Infinity;
+                panels.forEach(function(panel, si) {
+                    var focusElements = cardsByPanel[si].length ? cardsByPanel[si] : [panel];
+                    focusElements.forEach(function(element, mi) {
+                        var rect = element.getBoundingClientRect();
+                        var dx = rect.left + rect.width / 2 - centerX;
+                        var dy = rect.top + rect.height / 2 - centerY;
+                        var distance = Math.sqrt(dx * dx + dy * dy);
+                        if (distance < bestDistance) {
+                            bestDistance = distance;
+                            bestSection = si;
+                            bestModule = mi;
+                        }
+                    });
+                });
+                currentSection = bestSection;
+                currentModule = bestModule;
+                refreshState();
+            }
+
+            tabs.forEach(function(tab, index) {
+                tab.addEventListener("click", function() {
+                    goToSection(index, true);
+                });
+            });
+
+            dotsByPanel.forEach(function(dots, si) {
+                dots.forEach(function(dot, mi) {
+                    dot.addEventListener("click", function() {
+                        currentSection = si;
+                        goToModule(mi, true);
+                    });
+                });
+            });
+
+            stage.addEventListener("scroll", function() {
+                if (stage.__scrollAnimating || scrollQueued) return;
+                scrollQueued = true;
+                requestAnimationFrame(function() {
+                    scrollQueued = false;
+                    if (stage.__scrollAnimating) return;
+                    updateFocusFromScroll();
+                });
+            }, { passive: true });
+
+            stage.addEventListener("wheel", function(e) {
+                if (e.ctrlKey || e.metaKey || e.altKey) return;
+                e.preventDefault();
+                var nx = normalizeWheelDelta(e.deltaX, e.deltaMode);
+                var ny = normalizeWheelDelta(e.deltaY, e.deltaMode);
+                if (e.shiftKey && Math.abs(ny) > Math.abs(nx)) {
+                    nx = ny;
+                    ny = 0;
+                }
+                if (!nx && !ny) return;
+
+                var now = performance.now();
+                var axis = Math.abs(nx) >= Math.abs(ny) ? "x" : "y";
+                if (wheelAxis && now - lastWheelEventAt < 150) axis = wheelAxis;
+                lastWheelEventAt = now;
+                var fast = wheelFastFactor();
+                var threshold = 18;
+
+                if (axis === "x" && nx !== 0) {
+                    if (wheelAccumX !== 0 && (wheelAccumX > 0) !== (nx > 0)) wheelAccumX = 0;
+                    wheelAccumX += nx;
+                    if (Math.abs(wheelAccumX) < threshold) return;
+                    var dirX = wheelAccumX > 0 ? 1 : -1;
+                    var targetSection = currentSection + dirX;
+                    wheelAccumX = 0;
+                    wheelAccumY = 0;
+                    wheelAxis = "x";
+                    if (targetSection < 0 || targetSection >= panels.length) return;
+                    goToSection(targetSection, true, fast);
+                    return;
+                }
+
+                if (ny !== 0) {
+                    if (wheelAccumY !== 0 && (wheelAccumY > 0) !== (ny > 0)) wheelAccumY = 0;
+                    wheelAccumY += ny;
+                    if (Math.abs(wheelAccumY) < threshold) return;
+                    var dirY = wheelAccumY > 0 ? 1 : -1;
+                    var nextModule = currentModule + dirY;
+                    var moduleCount = Math.max(1, cardsByPanel[currentSection].length);
+                    wheelAccumX = 0;
+                    wheelAccumY = 0;
+                    wheelAxis = "y";
+                    if (nextModule >= 0 && nextModule < moduleCount) {
+                        goToModule(nextModule, true, fast);
+                    } else if (wheelChaining && dirY > 0 && currentSection < panels.length - 1) {
+                        goToSection(currentSection + 1, true, fast);
+                    } else if (wheelChaining && dirY < 0 && currentSection > 0) {
+                        goToSection(currentSection - 1, true, fast);
+                    }
+                }
+            }, { passive: false });
+
+            document.addEventListener("keydown", function(e) {
+                if (e.ctrlKey || e.metaKey || e.altKey) {
+                    if ((e.ctrlKey || e.metaKey) && e.key === "Home") {
+                        e.preventDefault();
+                        goToSection(0, true);
+                    } else if ((e.ctrlKey || e.metaKey) && e.key === "End") {
+                        e.preventDefault();
+                        goToSection(panels.length - 1, true);
+                    }
+                    return;
+                }
+
+                var target = e.target;
+                if (target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.tagName === "SELECT" || target.isContentEditable)) {
+                    return;
+                }
+
+                var interactive = target && target.closest && target.closest("a, button, [role='button']");
+                var onStage = target === stage || (stage && stage.contains && stage.contains(target));
+
+                if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
+                    if (!onStage) return;
+                    e.preventDefault();
+                    goToSection(currentSection + (e.key === "ArrowRight" ? 1 : -1), true);
+                    return;
+                }
+                if (e.key === "ArrowUp" || e.key === "ArrowDown") {
+                    if (!onStage) return;
+                    e.preventDefault();
+                    goToModuleAcross(currentModule + (e.key === "ArrowDown" ? 1 : -1), true);
+                    return;
+                }
+                if (e.key === "Home") {
+                    e.preventDefault();
+                    goToModule(0, true);
+                    return;
+                }
+                if (e.key === "End") {
+                    e.preventDefault();
+                    goToModule(cardsByPanel[currentSection].length - 1, true);
+                    return;
+                }
+                if (e.key === "PageUp" || e.key === "PageDown") {
+                    if (!onStage) return;
+                    e.preventDefault();
+                    goToSection(currentSection + (e.key === "PageDown" ? 1 : -1), true);
+                    return;
+                }
+                if (e.key === "Enter" || e.key === " ") {
+                    if (interactive) return;
+                    e.preventDefault();
+                    openActiveModule();
+                    return;
+                }
+                if (/^[1-9]$/.test(e.key)) {
+                    var moduleIndex = Number(e.key) - 1;
+                    if (moduleIndex < cardsByPanel[currentSection].length) {
+                        e.preventDefault();
+                        goToModule(moduleIndex, true);
+                    }
+                }
+            });
+
+            window.addEventListener("resize", function() {
+                requestAnimationFrame(function() {
+                    scrollToFocus(false);
+                });
+            });
+            window.addEventListener("load", function() {
+                refreshState();
+                scrollToFocus(false);
+            });
+        })();
+    </script>
 </body>
 </html>
