@@ -6,8 +6,8 @@ The application object, entry points, and window lifecycle. Import from
 
 ## `NeonApplication`
 
-The application object — owns the window, the bridge, the theme, and
-shared state. Construct with a `Config`, build a `Page`, then `run()`.
+The application object — owns the windows, the theme, and shared state.
+Construct with a `Config`, build a `Page`, then `run()`.
 
 ```python
 from neony.application import Config, NeonApplication, Page, Theme, WebViewConfig, WindowConfig
@@ -19,7 +19,7 @@ app = NeonApplication(
     )
 )
 app.state.count = 0  # shared mutable state
-app.theme = Theme.get("light")  # pick the initial preset before run()
+app.theme = Theme.get("nightglow-light")  # pick the initial preset before run()
 
 
 def main() -> None:
@@ -90,14 +90,13 @@ folder = await app.select_folder()  # str | None
 
 The dialogs are the platform's own — zenity on Linux (most desktops
 ship it), `osascript` on macOS, PowerShell on Windows, with a tkinter
-fallback — shown as a child process so the app's event loop keeps
-running while they're up. Nothing is drawn by Neony itself: the
+fallback. They open asynchronously, so the app's event loop keeps
+running while they're up, and nothing is drawn by Neony itself: the
 look, navigation and filters are exactly what the OS provides.
 
 `filetypes` maps onto the native filter UI (`[("PNG images", "*.png"),
 ("All files", "*.*")]`); `default_dir` / `default_name` preselect the
-starting location. No WebView, no tkinter window in-process, no
-bundled dialog component.
+starting location.
 
 ## `launch()`
 
@@ -177,20 +176,15 @@ It supports HTTP `Range` requests (`206 Partial Content`, `416` for an
 unsatisfiable range), answers `HEAD`, guesses MIME types, and sends
 `ETag` / `Last-Modified` / `Accept-Ranges`. There is no path allow-list:
 a Neony page is trusted application content. See
-[`demo_protocols.py`](https://github.com/HarcicYang/Neony/blob/cb851af/demo_protocols.py).
+[`demo_protocols.py`](https://github.com/HarcicYang/Neony/blob/117e6a3/demo_protocols.py).
 
-**Media playback** — a webview's media pipeline (GStreamer on Linux)
-cannot read custom URI schemes. The managed `Video` / `Audio`
-components hydrate `neony://…` sources automatically through the
-`data-neony-media-src` contract: the runtime fetches the bytes over the
-protocol, swaps in a `blob:` URL, and revokes it when the source changes
-or the element is removed. Raw `<audio>` / `<video>` DOM elements are
-not hydrated — use the components (see
-[`Video` / `Audio`](/api/components#video)). Playback and seeking then
-work everywhere `file://` subresources are blocked. The whole file is
-held in memory while playing — ideal for voice clips and sound effects;
-mind the size for long videos. Protocol responses carry permissive CORS
-headers so the page (an opaque origin) can `fetch()` them.
+**Media playback** — the managed `Video` / `Audio` components load
+`neony://…` sources automatically, so local media plays and seeking
+works where `file://` subresources are blocked. Raw `<audio>` /
+`<video>` DOM elements are not handled this way — use the components (see
+[`Video` / `Audio`](/api/components#video)). The whole file is held in
+memory while playing — ideal for voice clips and sound effects; mind
+the size for long videos.
 
 ## `Config`, `WindowConfig`, `WebViewConfig`
 
@@ -343,9 +337,8 @@ page.on_download_completed(lambda url, path, ok: print(f"downloaded {path}"))
 
 ## `Tray` & `TrayItem` — system tray (native menu)
 
-A tray icon with a native context menu, backed by lumiview .dev4
-(muda menus + TrayIcon). Assign `app.tray` before `run()`; the icon
-materializes once the app is up.
+A tray icon with a native context menu. Assign `app.tray` before
+`run()`; the icon materializes once the app is up.
 
 ```python
 from neony.application import Tray, TrayItem
@@ -365,10 +358,10 @@ app.tray = Tray(
 ```
 
 - `TrayItem` — `text`, optional `id` (carried by activation
-  callbacks), `accelerator` (muda syntax; Windows may not fire it from
-  the keyboard), `on_activate` (sync or async, run on the asyncio
-  loop), `checked=True` for a check item; `TrayItem.separator()` for a
-  divider.
+  callbacks), `accelerator` (shortcut syntax; Windows may not fire it
+  from the keyboard), `on_activate` (sync or async, run
+  asynchronously), `checked=True` for a check item;
+  `TrayItem.separator()` for a divider.
 - `close_to_tray=True` — every window's close request is prevented and
   the app hides (restore from the menu / tray click; on macOS a Dock
   click via `ReopenEvent`). `Page.on_close` handlers still run.
@@ -377,4 +370,4 @@ app.tray = Tray(
 - Platform notes: **Linux needs libayatana-appindicator**; the tooltip
   is unsupported there and the menu cannot be replaced after creation.
 
-  See [`demo_tray.py`](https://github.com/HarcicYang/Neony/blob/cb851af/demo_tray.py).
+  See [`demo_tray.py`](https://github.com/HarcicYang/Neony/blob/117e6a3/demo_tray.py).

@@ -1,13 +1,19 @@
 {
   "current": {
-    "sha": "cb851af2682c2008154b5b2744bf790328f500f5",
-    "short": "cb851af",
-    "tag": "v0.3.0",
+    "sha": "117e6a3f3b890163f5d2aaa1464c7f02c5681b0b",
+    "short": "117e6a3",
+    "tag": "v0.3.0.post1",
     "ref": "",
-    "date": "2026-08-25",
-    "message": "chore: bump version & update docs"
+    "date": "2026-08-26",
+    "message": "chore: release 0.3.0.post1"
   },
   "tags": [
+    {
+      "name": "v0.3.0.post1",
+      "sha": "117e6a3f3b890163f5d2aaa1464c7f02c5681b0b",
+      "short": "117e6a3",
+      "date": "2026-08-26"
+    },
     {
       "name": "v0.3.0",
       "sha": "cb851af2682c2008154b5b2744bf790328f500f5",
@@ -101,6 +107,12 @@
   ],
   "history": [
     {
+      "sha": "cb851af2682c2008154b5b2744bf790328f500f5",
+      "short": "cb851af",
+      "date": "2026-08-25",
+      "message": "chore: bump version & update docs"
+    },
+    {
       "sha": "3ea31c0a5c8acc18f4d74a995f432a0088d54576",
       "short": "3ea31c0",
       "date": "2026-08-22",
@@ -147,12 +159,6 @@
       "short": "ef0ede3",
       "date": "2026-08-14",
       "message": "docs: fix missing blank lines between parag…"
-    },
-    {
-      "sha": "b74435212293d691c59b441b5e40f75fb0805c81",
-      "short": "b744352",
-      "date": "2026-08-14",
-      "message": "docs: align README and API docs with the cu…"
     }
   ]
 }

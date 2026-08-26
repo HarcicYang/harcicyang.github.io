@@ -3,7 +3,7 @@
 
 This tutorial takes you from an empty Python file to a small reactive desktop
 window. It uses the same public imports and patterns as
-[`demo_hello.py`](https://github.com/HarcicYang/Neony/blob/cb851af/demo_hello.py).
+[`demo_hello.py`](https://github.com/HarcicYang/Neony/blob/117e6a3/demo_hello.py).
 
 ## 1. Install the prerequisites
 
@@ -14,12 +14,8 @@ platform. For a normal application install the package with:
 python -m pip install neony
 ```
 
-If you are working from this repository, install the development environment
-with:
-
-```bash
-uv sync --group dev
-```
+If you want to build or change Neony itself, use the repository setup
+described in [Contributing](https://github.com/HarcicYang/Neony/blob/117e6a3/CONTRIBUTING.md) instead.
 
 Platform-specific dependencies are covered in
 [Installation and platforms](/guides/installation-platforms).
@@ -60,9 +56,9 @@ Run it from the directory containing the file:
 python hello.py
 ```
 
-The same example is maintained as
-[`demo_hello.py`](https://github.com/HarcicYang/Neony/blob/cb851af/demo_hello.py); use that file when you want to compare the
-tutorial with the repository's tested example.
+The repository contains the same example at
+[`demo_hello.py`](https://github.com/HarcicYang/Neony/blob/117e6a3/demo_hello.py); use that file when you want to compare the
+tutorial with a tested runnable example.
 
 ## 3. Understand the tree
 
@@ -78,7 +74,7 @@ Common layout controls are:
 - `fill=True` for chrome or layouts that should occupy the window height;
 - `grow` on a flex component when it should consume remaining space.
 
-The [`demo_builder.py`](https://github.com/HarcicYang/Neony/blob/cb851af/demo_builder.py) example shows a centered page with a
+The [`demo_builder.py`](https://github.com/HarcicYang/Neony/blob/117e6a3/demo_builder.py) example shows a centered page with a
 raw styled `Div` alongside framework components.
 
 ## 4. Handle user events
@@ -122,7 +118,7 @@ element.bind_visible(signal)
 Use `Computed` for derived values and `effect()` for side effects. Use an
 ordinary `on_*` handler when you need event context or multi-step behavior.
 
-[`demo_reactive.py`](https://github.com/HarcicYang/Neony/blob/cb851af/demo_reactive.py) demonstrates Signal, Computed, Effect,
+[`demo_reactive.py`](https://github.com/HarcicYang/Neony/blob/117e6a3/demo_reactive.py) demonstrates Signal, Computed, Effect,
 `bind_value`, `bind_style`, and `bind_visible` together.
 
 ## 6. Style the application
@@ -144,7 +140,7 @@ surface = Div(
 )
 ```
 
-Ten built-in presets span four visual families (`DARK`, `LIGHT`, and
+Eight built-in presets span four visual families (`DARK`, `LIGHT`, and
 `DEEP_BLUE` remain as aliases). See [Theming](/api/platform-i18n)
 for custom tokens, motion, transitions, or keyframes.
 
@@ -152,10 +148,10 @@ for custom tokens, motion, transitions, or keyframes.
 
 - Need installation help? Read [Installation and platforms](/guides/installation-platforms).
 - Need state synchronization? Read [Reactivity](/api/reactive) and
-  start with [`demo_reactive.py`](https://github.com/HarcicYang/Neony/blob/cb851af/demo_reactive.py).
+  start with [`demo_reactive.py`](https://github.com/HarcicYang/Neony/blob/117e6a3/demo_reactive.py).
 - Need frameless windows? Read the API's `Page`, `WindowConfig`, and `TitleBar`
-  sections, then run [`demo_custom_window.py`](https://github.com/HarcicYang/Neony/blob/cb851af/demo_custom_window.py).
-- Need two windows? Run [`demo_multi_window.py`](https://github.com/HarcicYang/Neony/blob/cb851af/demo_multi_window.py).
+  sections, then run [`demo_custom_window.py`](https://github.com/HarcicYang/Neony/blob/117e6a3/demo_custom_window.py).
+- Need two windows? Run [`demo_multi_window.py`](https://github.com/HarcicYang/Neony/blob/117e6a3/demo_multi_window.py).
 - Need the component gallery? Run:
 
   ```bash
@@ -163,4 +159,4 @@ for custom tokens, motion, transitions, or keyframes.
   ```
 
 For exact signatures, use the [API index](/api/). For repository
-changes, read [Contributing](https://github.com/HarcicYang/Neony/blob/cb851af/CONTRIBUTING.md).
+changes, read [Contributing](https://github.com/HarcicYang/Neony/blob/117e6a3/CONTRIBUTING.md).
