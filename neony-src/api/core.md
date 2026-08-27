@@ -176,7 +176,7 @@ It supports HTTP `Range` requests (`206 Partial Content`, `416` for an
 unsatisfiable range), answers `HEAD`, guesses MIME types, and sends
 `ETag` / `Last-Modified` / `Accept-Ranges`. There is no path allow-list:
 a Neony page is trusted application content. See
-[`demo_protocols.py`](https://github.com/HarcicYang/Neony/blob/117e6a3/demo_protocols.py).
+[`demo_protocols.py`](https://github.com/HarcicYang/Neony/blob/c3f9724/demo_protocols.py).
 
 **Media playback** — the managed `Video` / `Audio` components load
 `neony://…` sources automatically, so local media plays and seeking
@@ -370,4 +370,4 @@ app.tray = Tray(
 - Platform notes: **Linux needs libayatana-appindicator**; the tooltip
   is unsupported there and the menu cannot be replaced after creation.
 
-  See [`demo_tray.py`](https://github.com/HarcicYang/Neony/blob/117e6a3/demo_tray.py).
+  See [`demo_tray.py`](https://github.com/HarcicYang/Neony/blob/c3f9724/demo_tray.py).

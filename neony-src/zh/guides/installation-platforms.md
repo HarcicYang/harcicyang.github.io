@@ -12,7 +12,7 @@ Neony 会把 Python 构建的 DOM 树渲染到原生 WebView 中。安装 Python
 python -m pip install neony
 ```
 
-要构建或修改仓库本身，请使用[贡献指南](https://github.com/HarcicYang/Neony/blob/117e6a3/CONTRIBUTING.zh.md)中记录的
+要构建或修改仓库本身，请使用[贡献指南](https://github.com/HarcicYang/Neony/blob/c3f9724/CONTRIBUTING.zh.md)中记录的
 开发环境。
 
 ## Linux

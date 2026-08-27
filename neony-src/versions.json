@@ -1,13 +1,19 @@
 {
   "current": {
-    "sha": "117e6a3f3b890163f5d2aaa1464c7f02c5681b0b",
-    "short": "117e6a3",
-    "tag": "v0.3.0.post1",
+    "sha": "c3f97240ddc312c610076f15a6307576ebcb7987",
+    "short": "c3f9724",
+    "tag": "v0.3.1",
     "ref": "",
-    "date": "2026-08-26",
-    "message": "chore: release 0.3.0.post1"
+    "date": "2026-08-27",
+    "message": "chore: bump version"
   },
   "tags": [
+    {
+      "name": "v0.3.1",
+      "sha": "c3f97240ddc312c610076f15a6307576ebcb7987",
+      "short": "c3f9724",
+      "date": "2026-08-27"
+    },
     {
       "name": "v0.3.0.post1",
       "sha": "117e6a3f3b890163f5d2aaa1464c7f02c5681b0b",
@@ -107,6 +113,18 @@
   ],
   "history": [
     {
+      "sha": "25e4b4ee1285117b8ce36cd4d1aedab6fe244bf1",
+      "short": "25e4b4e",
+      "date": "2026-08-27",
+      "message": "feat(components): stabilize public APIs and…"
+    },
+    {
+      "sha": "117e6a3f3b890163f5d2aaa1464c7f02c5681b0b",
+      "short": "117e6a3",
+      "date": "2026-08-26",
+      "message": "chore: release 0.3.0.post1"
+    },
+    {
       "sha": "cb851af2682c2008154b5b2744bf790328f500f5",
       "short": "cb851af",
       "date": "2026-08-25",
@@ -147,18 +165,6 @@
       "short": "5194992",
       "date": "2026-08-20",
       "message": "feat(page): use VStack for default layout"
-    },
-    {
-      "sha": "ef001d4c48e515b048beffe01fc9fbc38fa1a813",
-      "short": "ef001d4",
-      "date": "2026-08-18",
-      "message": "feat(componenets, events): plenty of compon…"
-    },
-    {
-      "sha": "ef0ede38fb9709a40a9e72e2214e31dfcaa82582",
-      "short": "ef0ede3",
-      "date": "2026-08-14",
-      "message": "docs: fix missing blank lines between parag…"
     }
   ]
 }

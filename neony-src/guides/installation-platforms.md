@@ -14,7 +14,7 @@ python -m pip install neony
 ```
 
 To build or modify the repository itself, use the development setup
-documented in [Contributing](https://github.com/HarcicYang/Neony/blob/117e6a3/CONTRIBUTING.md).
+documented in [Contributing](https://github.com/HarcicYang/Neony/blob/c3f9724/CONTRIBUTING.md).
 
 ## Linux
 

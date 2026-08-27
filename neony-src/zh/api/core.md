@@ -169,7 +169,7 @@ Image(local_url("~/Music/song.mp3"))
 它支持 HTTP `Range` 请求(`206 Partial Content`,区间不可满足时返回
 `416`)、应答 `HEAD`、猜测 MIME 类型，并发送 `ETag` / `Last-Modified` /
 `Accept-Ranges`。没有路径白名单：Neony 页面是受信任的应用内容。参见
-[`demo_protocols.py`](https://github.com/HarcicYang/Neony/blob/117e6a3/demo_protocols.py)。
+[`demo_protocols.py`](https://github.com/HarcicYang/Neony/blob/c3f9724/demo_protocols.py)。
 
 **媒体播放** —— 受管 `Video` / `Audio` 组件会自动加载 `neony://…`
 源，因此本地媒体播放与进度拖动在 `file://` 子资源被拦截的环境下照常
@@ -349,4 +349,4 @@ app.tray = Tray(
 - `on_left_click` — `menu_on_left_click=False` 时左键松开触发
   （典型用途：切换窗口）。
 - 平台注意：**Linux 需要 libayatana-appindicator**；tooltip 不支持、
-  菜单创建后不可替换。参见 [`demo_tray.py`](https://github.com/HarcicYang/Neony/blob/117e6a3/demo_tray.py)。
+  菜单创建后不可替换。参见 [`demo_tray.py`](https://github.com/HarcicYang/Neony/blob/c3f9724/demo_tray.py)。

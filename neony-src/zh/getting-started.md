@@ -3,7 +3,7 @@
 
 本教程会带你从一个空的 Python 文件开始，构建一个小型响应式桌面窗口。
 
-示例使用的公开导入路径和模式与 [`demo_hello.py`](https://github.com/HarcicYang/Neony/blob/117e6a3/demo_hello.py) 一致。
+示例使用的公开导入路径和模式与 [`demo_hello.py`](https://github.com/HarcicYang/Neony/blob/c3f9724/demo_hello.py) 一致。
 
 ## 1. 安装前置
 
@@ -15,7 +15,7 @@ Neony 需要 Python 3.11 或更高版本，以及对应平台的原生 WebView �
 python -m pip install neony
 ```
 
-如果你想构建或修改 Neony 本身，请改用[贡献指南](https://github.com/HarcicYang/Neony/blob/117e6a3/CONTRIBUTING.zh.md)
+如果你想构建或修改 Neony 本身，请改用[贡献指南](https://github.com/HarcicYang/Neony/blob/c3f9724/CONTRIBUTING.zh.md)
 中描述的仓库环境。
 
 平台相关依赖见[安装与平台指南](/zh/guides/installation-platforms)。
@@ -56,7 +56,7 @@ launch(page, title="My App", width=480, height=360)
 python hello.py
 ```
 
-仓库中的同等示例是 [`demo_hello.py`](https://github.com/HarcicYang/Neony/blob/117e6a3/demo_hello.py)。需要对照经过测试
+仓库中的同等示例是 [`demo_hello.py`](https://github.com/HarcicYang/Neony/blob/c3f9724/demo_hello.py)。需要对照经过测试
 的仓库示例时，优先阅读该文件。
 
 ## 3. 理解界面树
@@ -74,7 +74,7 @@ python hello.py
 - `fill=True`：让 chrome 或布局占满窗口高度；
 - flex 组件的 `grow`：吸收剩余空间。
 
-[`demo_builder.py`](https://github.com/HarcicYang/Neony/blob/117e6a3/demo_builder.py) 展示了居中页面、原始样式 `Div` 和
+[`demo_builder.py`](https://github.com/HarcicYang/Neony/blob/c3f9724/demo_builder.py) 展示了居中页面、原始样式 `Div` 和
 框架组件的组合方式。
 
 ## 4. 处理用户事件
@@ -114,7 +114,7 @@ element.bind_visible(signal)
 
 使用 `Computed` 表示派生值，使用 `effect()` 处理副作用；需要事件上下文或
 多步骤行为时，仍然使用普通 `on_*` 回调。完整示例
-[`demo_reactive.py`](https://github.com/HarcicYang/Neony/blob/117e6a3/demo_reactive.py) 同时展示 Signal、Computed、Effect、
+[`demo_reactive.py`](https://github.com/HarcicYang/Neony/blob/c3f9724/demo_reactive.py) 同时展示 Signal、Computed、Effect、
 `bind_value`、`bind_style` 和 `bind_visible`。
 
 ## 6. 设置样式
@@ -143,10 +143,10 @@ surface = Div(
 
 - 需要安装帮助：阅读[安装与平台指南](/zh/guides/installation-platforms)。
 - 需要状态同步：阅读[响应式 API](/zh/api/reactive)，先运行
-  [`demo_reactive.py`](https://github.com/HarcicYang/Neony/blob/117e6a3/demo_reactive.py)。
+  [`demo_reactive.py`](https://github.com/HarcicYang/Neony/blob/c3f9724/demo_reactive.py)。
 - 需要无边框窗口：查 API 中的 `Page`、`WindowConfig`、`TitleBar`，再运行
-  [`demo_custom_window.py`](https://github.com/HarcicYang/Neony/blob/117e6a3/demo_custom_window.py)。
-- 需要多窗口：运行 [`demo_multi_window.py`](https://github.com/HarcicYang/Neony/blob/117e6a3/demo_multi_window.py)。
+  [`demo_custom_window.py`](https://github.com/HarcicYang/Neony/blob/c3f9724/demo_custom_window.py)。
+- 需要多窗口：运行 [`demo_multi_window.py`](https://github.com/HarcicYang/Neony/blob/c3f9724/demo_multi_window.py)。
 - 需要组件画廊：运行：
 
   ```bash
@@ -154,4 +154,4 @@ surface = Div(
   ```
 
 精确签名请查 [API 索引](/zh/api/)；修改仓库前请阅读
-[贡献指南](https://github.com/HarcicYang/Neony/blob/117e6a3/CONTRIBUTING.zh.md)。
+[贡献指南](https://github.com/HarcicYang/Neony/blob/c3f9724/CONTRIBUTING.zh.md)。
