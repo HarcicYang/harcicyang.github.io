@@ -169,7 +169,7 @@ Image(local_url("~/Music/song.mp3"))
 它支持 HTTP `Range` 请求(`206 Partial Content`,区间不可满足时返回
 `416`)、应答 `HEAD`、猜测 MIME 类型，并发送 `ETag` / `Last-Modified` /
 `Accept-Ranges`。没有路径白名单：Neony 页面是受信任的应用内容。参见
-[`demo_protocols.py`](https://github.com/HarcicYang/Neony/blob/c3f9724/demo_protocols.py)。
+[`demo_protocols.py`](https://github.com/HarcicYang/Neony/blob/438fd49/demo_protocols.py)。
 
 **媒体播放** —— 受管 `Video` / `Audio` 组件会自动加载 `neony://…`
 源，因此本地媒体播放与进度拖动在 `file://` 子资源被拦截的环境下照常
@@ -190,13 +190,18 @@ Pydantic 配置模型。`WindowConfig` 负责几何与外观
 无边框窗口没有 OS 装饰——内联图标见 [`TitleBar`](/zh/api/layout-chrome#titlebar) 的 `icon`
 参数，运行时更换见 [`NeonApplication.set_icon()`](#neonapplication)。
 
+**`WindowConfig.sync_visibility`** — 默认开启：窗口隐藏或最小化时，
+底层 webview 一同隐藏，平台得以节流并降低 CPU 占用。托盘类应用需要
+在窗口隐藏期间继续渲染时设为 `False`。
+
 **`WebViewConfig.default_context_menus`** — 默认关闭：应用自绘菜单
 （`Menu` 组件、`contextmenu` 事件），webview 的原生右键菜单会盖住
 它们。需要平台默认菜单时设为 `True`。
 
 ## `Page`
 
-顶层弹性列容器。两层结构：全屏背景层 + 限宽居中的内容列。
+顶层弹性列容器。页面包含全局浮层时通常有三层：全屏背景、限宽居中的
+内容列，以及内部覆盖层宿主。
 
 ```python
 Page(gap="16px", padding="24px", max_width="720px")
@@ -208,6 +213,12 @@ Page(fill=True, radius="12px")  # 装饰性布局
 `radius`
 
 `fill=True` 撑满窗口高度。`radius` 圆角窗口边框（用于透明无边框窗口）。
+
+`build()` 时，Page 会把带 portal 标记的浮层根节点移入内容列之后的内部
+`OverlayHost`。这样 `Dialog`、`Popover`、`Drawer`、`CommandPalette`、
+`Menu` 与 `Toast` 不再受 transform、filter 或 overflow 裁剪祖先影响，
+同时无需改变应用侧的挂载方式。宿主与 portal 标记均为框架内部实现，
+不暴露公开 portal API。
 
 **方法：** `add(child)`（链式）、`on_close(fn)`（链式 —— 见
 [生命周期](#生命周期)）、`on_focus(fn)` / `on_blur(fn)`（链式）、
@@ -349,4 +360,4 @@ app.tray = Tray(
 - `on_left_click` — `menu_on_left_click=False` 时左键松开触发
   （典型用途：切换窗口）。
 - 平台注意：**Linux 需要 libayatana-appindicator**；tooltip 不支持、
-  菜单创建后不可替换。参见 [`demo_tray.py`](https://github.com/HarcicYang/Neony/blob/c3f9724/demo_tray.py)。
+  菜单创建后不可替换。参见 [`demo_tray.py`](https://github.com/HarcicYang/Neony/blob/438fd49/demo_tray.py)。

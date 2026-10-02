@@ -21,6 +21,27 @@ GlassPanel(Heading("Frosted"), background=url, grow=True)  # frosted stage
   overrides the default 12px corner radius; `width` / `height` fix the
   panel to a definite size (pair with the default non-`grow` mode).
 
+## Grid container
+
+```python
+from neony.dom import Columns  # CSS value types live in neony.dom
+
+GridView(cards, columns=Columns.responsive(120))  # card wall that reflows
+GridView(cards, columns=Columns.fixed(3), gap="12px")
+GridView(cards, uniform=False)  # tiles keep their own height
+```
+
+- `columns` picks the column layout: `Columns.fixed(n)` for `n` even
+  columns, `Columns.responsive(min_width)` for as many columns as fit
+  (add `fit=True` so a short last row stretches wide), or
+  `Columns(tracks=...)` for explicit widths. See
+  [DOM & CSS](/api/dom-css) for the full `Columns` reference.
+- `uniform=True` (default) makes every tile in a row as tall as the
+  tallest one — picture grids stay flush. `uniform=False` keeps each
+  tile at its natural height, top-aligned.
+- Long labels wrap inside their tile instead of overflowing, and rows
+  reflow as the window resizes — no extra styling needed.
+
 ## `TitleBar`
 
 Custom window chrome for frameless windows. Requires
@@ -221,6 +242,9 @@ people = DataTable(
     ],
     row_key=lambda r: r["name"],  # default: row index
     active_key="Ada",
+    virtualize="auto",  # optional: bool or "auto"
+    row_height=36,
+    overscan=8,
 )
 people.on_change(lambda e: print(e.value))  # selected row key
 people.sort_by = ("age", "desc")  # header clicks sort too
@@ -231,7 +255,8 @@ Columns and rows can also be appended chainably:
 `DataTable().column("Name").row({"name": "Ada"})`.
 
 **Options:** `DataTable(columns=None, rows=None, *, row_key=None,
-selection="single", active_key=None, selected_keys=None, edge_fade=True)`.
+selection="single", active_key=None, selected_keys=None,
+virtualize="auto", row_height=36, overscan=8, edge_fade=True)`.
 
 `Column(title, key=None, width=None, sortable=False, align=None,
 format=None, sort_key=None)` — `key` defaults to the lowercased title;
@@ -246,6 +271,15 @@ switching columns starts asc); sorting is numeric-aware (or via
 
 The header is `position: sticky` inside the scroll container, so header
 and rows stay aligned under horizontal scroll.
+
+**Virtualization.** `virtualize="auto"` (the default) keeps the full DOM
+for up to 200 rows and mounts a bounded window above that threshold.
+`virtualize=True` always virtualizes; `False` keeps every row mounted.
+Rows use a fixed `row_height` and `overscan` rows above and below the
+viewport. Sorting, selection, row keys and keyboard navigation continue
+to operate on the complete model, including rows currently outside the
+window. Set `virtualize=False` when the complete row DOM must remain
+mounted; this trades memory and update cost for a conventional full tree.
 
 **Selection.** `selection="single"` (default) exposes `selected_key`
 (programmatic writes never fire callbacks); `selection="multi"` exposes

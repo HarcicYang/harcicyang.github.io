@@ -17,6 +17,7 @@ Button("Ghost", variant="ghost")  # bordered surface
 Button("Delete", variant="danger")  # danger color
 Button("Glass", glass=True)  # frosted variant
 Button("Ok", disabled=True)  # dimmed
+Button("Save", loading=True)  # busy; blocks clicks and sets aria-busy
 button.on_click(handler)  # click event
 ```
 
@@ -25,6 +26,7 @@ button.on_click(handler)  # click event
 ```python
 cb = Checkbox("Pizza")
 cb.checked = True  # programmatic — no callback
+cb.indeterminate = True  # mixed visual/state; user click clears it
 cb.on_change(lambda e: print(e.value))  # value = checked bool
 ```
 
@@ -33,7 +35,61 @@ cb.on_change(lambda e: print(e.value))  # value = checked bool
 ```python
 inp = Input(placeholder="Your name…", type="text")  # text | password | email | number …
 inp.on_input(lambda e: print(e.value))  # live value
+search = Input(prefix=icons.search, clearable=True, placeholder="Search…")
+pwd = Input(type="password", reveal_password=True)
+search.on_submit(lambda e: run_search(e.value))
 ```
+
+**Options:** `Input(..., prefix=None, suffix=None, clearable=False,
+reveal_password=False)`. Prefix/suffix accept text, `Icon`, a Component
+or a DOMElement. The clear action is user-driven and emits both `input`
+and `change`; password reveal only toggles the native input type.
+`on_submit(fn)` fires on Enter outside IME composition with
+`event.value` set to the current text.
+
+### `Textarea`
+
+```python
+notes = Textarea("Notes", value="", rows=6, resize="vertical")
+notes.value = "Draft"  # programmatic — no callback
+notes.bind_value(draft)  # Signal[str] ↔ textarea value
+notes.on_input(on_preview)  # live value while typing
+notes.on_change(on_save)  # blur after an edit
+```
+
+**Options:** `Textarea(placeholder="", *, value="", rows=4,
+resize="vertical", glass=False, disabled=False, maxlength=None)`.
+`resize` is `"none"`, `"both"`, `"horizontal"` or `"vertical"`.
+`bind_value` writes on `input`; `change` is a separate callback channel.
+
+### `FormField`
+
+```python
+email = FormField(
+    "Email",
+    Input(type="email"),
+    help="Never shared.",
+    required=True,
+    validator=lambda value: None if "@" in value else "Invalid email",
+)
+email.validate()  # updates invalid / error and returns bool
+```
+
+**Options:** `FormField(label, control, *, help=None, required=False,
+invalid=False, error=None, validator=None)`.
+
+`FormField` accepts any component or DOM node, connects the visible
+label with `aria-labelledby`, connects visible help/error text with
+`aria-describedby`, and mirrors `required` / `invalid` into
+`aria-required` / `aria-invalid`. The root is a `div`, so a compound
+control containing buttons is never implicitly activated by a label.
+
+`validator(value)` returns `None` for valid input or an error string.
+`validate(value=...)` checks `required`, runs the validator and updates
+`invalid` / `error`; when `value` is omitted it reads `value` or
+`checked` from the wrapped component. Validation is programmatic and
+never fires user callbacks. Form-level orchestration and cross-field
+rules remain the caller's responsibility.
 
 ### `Radio` & `RadioGroup`
 
@@ -116,6 +172,37 @@ suggestion in one keypress**, Escape / click-away closes. Value
 semantics match `Input`: `on_input` records state only, `on_change`
 fires on a pick or blur.
 
+### `ChoiceItem`
+
+```python
+from neony.application.elements import ChoiceItem, MenuSeparator
+
+menu = Menu(
+    ChoiceItem("rename", "Rename", icon=icons.edit, shortcut="F2"),
+    MenuSeparator(),
+    ChoiceItem("delete", "Delete", danger=True),
+)
+
+select = Select(
+    "Plan",
+    options=[
+        ChoiceItem("free", "Free"),
+        ChoiceItem("pro", "Pro"),
+        ChoiceItem("legacy", "Legacy", disabled=True),
+    ],
+)
+```
+
+`ChoiceItem(value, label=None, *, icon=None, disabled=False,
+danger=False, shortcut=None, checked=None, keywords=())` is the rich
+option model shared by Menu, Dropdown, Select, ComboBox and
+CascadingDropdown. Legacy `str` and `(value, label)` entries remain
+valid. Disabled choices are skipped by keyboard navigation and never
+dispatch `change`; `MenuSeparator()` renders a non-selectable divider.
+Menu renders a check slot when `checked` is not `None`. `shortcut` and
+`keywords` are display/filter metadata; they do not register global
+keyboard shortcuts.
+
 ### `Slider`
 
 ```python
@@ -150,6 +237,69 @@ A rounded track with an accent fill that transitions on value changes
 ARIA `role="progressbar"` + `aria-valuenow/min/max` are carried on the
 bar.
 
+## Navigation
+
+### `SegmentedControl`
+
+```python
+view = SegmentedControl(
+    ChoiceItem("list", "List"),
+    ChoiceItem("grid", "Grid"),
+    ChoiceItem("board", "Board", disabled=True),
+    value="list",
+)
+view.bind_value(view_mode)
+view.on_change(lambda event: print(event.value))
+```
+
+A compact single-value selector. Values, labels, icons and disabled
+state use the shared `ChoiceItem` model. ArrowLeft/ArrowRight cycle
+through enabled segments, Home/End jump to the ends, and `bind_value`
+uses the standard `change` protocol.
+
+### `Breadcrumb`
+
+```python
+crumbs = Breadcrumb("Workspace", ("project", "Neony"), "Settings")
+crumbs.on_change(lambda event: router.go(event.value))
+```
+
+The final item is marked `aria-current="page"` and does not dispatch.
+Ancestor items behave like links and emit their value through
+`on_change`. `ChoiceItem` can add icons or disable individual crumbs.
+
+### `Pagination`
+
+```python
+pager = Pagination(value=1, page_count=20, siblings=1, boundary=1)
+pager.bind_value(page)
+pager.on_change(lambda event: load_page(event.value))
+```
+
+Previous/next controls and compressed page buttons share one clamped
+integer value. ArrowLeft/ArrowRight move one page and Home/End jump to
+the boundaries.
+
+### `Stepper`
+
+```python
+steps = Stepper(
+    Step("Account", account_form, key="account"),
+    Step("Plan", plan_form, key="plan"),
+    Step("Review", review_panel, key="review"),
+    linear=True,
+)
+steps.bind_selected(step_key)
+steps.next()
+steps.previous()
+```
+
+A guided sequence with persistent panels. `selected_key` /
+`bind_selected` follow the standard selection protocol. Disabled steps
+are skipped; `linear=True` allows user movement to visited steps and
+the next step, while `next()` / `previous()` remain explicit
+navigation APIs.
+
 ## Text & tabs
 
 ### `Heading` & `Text`
@@ -161,6 +311,38 @@ Text("Muted", role="secondary")  # muted
 Text("Error", role="danger")  # danger
 Text("OK", role="success")  # success
 ```
+
+### Streaming text
+
+Reactive text accepts `str`, `Signal[str]`, or `Computed[str]` anywhere a
+component takes `text`. When a bound value grows by pure extension — the
+streaming case — the diff ships only the appended chunk
+(`append_text` patch) instead of the full string, so token-by-token
+updates stay O(chunk) on the bridge.
+
+```python
+t = Text("")
+t.append_text("Hello, ")  # chainable imperative append
+t.append_text("world")
+t.text = "reset"  # plain replacement
+
+async for token in llm.reply(prompt):
+    t.append_text(token)  # or: task = t.stream(tokens())
+
+task = t.stream(tokens_aiter)  # frame-batched consumption (~60fps),
+task.cancel()  #   or t.stop_stream()
+```
+
+`MessageBubble`, `NoticeBubble` and `Markdown` expose the same
+`append_text()` / `stream()` / `stop_stream()` API. Appending to a
+component that was created with a Signal/Computed disposes that binding
+and switches the component to imperative ownership.
+
+Every `stream()` runs with full effects: a blinking caret trails the
+growing text, every append fades in on its own (Markdown streams fade
+their newest block on each update), and a message bubble glows softly
+until the stream ends (a stop or finish removes all of it).
+Imperative `append_text()` calls stay animation-free.
 
 ### `Tabs`
 
@@ -222,6 +404,79 @@ selection protocol.
 
 ## Overlays & feedback
 
+Each `Page` builds an internal `OverlayHost` after its content column.
+Global overlay roots marked as portals are moved into that host during
+`Page.build()`, so `position: fixed` surfaces do not inherit a transformed,
+filtered or clipped containing block. Dialog, PromptDialog, Menu, Toast,
+Drawer, CommandPalette, and the Popover panel all use this path; the host is
+internal and applications continue to mount components normally with
+`page.add(...)`.
+
+### `Alert`
+
+```python
+undo = Button("Undo")
+
+alert = Alert(
+    "Saved",
+    description="All changes synced.",
+    variant="success",  # accent | success | danger | neutral
+    dismissible=True,
+    actions=[undo],
+)
+
+
+def undo_changes(_event):
+    revert_changes()
+    alert.dismiss()
+
+
+undo.on_click(undo_changes)
+alert.on_dismiss(lambda _alert: update_status())
+alert.dismiss()
+alert.dismissed = False  # restore without firing on_dismiss
+```
+
+**Options:** `Alert(title="", *, description="", variant="neutral",
+dismissible=False, dismiss_label="Dismiss", actions=())`. `actions`
+accepts components or DOM nodes; the alert does not invent action
+behavior, so wire the action's own event handler.
+
+`dismiss()` and `dismissed = True` are lifecycle pseudo-events: both
+hide the alert and fire `on_dismiss(alert)`, including programmatic
+writes. A close-button click uses the same path. `title`,
+`description` and `variant` are settable. Action buttons are independent:
+the example's Undo performs an application action and then dismisses,
+while `X` only dismisses.
+
+### `Spinner`, `Skeleton` & `EmptyState`
+
+```python
+loading = Spinner("Loading projects", size="24px", role="accent")
+loading.label = "Saving..."
+
+skeleton = Skeleton(variant="text", lines=3, width="70%")
+skeleton.animation = False
+
+empty = EmptyState(
+    "No projects",
+    description="Create one to start.",
+    icon=icons.star,
+    actions=[Button("New project")],
+)
+empty.description = "Try another filter."
+```
+
+**Options:** `Spinner(label="", *, size="20px", role="accent")`;
+`Skeleton(variant="text", *, lines=1, width=None, height=None,
+radius=None, animation=True)`; `EmptyState(title, *, description="",
+icon=None, actions=())`.
+
+Spinner exposes `label`, `size` and `role` (`accent`, `success`,
+`danger`, `neutral`). Skeleton supports `text`, `rect` and `circle`
+variants; `animation=False` keeps the placeholder static. EmptyState
+accepts arbitrary components or DOM nodes in `actions`.
+
 ### `Dialog`
 
 ```python
@@ -229,6 +484,7 @@ dlg = Dialog(
     title="Confirm",
     content=Text("..."),
     width="380px",
+    initial_focus=confirm_button,
     actions=[
         DialogAction("确认", on_click=confirm_handler),  # runs, then closes
         DialogAction("取消", variant="ghost"),
@@ -242,13 +498,118 @@ dlg.on_close(lambda d: print("closed"))  # called with the dialog
 A fixed full-page scrim (`--color-bg-overlay`, theme-following) with a
 centered panel. Close paths: scrim click, Escape (while focus is
 inside), or click-away. `closable=False` disables only
-the scrim. `actions` render as a row of themed buttons — `DialogAction`
+the scrim. `initial_focus` accepts a mounted component or DOM element;
+when omitted, the first focusable child receives focus. Dialog traps
+Tab / Shift+Tab inside the panel. `actions` render as a row of themed buttons — `DialogAction`
 takes a label (positional), a `variant` (`primary`/`ghost`/`danger`),
 an `on_click` callback (called with the dialog, sync or async) and
 `close_on_click` (default True). NOTE: any `backdrop-filter` /
-`transform` ancestor becomes the containing block for
-`position: fixed` — mount the dialog at the page root or in a
-non-filtered container.
+`transform` ancestor becomes the containing block for `position: fixed`
+when the component is used outside a Page. Page automatically moves
+Dialog into its internal OverlayHost.
+
+Dialog content may contain components with their own popups, such as
+Dropdown, Select, ComboBox and Tooltip. An opened child joins the same
+window-level logical layer stack: its numeric band remains `popup`, but
+its stack order follows the modal. A click inside the dialog but outside
+the child popup closes only the child, not the Dialog. The Gallery's
+Overlays page contains a runnable example.
+
+### `Popover`
+
+```python
+anchor = Button("Filters")
+filters = Popover(
+    anchor,
+    filter_panel,
+    placement="bottom",
+    align="start",
+)
+anchor.on_click(lambda _event: filters.toggle())
+
+filters.on_open(on_opened)
+filters.on_close(on_closed)
+filters.open = True
+```
+
+**Options:** `Popover(anchor, content, *, placement="bottom",
+align="start", open=False, owner=None, focus_scope="none",
+initial_focus=None)`.
+
+`anchor` accepts a Component, DOMElement or string; `content` accepts a
+Component or DOMElement. `placement` is `top`, `right`, `bottom` or
+`left`; `align` is `start`, `center` or `end` on the cross axis. The
+browser runtime measures the anchor, flips to the opposite side when the
+requested side has insufficient room, and clamps the panel to the viewport.
+An open panel repositions on scroll and resize.
+
+`open` is settable, and `toggle()` flips it. Programmatic writes dispatch the
+`open` / `close` pseudo-events registered with `on_open()` / `on_close()`.
+Opening a Popover closes the previously open Popover, registers the panel at
+the popover layer, closes on Escape or an outside click, and treats the anchor
+as inside for routing. Pass `owner=` when opening from another overlay so the
+Popover follows that layer and closes with it. `focus_scope="trap"` and
+`initial_focus=` opt into the shared modal focus contract; the default
+`focus_scope="none"` only establishes the layer and outside-click contract.
+
+### `Drawer`
+
+```python
+drawer = Drawer(
+    notification_panel,
+    title="Notifications",
+    side="right",
+    width="360px",
+    closable=True,
+)
+drawer.open = True
+drawer.on_open(on_opened)
+drawer.on_close(on_closed)
+```
+
+**Options:** `Drawer(content, *, title="", side="right",
+width="360px", open=False, closable=True)`.
+
+A modal edge panel with a full-window scrim, directional entrance / exit
+animation and the same focus trap as Dialog. `side` is `left`, `right`,
+`top` or `bottom`; `width` sets the panel thickness for every side. `title`
+accepts text or a reactive text source and, when provided, is wired to the
+panel's accessible label.
+
+`open` is settable and dispatches the `open` / `close` pseudo-events. The
+scrim closes the drawer only when `closable=True`; Escape and parent-layer
+cascades still apply. Drawer is modal, so opening it closes lower transient
+layers and captures / restores focus through the shared layer manager.
+
+### `CommandPalette`
+
+```python
+palette = CommandPalette(
+    Command("open", "Open file", keywords=("document",), shortcut="Ctrl+O"),
+    Command("theme", "Change theme", description="Cycle the active theme"),
+    hotkey={"darwin": "Meta+Shift+P", "default": "Ctrl+Shift+P"},
+)
+palette.on_change(run_command)
+```
+
+**Options:** `CommandPalette(*commands, hotkey=None,
+placeholder="Search commands…", open=False)`.
+
+`Command(value, label=None, *, description="", keywords=(), shortcut=None,
+icon=None, disabled=False)` describes one row. Filtering is local and
+case-insensitive across `value`, `label`, `description` and `keywords`.
+ArrowUp/Down clamp through the enabled rows, Home/End jump to the first or
+last enabled row, and Enter selects the active row. Disabled commands are
+never selected and do not dispatch `change`.
+
+`query` is settable and filters immediately; `commands` returns a read-only
+snapshot. Use `add_command(*commands)` to append entries; duplicate values
+raise `ValueError`. Opening resets the query and focuses the search field.
+Selecting a command closes the palette and dispatches `change` with its
+`value`; Escape and the scrim also close it. `shortcut` on a Command is only
+display metadata. The constructor's `hotkey` is the real Page-level shortcut
+that opens the palette and is collected automatically when the palette is
+mounted in a Page.
 
 ### `PromptDialog`
 
@@ -272,8 +633,8 @@ focus) fires `on_submit` with the field's current value, then closes;
 cancelling (the ghost button, `Escape`, scrim click, or click-away)
 closes without firing it. `value` is the field's text — set it before
 opening to pre-fill, read it after submit. `prompt`, `confirm_label`,
-`cancel_label`, and `placeholder` are configurable. Same `position:
-fixed` caveat as `Dialog` — mount at the page root.
+`cancel_label`, and `placeholder` are configurable. Page automatically
+moves the PromptDialog into its internal OverlayHost.
 
 ### `Tooltip`
 
@@ -353,13 +714,17 @@ menu = Menu(
     ),
 )
 btn.on_contextmenu(lambda e: menu.open_at(e.x, e.y))  # cursor position
+# From inside a Dialog, pass owner so the Menu follows and closes with it:
+btn.on_contextmenu(lambda e: menu.open_at(e.x, e.y, owner=dialog))
 menu.on_change(lambda e: print(e.value))
 ```
 
 A fixed popup positioned with `open_at(x, y)` — typically a
 `contextmenu` event's viewport coordinates, so no measurement is
 needed. Same keyboard nav as `Dropdown`; closes on selection, Escape,
-or click-away. The panel pops upward — its bottom edge anchors 8px
+or click-away. Optional `owner=` accepts the Component or DOMElement that
+opened it; when that owner is an open Dialog or other layer, the Menu
+follows its logical layer and closes with it. The panel pops upward — its bottom edge anchors 8px
 above the cursor — and clamps to the viewport via `calc()` max
 width/height, so it never overflows an edge. `MenuBranch(label, items)`
 adds a cascading branch: `ArrowRight` / `Enter` opens the child menu,
@@ -392,9 +757,11 @@ height); bottom placements always hug the window edge. Each card enters
 with a placement-specific directional animation (top placements drop
 in, bottom ones rise up, corners slide diagonally) and leaves by
 replaying the same keyframe reversed toward that edge. The host is a
-full-viewport `position: fixed` layer at z-index 1100 with
+full-viewport `position: fixed` layer in the framework-managed
+notification band with
 `pointer-events: none` (clicks pass through to the page) — mount it at
-the page root, away from `backdrop-filter` / `transform` ancestors.
+the page root when used outside a Page; Page moves it into the internal
+OverlayHost automatically.
 
 ## Content
 
@@ -462,6 +829,39 @@ control card. The ownership model, transport row, commands, events, and
 options match — minus the picture surface — and HEVC transcode fallback
 applies too. `width` sizes the card; `media_styles` overrides only the
 inner native media element's styles.
+
+### `Markdown`
+
+```python
+from neony.application.elements import Markdown
+
+doc = Markdown("# Release notes\n\n- **bold** and `code`\n\n```python\nprint(1)\n```\n")
+doc.append_text("\n\nMore text streams here.")  # token-by-token friendly
+await doc.stream(md_tokens)  # frame-batched streaming
+```
+
+Renders Markdown in the webview — parsing, HTML rendering and code
+highlighting run in the browser (markdown-it + highlight.js, bundled
+with the runtime; no Python-side dependency). Python owns the raw
+*source*: updates push the source text through an internal command and
+the element re-renders in place, so streaming appends stay cheap no
+matter how large the rendered structure grows.
+
+Raw HTML inside the source is escaped, so untrusted input stays
+inert. Tables, strikethrough and linkification follow the GFM-ish
+defaults, and links open in the system browser.
+
+Everything you see is themed: colors come from the theme tokens, so all
+eight presets — and live theme switches — restyle the whole document.
+Fenced code blocks sit on one uniform code surface — the page
+background token: a single clean dark in dark mode, a single clean
+light in light mode, no theme hue blended in — with a subtle border.
+Inline code keeps a quiet chip, headings carry a rule, tables
+zebra-stripe, and code highlighting uses the theme's own hues. On a
+colored surface the palette adapts: inside an accent-filled `from_me`
+bubble, the code well and inline code chips take the theme's secondary
+accent, and links, rules and table bands follow it — the bubble's own
+hue at a readable tone.
 
 ### `Avatar`
 
@@ -576,6 +976,20 @@ Quick actions also support `actions_placement="below" | "beside"`,
 `content` / `set_content()`, `actions_visible` / `show_actions()` /
 `hide_actions()`, `action_elements()` / `action_values()`, and
 `overlay_slot` for attaching a bubble-local overlay.
+
+A bubble's text streams well: `append_text(chunk)` ships only the
+chunk when the browser already shows the previous text, and
+`stream(chunks)` consumes a sync iterable or async iterator at frame
+cadence (`stop_stream()` cancels mid-stream). With `markdown=True` the
+bubble hosts a `Markdown` component instead — `text` / `append_text()` /
+`stream()` carry the raw source and the webview renders it in place
+(see [`Markdown`](#markdown)):
+
+```python
+reply = MessageBubble("", name="Assistant", markdown=True)
+async for token in llm.reply(prompt):
+    reply.append_text(token)
+```
 
 ### `NoticeBubble`
 

@@ -17,6 +17,7 @@ Button("Ghost", variant="ghost")  # 描边表面
 Button("Delete", variant="danger")  # 危险色
 Button("Glass", glass=True)  # 磨砂变体
 Button("Ok", disabled=True)  # 置灰
+Button("Save", loading=True)  # 忙碌态；阻止点击并设置 aria-busy
 button.on_click(handler)  # 点击事件
 ```
 
@@ -25,6 +26,7 @@ button.on_click(handler)  # 点击事件
 ```python
 cb = Checkbox("Pizza")
 cb.checked = True  # 编程设置 — 不触发回调
+cb.indeterminate = True  # 半选状态；用户点击后清除
 cb.on_change(lambda e: print(e.value))  # value = 是否勾选
 ```
 
@@ -33,7 +35,58 @@ cb.on_change(lambda e: print(e.value))  # value = 是否勾选
 ```python
 inp = Input(placeholder="你的名字…", type="text")  # text | password | email | number …
 inp.on_input(lambda e: print(e.value))  # 实时值
+search = Input(prefix=icons.search, clearable=True, placeholder="搜索…")
+pwd = Input(type="password", reveal_password=True)
+search.on_submit(lambda e: run_search(e.value))
 ```
+
+**参数:** `Input(..., prefix=None, suffix=None, clearable=False,
+reveal_password=False)`。prefix/suffix 接受文本、`Icon`、组件或
+DOM 元素。清除按钮属于用户操作，会同时派发 `input` 与 `change`；
+密码显隐只切换原生 input 类型。`on_submit(fn)` 在非 IME 组合状态的
+Enter 上触发，`event.value` 为当前文本。
+
+### `Textarea`
+
+```python
+notes = Textarea("备注", value="", rows=6, resize="vertical")
+notes.value = "草稿"  # 编程写入 —— 不触发回调
+notes.bind_value(draft)  # Signal[str] ↔ 多行文本值
+notes.on_input(on_preview)  # 编辑时实时触发
+notes.on_change(on_save)  # 编辑后失焦
+```
+
+**参数:** `Textarea(placeholder="", *, value="", rows=4,
+resize="vertical", glass=False, disabled=False, maxlength=None)`。
+`resize` 为 `"none"`、`"both"`、`"horizontal"` 或 `"vertical"`。
+`bind_value` 使用 `input` 通道写回；`change` 是独立的事件通道。
+
+### `FormField`
+
+```python
+email = FormField(
+    "邮箱",
+    Input(type="email"),
+    help="不会公开。",
+    required=True,
+    validator=lambda value: None if "@" in value else "邮箱格式无效",
+)
+email.validate()  # 更新 invalid / error 并返回 bool
+```
+
+**参数:** `FormField(label, control, *, help=None, required=False,
+invalid=False, error=None, validator=None)`。
+
+`FormField` 可包装任意组件或 DOM 节点，用 `aria-labelledby` 连接可见
+标签，用 `aria-describedby` 连接帮助与错误文本，并把 `required` /
+`invalid` 同步到 `aria-required` / `aria-invalid`。根节点是 `div`，
+因此包含按钮的复合控件不会被标签隐式激活。
+
+`validator(value)` 返回 `None` 表示通过，返回字符串表示错误。
+`validate(value=...)` 会检查 `required`、执行 validator，并更新
+`invalid` / `error`;省略 `value` 时从包装组件读取 `value` 或
+`checked`。验证是程序化操作,不会触发用户回调。Form 级编排和跨字段
+规则仍由调用方负责。
 
 ### `Radio` & `RadioGroup`
 
@@ -109,6 +162,35 @@ box.on_change(on_tag_change)  # event.value 是提交后的文本
 首/尾建议**、Escape / 点击外部关闭。值语义与 `Input` 一致：
 `on_input` 只记录状态，`on_change` 在选中建议或失焦时触发。
 
+### `ChoiceItem`
+
+```python
+from neony.application.elements import ChoiceItem, MenuSeparator
+
+menu = Menu(
+    ChoiceItem("rename", "重命名", icon=icons.edit, shortcut="F2"),
+    MenuSeparator(),
+    ChoiceItem("delete", "删除", danger=True),
+)
+
+select = Select(
+    "方案",
+    options=[
+        ChoiceItem("free", "免费"),
+        ChoiceItem("pro", "专业版"),
+        ChoiceItem("legacy", "旧版", disabled=True),
+    ],
+)
+```
+
+`ChoiceItem(value, label=None, *, icon=None, disabled=False,
+danger=False, shortcut=None, checked=None, keywords=())` 是 Menu、
+Dropdown、Select、ComboBox 与 CascadingDropdown 共用的富选项模型。
+原有 `str` 与 `(value, label)` 写法继续有效。disabled 选项会被键盘
+导航跳过，也不会派发 `change`；`MenuSeparator()` 渲染不可选择的
+分隔线。Menu 在 `checked` 非 `None` 时显示勾选槽位。`shortcut` 与 `keywords`
+是展示或过滤元数据，不会自动注册全局快捷键。
+
 ### `Slider`
 
 ```python
@@ -136,6 +218,64 @@ Progress("扫描中…", indeterminate=True)  # 滑动扫掠动画
 
 条上携带 ARIA `role="progressbar"` + `aria-valuenow/min/max`。
 
+## 导航
+
+### `SegmentedControl`
+
+```python
+view = SegmentedControl(
+    ChoiceItem("list", "列表"),
+    ChoiceItem("grid", "网格"),
+    ChoiceItem("board", "看板", disabled=True),
+    value="list",
+)
+view.bind_value(view_mode)
+view.on_change(lambda event: print(event.value))
+```
+
+紧凑的单值分段选择器。值、标签、图标与禁用状态复用统一的
+`ChoiceItem`。方向键循环切换可用项，Home/End 跳到首尾，`bind_value`
+使用标准 `change` 协议。
+
+### `Breadcrumb`
+
+```python
+crumbs = Breadcrumb("工作区", ("project", "Neony"), "设置")
+crumbs.on_change(lambda event: router.go(event.value))
+```
+
+最后一项标记为 `aria-current="page"` 且不派发事件；祖先项像链接一样
+通过 `on_change` 发出 value。`ChoiceItem` 可添加图标或禁用单项。
+
+### `Pagination`
+
+```python
+pager = Pagination(value=1, page_count=20, siblings=1, boundary=1)
+pager.bind_value(page)
+pager.on_change(lambda event: load_page(event.value))
+```
+
+前后页按钮与压缩页码共享一个整数、自动钳制范围。方向键移动一页，
+Home/End 跳到首尾。
+
+### `Stepper`
+
+```python
+steps = Stepper(
+    Step("账户", account_form, key="account"),
+    Step("方案", plan_form, key="plan"),
+    Step("确认", review_panel, key="review"),
+    linear=True,
+)
+steps.bind_selected(step_key)
+steps.next()
+steps.previous()
+```
+
+带持久化面板的步骤导航。`selected_key` / `bind_selected` 遵循标准选择
+协议；禁用步骤会被跳过。`linear=True` 时用户只能访问已到过的步骤和
+下一步；`next()` / `previous()` 保留显式导航能力。
+
 ## 文本与标签页
 
 ### `Heading` & `Text`
@@ -147,6 +287,31 @@ Text("次要", role="secondary")  # 次要文字
 Text("错误", role="danger")  # 危险文字
 Text("成功", role="success")  # 成功文字
 ```
+
+### 流式文本
+
+组件的 `text` 参数接受 `str`、`Signal[str]` 或 `Computed[str]`。当绑定值以纯追加方式增长——即流式场景——diff 只传输新增文本块（`append_text` 补丁）而非完整字符串，逐 token 更新在桥上的开销始终是 O(块大小)。
+
+```python
+t = Text("")
+t.append_text("你好，")  # 链式命令式追加
+t.append_text("世界")
+t.text = "重置"  # 整体替换
+
+async for token in llm.reply(prompt):
+    t.append_text(token)  # 或: task = t.stream(tokens())
+
+task = t.stream(tokens_aiter)  # 按帧合并消费（约 60fps），
+task.cancel()  #   或 t.stop_stream()
+```
+
+`MessageBubble`、`NoticeBubble` 和 `Markdown` 暴露同样的
+`append_text()` / `stream()` / `stop_stream()` API。对以 Signal/Computed
+创建的组件调用追加会先释放该绑定，组件转为命令式持有。
+
+每次 `stream()` 都自带完整动效：闪烁光标跟随增长的文本、每一次追加
+都独立渐显（Markdown 流每次更新渐显最新的块）、消息气泡在流式期间
+持续泛光——停止或结束后全部移除。命令式 `append_text()` 不带动画。
 
 ### `Tabs`
 
@@ -186,6 +351,75 @@ accordion.expanded_keys  # list[str]，当前展开的分组
 
 ## 浮层与反馈
 
+每个 `Page` 都会在内容列之后构建内部 `OverlayHost`。`Page.build()` 时，
+带 portal 标记的全局浮层根节点会移入该宿主，避免 `position: fixed`
+继承 transform、filter 或裁剪祖先形成的 containing block。Dialog、
+PromptDialog、Menu、Toast、Drawer、CommandPalette 与 Popover 面板均走
+这条路径；宿主属于内部实现，应用侧仍通过 `page.add(...)` 正常挂载。
+
+### `Alert`
+
+```python
+undo = Button("撤销")
+
+alert = Alert(
+    "已保存",
+    description="所有更改已同步。",
+    variant="success",  # accent | success | danger | neutral
+    dismissible=True,
+    actions=[undo],
+)
+
+
+def undo_changes(_event):
+    revert_changes()
+    alert.dismiss()
+
+
+undo.on_click(undo_changes)
+alert.on_dismiss(lambda _alert: update_status())
+alert.dismiss()
+alert.dismissed = False  # 恢复；不会触发 on_dismiss
+```
+
+**参数:** `Alert(title="", *, description="", variant="neutral",
+dismissible=False, dismiss_label="Dismiss", actions=())`。`actions`
+可接受组件或 DOM 节点；Alert 不会替操作按钮决定行为，因此需要为按钮
+注册自己的事件处理器。
+
+`dismiss()` 与 `dismissed = True` 是按生命周期设计的伪事件：两者都会
+隐藏提示并触发 `on_dismiss(alert)`，编程式写入也不例外；关闭按钮走同一
+路径。`title`、`description` 与 `variant` 均可更新。操作按钮彼此独立：
+示例中的撤销先执行应用逻辑，再关闭提示；`X` 只负责关闭。
+
+### `Spinner`、`Skeleton` 与 `EmptyState`
+
+```python
+loading = Spinner("正在加载项目", size="24px", role="accent")
+loading.label = "保存中……"
+
+skeleton = Skeleton(variant="text", lines=3, width="70%")
+skeleton.animation = False
+
+empty = EmptyState(
+    "暂无项目",
+    description="创建一个项目即可开始。",
+    icon=icons.star,
+    actions=[Button("新建项目")],
+)
+empty.description = "试试其他筛选条件。"
+```
+
+**参数:** `Spinner(label="", *, size="20px", role="accent")`；
+`Skeleton(variant="text", *, lines=1, width=None, height=None,
+radius=None, animation=True)`；`EmptyState(title, *, description="",
+icon=None, actions=())`。
+
+Spinner 暴露 `label`、`size` 与 `role`（`accent`、`success`、
+`danger`、`neutral`）。Skeleton 支持 `text`、`rect`、`circle`
+变体；`animation=False` 保持静态。EmptyState 的 `actions` 可接受任意
+组件或 DOM 节点。
+
 ### `Dialog`
 
 ```python
@@ -193,6 +427,7 @@ dlg = Dialog(
     title="确认",
     content=Text("..."),
     width="380px",
+    initial_focus=confirm_button,
     actions=[
         DialogAction("确认", on_click=confirm_handler),  # 执行后关闭
         DialogAction("取消", variant="ghost"),
@@ -206,12 +441,108 @@ dlg.on_close(lambda d: print("closed"))  # 回调接收对话框自身
 固定全屏 scrim 层（`--color-bg-overlay`，跟随主题）+ 居中面板。
 
 关闭途径：scrim 点击、Escape（焦点在对话框内时）、点击外部。
-`closable=False` 仅禁用 scrim。`actions` 渲染为
+`closable=False` 仅禁用 scrim。`initial_focus` 可传入已挂载组件或
+DOM 元素；省略时聚焦第一个可聚焦子元素。Dialog 会把 Tab / Shift+Tab
+限制在面板内部。`actions` 渲染为
 底部一排主题按钮 —— `DialogAction` 接受标签（位置参数）、
 `variant`（`primary`/`ghost`/`danger`）、`on_click` 回调（收对话框
 自身，同步或异步）与 `close_on_click`（默认 True）。注意：任何
-`backdrop-filter` / `transform` 祖先会成为 `position: fixed` 的
-containing block —— Dialog 应挂页面根或非过滤容器。
+`backdrop-filter` / `transform` 祖先在组件脱离 Page 使用时才会成为
+`position: fixed` 的 containing block；Page 会自动把 Dialog 移入内部
+OverlayHost。
+
+Dialog 内容可以继续包含 Dropdown、Select、ComboBox、Tooltip 等拥有
+浮层的组件。子浮层打开后会进入同一窗口的逻辑层栈：它在数值上仍属于
+popup 层带，但会排在模态层之后；点击对话框内部、子浮层外部的区域只
+关闭子浮层，不会误关 Dialog。Gallery 的 Overlays 页面包含可运行示例。
+
+### `Popover`
+
+```python
+anchor = Button("筛选")
+filters = Popover(
+    anchor,
+    filter_panel,
+    placement="bottom",
+    align="start",
+)
+anchor.on_click(lambda _event: filters.toggle())
+
+filters.on_open(on_opened)
+filters.on_close(on_closed)
+filters.open = True
+```
+
+**参数：** `Popover(anchor, content, *, placement="bottom",
+align="start", open=False, owner=None, focus_scope="none",
+initial_focus=None)`。
+
+`anchor` 接受组件、DOMElement 或字符串；`content` 接受组件或
+DOMElement。`placement` 支持 `top`、`right`、`bottom`、`left`；
+`align` 在交叉轴支持 `start`、`center`、`end`。浏览器运行时会测量锚点，
+指定方向空间不足时翻转到反方向，并把面板限制在视口内；面板打开期间会
+随滚动和缩放重新定位。
+
+`open` 可写，`toggle()` 可切换。编程式写入同样会派发通过
+`on_open()` / `on_close()` 注册的 `open` / `close` 伪事件。打开
+Popover 会关闭上一个 Popover，把面板注册到 popover 层；Escape 与点击
+外部会关闭，锚点点击被视为内部事件。从其他浮层中打开时传入 `owner=`，
+让 Popover 跟随该层并在父层关闭时一并关闭。`focus_scope="trap"` 与
+`initial_focus=` 可启用共享模态焦点契约；默认
+`focus_scope="none"` 只建立层级与点击外部契约。
+
+### `Drawer`
+
+```python
+drawer = Drawer(
+    notification_panel,
+    title="通知",
+    side="right",
+    width="360px",
+    closable=True,
+)
+drawer.open = True
+drawer.on_open(on_opened)
+drawer.on_close(on_closed)
+```
+
+**参数：** `Drawer(content, *, title="", side="right",
+width="360px", open=False, closable=True)`。
+
+带全窗口遮罩、方向入场 / 出场动画和 Dialog 同款焦点陷阱的模态边缘面板。
+`side` 支持 `left`、`right`、`top`、`bottom`；`width` 设置所有方向的面板
+厚度。`title` 接受文本或响应式文本源；传入时会连接到面板的辅助功能标签。
+
+`open` 可写，并派发 `open` / `close` 伪事件。只有 `closable=True` 时点击
+遮罩才会关闭；Escape 与父层联级关闭仍然有效。Drawer 属于模态层，打开时
+会关闭较低层的临时浮层，并通过共享层级管理器捕获 / 恢复焦点。
+
+### `CommandPalette`
+
+```python
+palette = CommandPalette(
+    Command("open", "打开文件", keywords=("document",), shortcut="Ctrl+O"),
+    Command("theme", "切换主题", description="循环当前主题"),
+    hotkey={"darwin": "Meta+Shift+P", "default": "Ctrl+Shift+P"},
+)
+palette.on_change(run_command)
+```
+
+**参数：** `CommandPalette(*commands, hotkey=None,
+placeholder="Search commands…", open=False)`。
+
+`Command(value, label=None, *, description="", keywords=(), shortcut=None,
+icon=None, disabled=False)` 描述一行命令。过滤在本地执行，不区分大小写，
+覆盖 `value`、`label`、`description` 与 `keywords`。上下键会在可用行中
+钳制移动，Home/End 跳到首 / 尾可用项，Enter 选中当前项；禁用命令永远
+不会被选中，也不会派发 `change`。
+
+`query` 可写并立即触发过滤；`commands` 返回只读快照。用
+`add_command(*commands)` 追加命令；重复 value 会抛出 `ValueError`。
+打开面板会重置 query 并聚焦搜索框。选中命令后面板关闭，并通过
+`change` 派发其 `value`；Escape 与遮罩也可关闭。Command 的 `shortcut`
+仅是展示元数据；构造参数 `hotkey` 才是真正打开面板的 Page 级快捷键，
+面板挂载到 Page 后会自动收集。
 
 ### `PromptDialog`
 
@@ -233,8 +564,8 @@ ask.on_close(lambda d: print("closed"))  # 继承自 Dialog
 取消（ghost 按钮、`Escape`、scrim 点击或点击外部）只关闭、不触发。
 
 `value` 是输入框文字 —— 打开前设置可预填，提交后读取。`prompt`、
-`confirm_label`、`cancel_label`、`placeholder` 均可配置。与 `Dialog`
-相同的 `position: fixed` 注意点 —— 挂页面根。
+`confirm_label`、`cancel_label`、`placeholder` 均可配置。Page 会自动
+把 PromptDialog 移入内部 OverlayHost。
 
 ### `Tooltip`
 
@@ -310,12 +641,16 @@ menu = Menu(
     ),
 )
 btn.on_contextmenu(lambda e: menu.open_at(e.x, e.y))  # 光标位置
+# 从 Dialog 内部打开时声明 owner，让 Menu 跟随模态层并随其关闭：
+btn.on_contextmenu(lambda e: menu.open_at(e.x, e.y, owner=dialog))
 menu.on_change(lambda e: print(e.value))
 ```
 
 `open_at(x, y)` 定位的 fixed 弹出面板 —— 通常用 `contextmenu` 事件的
 视口坐标，无需测量。键盘导航与 `Dropdown` 相同；选中、Escape 或
-点击外部关闭。面板**向上弹出**——底边锚在光标上方 8px——并通过
+点击外部关闭。可选的 `owner=` 接受触发它的 Component 或 DOMElement；
+当 owner 是已打开的 Dialog 等浮层时，Menu 会跟随其逻辑层号，并在 owner
+关闭时一起关闭。面板**向上弹出**——底边锚在光标上方 8px——并通过
 `calc()` 的 max-width/height 钳制在视口内，靠近屏幕边缘也不会溢出。
 `MenuBranch(label, items)` 添加级联分支：`ArrowRight` / `Enter` 打开
 子菜单，`ArrowLeft` 回到父级，Escape 在关闭整棵菜单树前逐层关闭。
@@ -342,9 +677,10 @@ toast.clear()  # 全部移除
 顶部往下偏移——留出 `TitleBar` 的高度；bottom 组始终贴窗边。每张
 卡片的**入场动画与方位方向绑定**（top 组从上方落下、bottom 组从
 下方升起、角位对角滑入），出场反向重放同一 keyframe 滑向该方位
-角/边。宿主是 `position: fixed` 全视口层，z-index 1100、
-`pointer-events: none`（点击穿透到页面）——挂载在页根，避开
-`backdrop-filter` / `transform` 祖先。
+角/边。宿主是 `position: fixed` 全视口层，由框架的全局层级管理器
+固定为通知层、
+`pointer-events: none`（点击穿透到页面）。脱离 Page 使用时挂载在页根，
+Page 会自动移入内部 OverlayHost。
 
 ## 内容
 
@@ -403,6 +739,32 @@ await song.toggle_muted()
 与 [`Video`](#video) 同一套托管播放器的紧凑控制卡片形态。所有权模型、
 传输条、命令、事件与选项完全一致（少了画面区域），HEVC 转码回退同样适用；
 `width` 控制卡片宽度，`media_styles` 只覆写内部原生 media 元素样式。
+
+### `Markdown`
+
+```python
+from neony.application.elements import Markdown
+
+doc = Markdown("# 发布说明\n\n- **加粗** 与 `代码`\n\n```python\nprint(1)\n```\n")
+doc.append_text("\n\n后续文本在这里流式追加。")  # 逐 token 友好
+await doc.stream(md_tokens)  # 按帧合并的流式消费
+```
+
+在 WebView 内渲染 Markdown——解析、HTML 渲染与代码高亮都在浏览器端完成
+（markdown-it + highlight.js 随运行时打包；Python 侧零依赖）。Python
+只持有原始*源文本*：更新通过内部命令把源文本推送到前端，元素就地重渲染，
+因此无论渲染结果多大，流式追加始终保持低开销。
+
+源文本中的原始 HTML 会被转义，不可信内容保持惰性。表格、删除线与
+链接识别遵循 GFM 风格默认值；链接在系统浏览器中打开。
+
+渲染结果完全跟随主题：颜色全部取自主题令牌，八套预设与明暗切换都会
+自动重上色。围栏代码块坐在统一的纯色底板上——深色模式一个纯净的深色、
+浅色模式一个纯净的浅色（页面背景令牌），不掺任何主题色，配细边框。
+行内代码是安静的小色块，标题带分隔线，表格有斑马纹，语法高亮使用主题
+自己的色相。在彩色表面上配色还会自适应：accent 填充的 `from_me` 气泡里，
+代码井与行内代码小色块会换成主题次要强调色，链接、分隔线与表格色带
+也跟随它——即气泡自身色相的可读色调。
 
 ### `Avatar`
 
@@ -501,6 +863,18 @@ other.on_action(lambda v: print(v))  # 快捷操作点击
 `content` / `set_content()`、`actions_visible` / `show_actions()` /
 `hide_actions()`、`action_elements()` / `action_values()`，以及用于
 挂载气泡局部浮层的 `overlay_slot`。
+
+气泡文本天然适合流式：`append_text(chunk)` 在浏览器已显示前文时只传输
+新增块；`stream(chunks)` 以帧节奏消费同步可迭代对象或异步迭代器
+（`stop_stream()` 可中途取消）。`markdown=True` 时气泡内部改用
+`Markdown` 组件承载内容——`text` / `append_text()` / `stream()` 携带
+原始源文本，由 WebView 就地渲染（见 [`Markdown`](#markdown)）：
+
+```python
+reply = MessageBubble("", name="助手", markdown=True)
+async for token in llm.reply(prompt):
+    reply.append_text(token)
+```
 
 ### `NoticeBubble`
 

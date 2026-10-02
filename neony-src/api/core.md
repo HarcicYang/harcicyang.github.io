@@ -176,7 +176,7 @@ It supports HTTP `Range` requests (`206 Partial Content`, `416` for an
 unsatisfiable range), answers `HEAD`, guesses MIME types, and sends
 `ETag` / `Last-Modified` / `Accept-Ranges`. There is no path allow-list:
 a Neony page is trusted application content. See
-[`demo_protocols.py`](https://github.com/HarcicYang/Neony/blob/c3f9724/demo_protocols.py).
+[`demo_protocols.py`](https://github.com/HarcicYang/Neony/blob/438fd49/demo_protocols.py).
 
 **Media playback** — the managed `Video` / `Audio` components load
 `neony://…` sources automatically, so local media plays and seeking
@@ -199,6 +199,11 @@ windows. Frameless windows have no OS chrome — see the
 [`TitleBar`](/api/layout-chrome#titlebar) `icon` parameter for inline icons, and
 [`NeonApplication.set_icon()`](#neonapplication) to swap at runtime.
 
+**`WindowConfig.sync_visibility`** — on by default: when the window is
+hidden or minimized, the underlying webview is hidden too, letting the
+platform throttle it and save CPU. Set `False` for tray-style apps that
+must keep rendering while the window is hidden.
+
 **`WebViewConfig.default_context_menus`** — off by default: the app
 draws its own menus (the `Menu` component, `contextmenu` events) and
 the webview's native right-click menu would cover them. Set `True` for
@@ -206,8 +211,9 @@ the platform default menu.
 
 ## `Page`
 
-Top-level flex-column container. Two layers: a full-viewport backdrop
-and a width-constrained, centered content column.
+Top-level flex-column container. Normally three layers: a full-viewport
+backdrop, a width-constrained centered content column, and an internal
+overlay host when the page contains global floating layers.
 
 ```python
 Page(gap="16px", padding="24px", max_width="720px")
@@ -220,6 +226,13 @@ Page(fill=True, radius="12px")  # chrome layouts
 
 `fill=True` stretches to the full window height. `radius` rounds the
 window frame (for transparent frameless windows).
+
+At `build()` time, Page moves portal-marked overlay roots into an
+internal `OverlayHost` placed after the content column. This keeps
+`Dialog`, `Popover`, `Drawer`, `CommandPalette`, `Menu` and `Toast`
+outside transformed, filtered or overflow-clipped ancestors without
+changing how applications mount them. The host and portal marker are
+framework internals; no public portal API is required.
 
 **Methods:** `add(child)` (chainable), `on_close(fn)` (chainable — see
 [Lifecycle](#lifecycle)), `on_focus(fn)` / `on_blur(fn)` (chainable),
@@ -370,4 +383,4 @@ app.tray = Tray(
 - Platform notes: **Linux needs libayatana-appindicator**; the tooltip
   is unsupported there and the menu cannot be replaced after creation.
 
-  See [`demo_tray.py`](https://github.com/HarcicYang/Neony/blob/c3f9724/demo_tray.py).
+  See [`demo_tray.py`](https://github.com/HarcicYang/Neony/blob/438fd49/demo_tray.py).

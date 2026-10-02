@@ -10,13 +10,14 @@
 - [核心](/zh/api/core) — `NeonApplication`、`launch`、`Config` /
   `WindowConfig` / `WebViewConfig`、`Page`、生命周期、多窗口、导航策略、
   `Tray`。
-- [组件](/zh/api/components) — 表单控件、文本与标签页、浮层与反馈、
-  内容组件、`Menu` / `MenuBranch` / `CascadingDropdown` 级联菜单，
-  以及 `Reorder` 拖拽重排组件。
+- [组件](/zh/api/components) — 表单控件、文本与标签页、Portal 浮层
+  （`Dialog`、`Popover`、`Drawer`、`CommandPalette`、`Menu`、
+  `Toast`）、反馈、内容组件、`Menu` / `MenuBranch` /
+  `CascadingDropdown` 级联菜单，以及 `Reorder` 拖拽重排组件。
 - [布局与窗口装饰](/zh/api/layout-chrome) — `VStack` / `HStack` / `Flex` /
-  `Separator` / `GlassPanel`、`TitleBar`、`Sidebar` / `Pane` /
+  `Separator` / `GlassPanel` / `GridView`、`TitleBar`、`Sidebar` / `Pane` /
   `SidebarGroup`、`Tree`、`List`、`DataTable`、`Icon`。
-- [DOM 与 CSS](/zh/api/dom-css) — `Color`、`Styles`、`DomEvent`、原始 HTML
+- [DOM 与 CSS](/zh/api/dom-css) — `Color`、`Columns`、`Styles`、`DomEvent`、原始 HTML
   元素与底层拖拽原语。
 - [响应式](/zh/api/reactive) — `Signal`、`Computed`、`effect` / `Effect`、
   `untrack`、`SharedSignal`、声明式绑定、`bind_value`、自动渲染。

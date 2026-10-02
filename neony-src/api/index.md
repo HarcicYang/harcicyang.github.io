@@ -11,13 +11,15 @@ stay in English in both language versions so code can be copied directly.
 - [Core](/api/core) — `NeonApplication`, `launch`, `Config` /
   `WindowConfig` / `WebViewConfig`, `Page`, lifecycle, multi-window,
   navigation policies, `Tray`.
-- [Components](/api/components) — form controls, text & tabs, overlays
-  & feedback, content components, cascading `Menu` / `MenuBranch` /
-  `CascadingDropdown`, and the `Reorder` drag-and-reorder component.
+- [Components](/api/components) — form controls, text & tabs,
+  portal-backed overlays (`Dialog`, `Popover`, `Drawer`,
+  `CommandPalette`, `Menu`, `Toast`), feedback, content components,
+  cascading `Menu` / `MenuBranch` / `CascadingDropdown`, and the
+  `Reorder` drag-and-reorder component.
 - [Layout & chrome](/api/layout-chrome) — `VStack` / `HStack` / `Flex` /
-  `Separator` / `GlassPanel`, `TitleBar`, `Sidebar` / `Pane` /
+  `Separator` / `GlassPanel` / `GridView`, `TitleBar`, `Sidebar` / `Pane` /
   `SidebarGroup`, `Tree`, `List`, `DataTable`, `Icon`.
-- [DOM & CSS](/api/dom-css) — `Color`, `Styles`, `DomEvent`, raw HTML
+- [DOM & CSS](/api/dom-css) — `Color`, `Columns`, `Styles`, `DomEvent`, raw HTML
   elements, and the low-level drag primitive.
 - [Reactivity](/api/reactive) — `Signal`, `Computed`, `effect` / `Effect`,
   `untrack`, `SharedSignal`, declarative bindings, `bind_value`,

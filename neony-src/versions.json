@@ -1,13 +1,19 @@
 {
   "current": {
-    "sha": "c3f97240ddc312c610076f15a6307576ebcb7987",
-    "short": "c3f9724",
-    "tag": "v0.3.1",
+    "sha": "438fd49186e9e6681acce895a3acc3a6bbf7355a",
+    "short": "438fd49",
+    "tag": "v0.4.0",
     "ref": "",
-    "date": "2026-08-27",
-    "message": "chore: bump version"
+    "date": "2026-10-02",
+    "message": "feat(elements): add P2 overlay productivity"
   },
   "tags": [
+    {
+      "name": "v0.4.0",
+      "sha": "438fd49186e9e6681acce895a3acc3a6bbf7355a",
+      "short": "438fd49",
+      "date": "2026-10-02"
+    },
     {
       "name": "v0.3.1",
       "sha": "c3f97240ddc312c610076f15a6307576ebcb7987",
@@ -113,58 +119,58 @@
   ],
   "history": [
     {
+      "sha": "a5efe0e1f3be0bc7fecf5b54bf3f251b4a15711a",
+      "short": "a5efe0e",
+      "date": "2026-10-02",
+      "message": "feat(elements): add P1 daily controls and n…"
+    },
+    {
+      "sha": "9ec0178d7bee93c77924f83e616fc5221fff19b7",
+      "short": "9ec0178",
+      "date": "2026-10-02",
+      "message": "feat(elements): unify choice, focus, and va…"
+    },
+    {
+      "sha": "1559806286b992f717c0dfc696914431512f7ad3",
+      "short": "1559806",
+      "date": "2026-09-12",
+      "message": "docs: add real gallery screenshots and show…"
+    },
+    {
+      "sha": "cb425ffd78a6d64680a5eb4eb39e6da255f55b3c",
+      "short": "cb425ff",
+      "date": "2026-09-12",
+      "message": "feat: add virtualized tables, layer lifecyc…"
+    },
+    {
+      "sha": "3545dcb9be94a9bb768a255fb09507e2746912af",
+      "short": "3545dcb",
+      "date": "2026-09-12",
+      "message": "feat(layers): centralize floating overlay o…"
+    },
+    {
+      "sha": "e694ed7d96c16b9ec073c168a497024fe93f2c37",
+      "short": "e694ed7",
+      "date": "2026-08-29",
+      "message": "docs: bilingual streaming & Markdown docs, …"
+    },
+    {
+      "sha": "2fb9aed0757ec90ff1a859ef6cfde11372a440b4",
+      "short": "2fb9aed",
+      "date": "2026-08-28",
+      "message": "chore(lumiview): sync lumiview 0.1.1"
+    },
+    {
+      "sha": "cf15a124515db908c78bea25e4aba847a561515a",
+      "short": "cf15a12",
+      "date": "2026-08-28",
+      "message": "feat(elements): add GridView with typed Col…"
+    },
+    {
       "sha": "25e4b4ee1285117b8ce36cd4d1aedab6fe244bf1",
       "short": "25e4b4e",
       "date": "2026-08-27",
       "message": "feat(components): stabilize public APIs and…"
-    },
-    {
-      "sha": "117e6a3f3b890163f5d2aaa1464c7f02c5681b0b",
-      "short": "117e6a3",
-      "date": "2026-08-26",
-      "message": "chore: release 0.3.0.post1"
-    },
-    {
-      "sha": "cb851af2682c2008154b5b2744bf790328f500f5",
-      "short": "cb851af",
-      "date": "2026-08-25",
-      "message": "chore: bump version & update docs"
-    },
-    {
-      "sha": "3ea31c0a5c8acc18f4d74a995f432a0088d54576",
-      "short": "3ea31c0",
-      "date": "2026-08-22",
-      "message": "feat(media): webaudio transport for audio c…"
-    },
-    {
-      "sha": "3b10c78f99f066c36b9b7164caa26d0b61451410",
-      "short": "3b10c78",
-      "date": "2026-08-21",
-      "message": "feat: custom protocol"
-    },
-    {
-      "sha": "516ee6adbd1fea8548be498ced8bd6db23ad7f9d",
-      "short": "516ee6a",
-      "date": "2026-08-21",
-      "message": "fix(richtext): replace pasted blob images"
-    },
-    {
-      "sha": "eeb66ae438049c1c3cdcc2c004794df329e9ad2e",
-      "short": "eeb66ae",
-      "date": "2026-08-20",
-      "message": "fix(richtext): cap inline image dimensions"
-    },
-    {
-      "sha": "6eb92de62695f1b5bb0d68cbcbf4fbb8ad696e1f",
-      "short": "6eb92de",
-      "date": "2026-08-20",
-      "message": "fix(overlays): coordinate chat menu actions"
-    },
-    {
-      "sha": "519499208adae29514ad45b3d2c6db576b8b0096",
-      "short": "5194992",
-      "date": "2026-08-20",
-      "message": "feat(page): use VStack for default layout"
     }
   ]
 }
