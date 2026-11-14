@@ -1178,8 +1178,9 @@
                 var hurry = clamp(1 - (dt - 20) / 180, 0.25, 1);
                 return 1 - hurry * 0.5;
             }
-            function easeInOutQuint(t) {
-                return t < 0.5 ? 16 * Math.pow(t, 5) : 1 - Math.pow(-2 * t + 2, 5) / 2;
+            // Move on the first frame so the scroll matches the immediate selection update.
+            function easeOutCubic(t) {
+                return 1 - Math.pow(1 - t, 3);
             }
 
             function scrollDuration(distance, fast) {
@@ -1213,7 +1214,7 @@
                 var start = performance.now();
                 function frame(now) {
                     var progress = Math.min(1, (now - start) / duration);
-                    var eased = easeInOutQuint(progress);
+                    var eased = easeOutCubic(progress);
                     if (targetLeft !== null) scroller.scrollLeft = fromLeft + deltaLeft * eased;
                     if (targetTop !== null) scroller.scrollTop = fromTop + deltaTop * eased;
                     if (progress < 1) {
