@@ -1,0 +1,228 @@
+/* Music player surfaces layered on top of the shared tonal system. */
+
+html.rcitrat-preview .main-container {
+    color: var(--hc-on);
+}
+
+html.rcitrat-preview .playlist-container,
+html.rcitrat-preview .player-container {
+    --hc-fill: var(--hc-glass-1);
+    border: 0;
+    border-radius: var(--radius-xl);
+    background: var(--hc-fill);
+    color: var(--hc-on);
+}
+
+html.rcitrat-preview .playlist-container > h3,
+html.rcitrat-preview .lyrics-title {
+    color: var(--hc-on);
+    border-color: color-mix(in oklab, var(--hc-on) 14%, transparent);
+}
+
+html.rcitrat-preview .playlist {
+    scrollbar-color: var(--hc-accent) transparent;
+    scrollbar-width: none;
+}
+
+html.rcitrat-preview .playlist::-webkit-scrollbar,
+html.rcitrat-preview .lyrics-content::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
+}
+
+html.rcitrat-preview .playlist-item {
+    --hc-fill: var(--hc-glass-2);
+    position: relative;
+    overflow: hidden;
+    border: 0;
+    border-radius: var(--radius-lg);
+    background: var(--hc-fill);
+    color: var(--hc-on-2);
+}
+
+html.rcitrat-preview .playlist-item::before {
+    content: "";
+    position: absolute;
+    top: 18%;
+    bottom: 18%;
+    left: 0;
+    width: 2px;
+    border-radius: 0 999px 999px 0;
+    background: var(--hc-accent);
+    opacity: 0;
+    transform: scaleY(.35);
+    transition:
+        opacity var(--hc-duration-fast) var(--hc-ease),
+        transform var(--hc-duration-normal) var(--hc-spring);
+}
+
+html.rcitrat-preview .playlist-item:hover {
+    --hc-fill: var(--hc-glass-3);
+    background: var(--hc-fill);
+    color: var(--hc-on);
+}
+
+html.rcitrat-preview .playlist-item.active {
+    --hc-fill: color-mix(in oklab, var(--hc-primary-container) 78%, transparent);
+    background: var(--hc-fill);
+    color: var(--hc-on-primary-container);
+}
+
+html.rcitrat-preview .playlist-item.active::before {
+    background: var(--hc-on-primary-container);
+    opacity: 1;
+    transform: none;
+}
+
+html.rcitrat-preview .playlist-item h4,
+html.rcitrat-preview .playlist-item p {
+    color: inherit;
+}
+
+html.rcitrat-preview .playlist-item-go {
+    --hc-fill: var(--hc-glass-3);
+    border: 0;
+    background: var(--hc-fill);
+    color: var(--hc-on-2);
+}
+
+html.rcitrat-preview .playlist-item.active .playlist-item-go {
+    --hc-fill: color-mix(in oklab, var(--hc-on-primary-container) 14%, transparent);
+    background: var(--hc-fill);
+    color: var(--hc-on-primary-container);
+}
+
+html.rcitrat-preview .cover-art {
+    --hc-fill: var(--hc-glass-3);
+    border-radius: var(--radius-lg);
+    background-color: var(--hc-fill);
+    background-image:
+        linear-gradient(145deg,
+            color-mix(in oklab, var(--hc-surface-3) 92%, transparent),
+            color-mix(in oklab, var(--hc-surface-1) 96%, transparent)) !important;
+    box-shadow:
+        0 0 14px 4px color-mix(in oklab, var(--hc-surface-3) 86%, transparent),
+        0 0 40px 10px color-mix(in oklab, var(--hc-surface-3) 30%, transparent) !important;
+}
+
+html.rcitrat-preview .cover-art:hover {
+    box-shadow:
+        0 0 14px 4px color-mix(in oklab, var(--hc-surface-3) 88%, transparent),
+        0 0 44px 12px color-mix(in oklab, var(--hc-surface-3) 34%, transparent) !important;
+}
+
+html.rcitrat-preview #title {
+    color: var(--hc-primary);
+}
+
+html.rcitrat-preview #artist,
+html.rcitrat-preview #album,
+html.rcitrat-preview .time-display,
+html.rcitrat-preview .lyrics-content {
+    color: var(--hc-on-2);
+}
+
+html.rcitrat-preview .controls button {
+    --hc-fill: var(--hc-accent);
+    border: 0;
+    background: var(--hc-fill);
+    color: var(--hc-on-accent);
+    box-shadow:
+        0 0 10px 2px color-mix(in oklab, var(--hc-fill) 78%, transparent),
+        0 0 24px 5px color-mix(in oklab, var(--hc-fill) 20%, transparent);
+}
+
+html.rcitrat-preview .controls button:hover:not(:disabled) {
+    --hc-fill: var(--hc-primary);
+    background: var(--hc-fill);
+    box-shadow:
+        0 0 12px 3px color-mix(in oklab, var(--hc-fill) 82%, transparent),
+        0 0 28px 6px color-mix(in oklab, var(--hc-fill) 24%, transparent);
+}
+
+html.rcitrat-preview .controls button:disabled {
+    opacity: .56;
+    box-shadow:
+        0 0 8px 2px color-mix(in oklab, var(--hc-accent) 42%, transparent),
+        0 0 20px 4px color-mix(in oklab, var(--hc-accent) 14%, transparent);
+}
+
+html.rcitrat-preview .controls button::after {
+    display: none;
+}
+
+html.rcitrat-preview #progress {
+    accent-color: var(--hc-accent);
+    background: var(--hc-glass-3);
+}
+
+html.rcitrat-preview #progress::-webkit-slider-runnable-track,
+html.rcitrat-preview #progress::-moz-range-track {
+    background: var(--hc-glass-3);
+}
+
+html.rcitrat-preview #progress::-webkit-slider-thumb,
+html.rcitrat-preview #progress::-moz-range-thumb {
+    background: var(--hc-accent);
+    box-shadow:
+        0 0 8px 2px color-mix(in oklab, var(--hc-accent) 62%, transparent),
+        0 0 20px 4px color-mix(in oklab, var(--hc-accent) 18%, transparent);
+}
+
+html.rcitrat-preview .lyrics-container {
+    --hc-fill: var(--hc-glass-2);
+    border: 0;
+    border-radius: var(--radius-lg);
+    background: var(--hc-fill);
+}
+
+html.rcitrat-preview .lyrics-content {
+    scrollbar-color: var(--hc-accent) transparent;
+    scrollbar-width: none;
+}
+
+html.rcitrat-preview .loading-indicator {
+    color: var(--hc-on-2);
+}
+
+html.rcitrat-preview .loading-indicator::before {
+    border-color: color-mix(in oklab, var(--hc-on) 18%, transparent);
+    border-top-color: var(--hc-accent);
+}
+
+html.rcitrat-preview .lyrics-line.active {
+    color: var(--hc-accent) !important;
+}
+
+html.rcitrat-preview .error-message {
+    border: 0;
+    background: color-mix(in oklab, #7b3434 78%, transparent);
+    color: #fff4f4;
+}
+
+@media (max-width: 768px) {
+    html.rcitrat-preview .playlist-container {
+        background: var(--hc-fill);
+    }
+
+    html.rcitrat-preview .playlist-container::before,
+    html.rcitrat-preview .player-container::before {
+        background: var(--hc-on-3);
+        box-shadow: 0 0 8px 2px color-mix(in oklab, var(--hc-on-3) 24%, transparent);
+    }
+
+    html.rcitrat-preview .playlist-item {
+        background: var(--hc-fill);
+    }
+
+    html.rcitrat-preview .playlist-item.active {
+        background: var(--hc-fill);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html.rcitrat-preview .playlist-item::before {
+        transition: none;
+    }
+}

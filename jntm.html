@@ -1,4 +1,4 @@
-<html>
+<html class="rcitrat-preview">
     <head>
         <title>蔡徐坤邀请你语音通话</title>
         <style>
@@ -72,8 +72,12 @@
                 animation-name: button-change;
             }
         </style>
-        
-    </head>
+
+        <link rel="stylesheet" href="/resource/rcitrat/tokens.css?v=rcitrat-site-26">
+    <link rel="stylesheet" href="/resource/rcitrat/surfaces.css?v=rcitrat-site-26">
+    <link rel="stylesheet" href="/resource/rcitrat/icons.css?v=rcitrat-site-26">
+    <script src="/resource/rcitrat/color.js?v=rcitrat-site-26"></script>
+</head>
     <body>
         <div id="head">
             <img src="cxk.jpg" alt=" ">
@@ -108,7 +112,7 @@
                 else {
                     audio.src = 'jntm.mp3';
                 }
-                
+
                 audio.play();
             }
 
@@ -130,7 +134,7 @@
                 setInterval(function() {
                     if (timed >= 10) {
                         title_show.textContent = "正在通话 蔡徐坤 " + "00:" + timed;
-                        
+
                     }
                     else {
                         title_show.textContent = "正在通话 蔡徐坤 00:0" + timed;
@@ -150,5 +154,8 @@
                 play("L");
             }
         </script>
-    </body>
+        <script src="/resource/rcitrat/icons.js?v=rcitrat-site-26"></script>
+    <script src="/resource/rcitrat/site.js?v=rcitrat-site-26"></script>
+    <script src="/resource/theme.js?v=rcitrat-site-26"></script>
+</body>
 </html>

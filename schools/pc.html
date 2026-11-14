@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh" class="rcitrat-preview">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)">
     <meta name="theme-color" content="#e8ecf1" media="(prefers-color-scheme: light)">
     <title>让永信看看你能去哪</title>
     <link rel="icon" type="image/svg+xml" href="/resource/favicon.svg">
-    <link rel="stylesheet" href="/resource/theme.css">
+    <link rel="stylesheet" href="/resource/theme.css?v=rcitrat-site-26">
     <style>
         body { flex-direction: column; justify-content: center; }
         .school-container { width: 100%; max-width: 500px; padding: 2rem; background: var(--box-color); border-radius: var(--radius-lg); box-shadow: var(--shadow-card); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); text-align: center; }
@@ -21,15 +21,20 @@
         .school-btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-btn-hover); }
         @media (max-width: 480px) { .school-container { padding: 1.5rem 1rem; } .school-container img { max-width: 130px; } }
     </style>
+    <link rel="stylesheet" href="/resource/rcitrat/tokens.css?v=rcitrat-site-26">
+    <link rel="stylesheet" href="/resource/rcitrat/surfaces.css?v=rcitrat-site-26">
+    <link rel="stylesheet" href="/resource/rcitrat/icons.css?v=rcitrat-site-26">
+    <script src="/resource/rcitrat/color.js?v=rcitrat-site-26"></script>
 </head>
 <body>
-    <a href="/" class="back-btn" title="返回首页">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M21 11H6.414l5.293-5.293-1.414-1.414L2.586 12l7.707 7.707 1.414-1.414L6.414 13H21z"/></svg>
+    <a href="/" class="back-btn ic-host" title="返回首页">
+        <hc-icon name="back"></hc-icon>
         首页
     </a>
-    <button class="theme-toggle" id="themeToggle" aria-label="切换主题">
-        <svg class="icon-sun" viewBox="0 0 24 24" fill="currentColor"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58a.996.996 0 00-1.41 0 .996.996 0 000 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37a.996.996 0 00-1.41 0 .996.996 0 000 1.41l1.06 1.06c.39.39 1.03.39 1.41 0a.996.996 0 000-1.41l-1.06-1.06zm1.06-10.96a.996.996 0 000-1.41.996.996 0 00-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36a.996.996 0 000-1.41.996.996 0 00-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"/></svg>
-        <svg class="icon-moon" viewBox="0 0 24 24" fill="currentColor" style="display:none"><path d="M12 3a9 9 0 109 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 01-4.4 2.26 5.403 5.403 0 01-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>
+    <button class="theme-toggle ic-host" id="themeToggle" aria-label="切换主题">
+        <svg class="icon-sun" width="0" height="0" aria-hidden="true"></svg>
+        <svg class="icon-moon" width="0" height="0" style="display:none" aria-hidden="true"></svg>
+        <hc-icon name="theme"></hc-icon>
     </button>
     <div class="school-container">
         <img src="/schools/yang_yong_xing.jpeg" alt="杨永信">
@@ -39,6 +44,8 @@
         <div id="button" class="school-btn">确定</div>
     </div>
     <script src="handler.js"></script>
-    <script src="/resource/theme.js"></script>
+    <script src="/resource/rcitrat/icons.js?v=rcitrat-site-26"></script>
+    <script src="/resource/rcitrat/site.js?v=rcitrat-site-26"></script>
+    <script src="/resource/theme.js?v=rcitrat-site-26"></script>
 </body>
 </html>

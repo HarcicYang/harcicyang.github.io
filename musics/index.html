@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" class="rcitrat-preview">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)">
     <meta name="theme-color" content="#e8ecf1" media="(prefers-color-scheme: light)">
     <title>Harcic ' Songs</title>
@@ -279,6 +279,7 @@
         button:disabled::after { display: none; }
 
         .icon-container { position: relative; width: 24px; height: 24px; z-index: 1; }
+        .icon-container .icon { width: 24px; height: 24px; font-size: 24px; line-height: 1; }
         .icon-pause, .icon-play { position: absolute; left: 0; top: 0; opacity: 0; transition: opacity 0.15s; }
         .icon-play { opacity: 1; }
         button.playing .icon-play { opacity: 0; }
@@ -599,7 +600,7 @@
                 color: var(--accent-rgb-fallback, var(--primary-color));
                 transition: transform 0.25s ease, background-color 0.25s ease;
             }
-            .playlist-item-go svg { width: 19px; height: 19px; }
+            .playlist-item-go hc-icon { width: 19px; height: 19px; font-size: 19px; line-height: 1; }
             .playlist-item.active .playlist-item-go {
                 background: rgba(255, 255, 255, 0.18);
                 color: #fff;
@@ -667,19 +668,26 @@
             .lyrics-container { padding: 0.6rem; }
             button { padding: 9px; }
             .icon-container { width: 22px; height: 22px; }
+            .icon-container .icon { width: 22px; height: 22px; font-size: 22px; }
         }
 
     </style>
+    <link rel="stylesheet" href="/resource/rcitrat/tokens.css?v=rcitrat-site-26">
+    <link rel="stylesheet" href="/resource/rcitrat/surfaces.css?v=rcitrat-site-26">
+    <link rel="stylesheet" href="/resource/rcitrat/icons.css?v=rcitrat-site-26">
+    <link rel="stylesheet" href="/resource/rcitrat/music.css?v=rcitrat-site-26">
+    <script src="/resource/rcitrat/color.js?v=rcitrat-site-26"></script>
 </head>
 <body>
-    <a href="/" class="back-btn" title="返回首页">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M21 11H6.414l5.293-5.293-1.414-1.414L2.586 12l7.707 7.707 1.414-1.414L6.414 13H21z"/></svg>
+    <a href="/" class="back-btn ic-host" title="返回首页">
+        <hc-icon name="back"></hc-icon>
         首页
     </a>
 
-    <button class="theme-toggle" id="themeToggle" aria-label="切换主题">
-        <svg class="icon-sun" viewBox="0 0 24 24" fill="currentColor"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58a.996.996 0 00-1.41 0 .996.996 0 000 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37a.996.996 0 00-1.41 0 .996.996 0 000 1.41l1.06 1.06c.39.39 1.03.39 1.41 0a.996.996 0 000-1.41l-1.06-1.06zm1.06-10.96a.996.996 0 000-1.41.996.996 0 00-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36a.996.996 0 000-1.41.996.996 0 00-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"/></svg>
-        <svg class="icon-moon" viewBox="0 0 24 24" fill="currentColor" style="display:none"><path d="M12 3a9 9 0 109 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 01-4.4 2.26 5.403 5.403 0 01-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>
+    <button class="theme-toggle ic-host" id="themeToggle" aria-label="切换主题">
+        <svg class="icon-sun" width="0" height="0" aria-hidden="true"></svg>
+        <svg class="icon-moon" width="0" height="0" style="display:none" aria-hidden="true"></svg>
+        <hc-icon name="theme"></hc-icon>
     </button>
 
     <div class="main-container">
@@ -690,7 +698,7 @@
 
         <div class="player-container">
             <div class="player-main">
-                <img id="coverArt" class="cover-art" alt="" src="block.png">
+                <img id="coverArt" class="cover-art" alt="" src="block.svg?v=rcitrat-3">
                 <div class="song-info">
                     <h2 id="title">选择曲目开始播放</h2>
                     <p id="artist">&ndash;</p>
@@ -701,12 +709,8 @@
                 <div class="controls">
                     <button id="playPauseBtn" disabled aria-label="播放">
                         <div class="icon-container">
-                            <svg class="icon icon-play" viewBox="0 0 24 24" fill="rgba(255,255,255,0.9)">
-                                <path d="M8 5v14l11-7z"/>
-                            </svg>
-                            <svg class="icon icon-pause" viewBox="0 0 24 24" fill="rgba(255,255,255,0.9)">
-                                <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
-                            </svg>
+                            <hc-icon class="icon icon-play" name="play"></hc-icon>
+                            <hc-icon class="icon icon-pause" name="pause"></hc-icon>
                         </div>
                     </button>
                     <input type="range" id="progress" value="0" min="0" max="100" step="0.1" disabled>
@@ -868,8 +872,8 @@
                         style="--item-index:${index}">
                         <h4>${track.title}</h4>
                         <p>${track.artist}</p>
-                        <span class="playlist-item-go" aria-hidden="true">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
+                        <span class="playlist-item-go ic-host" aria-hidden="true">
+                            <hc-icon name="arrow"></hc-icon>
                         </span>
                     </li>
                 `).join('');
@@ -921,7 +925,7 @@
             document.getElementById('title').textContent = track.title || '未命名曲目';
             document.getElementById('artist').textContent = track.artist || '未知艺术家';
             document.getElementById('album').textContent = track.album || '未知专辑';
-            document.getElementById('coverArt').src = 'block.png';
+            document.getElementById('coverArt').src = 'block.svg?v=rcitrat-3';
             document.getElementById('lyrics').innerHTML = '<span style="opacity:0.7">正在加载歌词...</span>';
             lastHighlighted = null;
 
@@ -1131,7 +1135,7 @@
                     // 添加图片加载错误处理
                     coverArt.onerror = function() {
                         console.error('Failed to load cover art');
-                        coverArt.src = 'block.png';
+                        coverArt.src = 'block.svg?v=rcitrat-3';
                         resetBackgroundColors();
                     };
                     
@@ -1148,11 +1152,11 @@
                     
                 } catch (error) {
                     console.error('Error processing cover art:', error);
-                    document.getElementById('coverArt').src = 'block.png';
+                    document.getElementById('coverArt').src = 'block.svg?v=rcitrat-3';
                     resetBackgroundColors();
                 }
             } else {
-                document.getElementById('coverArt').src = 'block.png';
+                document.getElementById('coverArt').src = 'block.svg?v=rcitrat-3';
                 resetBackgroundColors();
             }
         }
@@ -1294,58 +1298,17 @@
             style.setProperty("--accent-g2", Math.min(255, colors[1] + 30));
             style.setProperty("--accent-b2", Math.min(255, colors[2] + 30));
         }
-        function applyAccentPair(dark, light) {
+        function applyAccentPair(dark, light, background) {
             currentAccentDark = dark;
             currentAccentLight = light;
             applyAccentFromTheme();
-        }
-
-        (function() {
-            const toggle = document.getElementById("themeToggle");
-            const sunIcon = toggle.querySelector(".icon-sun");
-            const moonIcon = toggle.querySelector(".icon-moon");
-            const saved = localStorage.getItem("theme") || "dark";
-            document.documentElement.setAttribute("data-theme", saved);
-            if (saved === "light") {
-                sunIcon.style.display = "none";
-                moonIcon.style.display = "";
+            if (window.RcitratColor) {
+                window.RcitratColor.setSeedPair(dark, light, background || "cover");
             }
-            toggle.addEventListener("click", () => {
-                const cur = document.documentElement.getAttribute("data-theme");
-                const next = cur === "light" ? "dark" : "light";
-                document.documentElement.setAttribute("data-theme", next);
-                localStorage.setItem("theme", next);
-                sunIcon.style.display = next === "light" ? "none" : "";
-                moonIcon.style.display = next === "light" ? "" : "none";
-                applyAccentFromTheme();
-                toggle.classList.add("burst");
-                setTimeout(() => toggle.classList.remove("burst"), 600);
-            });
-        })();
-
-        var loadBg = function() {
-            var style = document.documentElement.style;
-            fetch("/resource/backgrounds/list.json")
-                .then(function(r) { return r.json(); })
-                .then(function(data) {
-                    var list = data.backgrounds;
-                    if (list && list.length) {
-                        var pick = list[Math.floor(Math.random() * list.length)];
-                        style.setProperty("--bg-image", "url('/resource/backgrounds/" + pick.file + "')");
-                        if (pick.accentDark && pick.accentDark.length === 3 && pick.accentLight && pick.accentLight.length === 3) {
-                            applyAccentPair(pick.accentDark, pick.accentLight);
-                        } else if (pick.accent && pick.accent.length === 3) {
-                            applyAccentPair(pick.accent, pick.accent);
-                        }
-                    }
-                })
-                .catch(function() {
-                    style.setProperty("--bg-image", "url('/resource/backgrounds/13.webp')");
-                    applyAccentPair([25, 73, 133], [18, 61, 112]);
-                });
-        };
-        loadBg();
-        window.addEventListener("pageshow", function(e) { if (e.persisted) loadBg(); });
+        }
     </script>
+    <script src="/resource/rcitrat/icons.js?v=rcitrat-site-26"></script>
+    <script src="/resource/rcitrat/site.js?v=rcitrat-site-26"></script>
+    <script src="/resource/theme.js?v=rcitrat-site-26"></script>
 </body>
 </html>

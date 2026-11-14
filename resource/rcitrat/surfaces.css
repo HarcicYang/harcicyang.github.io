@@ -1,0 +1,1047 @@
+/* Tonal Borderless: translucent surfaces with one shared small blur radius. */
+
+html.rcitrat-preview body,
+html.rcitrat-preview[data-theme="light"] body {
+    background: transparent !important;
+    color: var(--hc-on);
+    isolation: isolate;
+    scrollbar-color: var(--hc-accent) transparent;
+}
+
+html.rcitrat-preview {
+    min-height: 100%;
+    background: var(--hc-bg);
+}
+
+html.rcitrat-preview body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100vh;
+    height: 100lvh;
+    min-height: 100vh;
+    min-height: 100lvh;
+    pointer-events: none;
+    background-color: var(--hc-bg);
+    background-image: linear-gradient(var(--overlay), var(--overlay)), var(--bg-image);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    filter: none !important;
+}
+html.rcitrat-preview[data-playing] body::before,
+html.rcitrat-preview[data-playing][data-theme="light"] body::before {
+    filter: none !important;
+}
+
+html.rcitrat-preview ::selection {
+    background: color-mix(in oklab, var(--hc-accent) 38%, transparent);
+    color: var(--hc-on);
+}
+
+html.rcitrat-preview ::-webkit-scrollbar-thumb {
+    background: var(--hc-accent);
+}
+html.rcitrat-preview ::-webkit-scrollbar-button {
+    display: none;
+    width: 0;
+    height: 0;
+}
+
+.hc-scroll-fade {
+    --hc-fade-left: 0px;
+    --hc-fade-right: 0px;
+    --hc-fade-top: 0px;
+    --hc-fade-bottom: 0px;
+}
+.hc-scroll-fade.is-fade-x {
+    -webkit-mask-image: linear-gradient(
+        to right,
+        transparent 0,
+        #000 var(--hc-fade-left),
+        #000 calc(100% - var(--hc-fade-right)),
+        transparent 100%
+    );
+    mask-image: linear-gradient(
+        to right,
+        transparent 0,
+        #000 var(--hc-fade-left),
+        #000 calc(100% - var(--hc-fade-right)),
+        transparent 100%
+    );
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+}
+.hc-scroll-fade.is-fade-y {
+    -webkit-mask-image: linear-gradient(
+        to bottom,
+        transparent 0,
+        #000 var(--hc-fade-top),
+        #000 calc(100% - var(--hc-fade-bottom)),
+        transparent 100%
+    );
+    mask-image: linear-gradient(
+        to bottom,
+        transparent 0,
+        #000 var(--hc-fade-top),
+        #000 calc(100% - var(--hc-fade-bottom)),
+        transparent 100%
+    );
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+}
+.hc-scroll-fade.is-fade-x.is-fade-y {
+    -webkit-mask-image:
+        linear-gradient(
+            to right,
+            transparent 0,
+            #000 var(--hc-fade-left),
+            #000 calc(100% - var(--hc-fade-right)),
+            transparent 100%
+        ),
+        linear-gradient(
+            to bottom,
+            transparent 0,
+            #000 var(--hc-fade-top),
+            #000 calc(100% - var(--hc-fade-bottom)),
+            transparent 100%
+        );
+    mask-image:
+        linear-gradient(
+            to right,
+            transparent 0,
+            #000 var(--hc-fade-left),
+            #000 calc(100% - var(--hc-fade-right)),
+            transparent 100%
+        ),
+        linear-gradient(
+            to bottom,
+            transparent 0,
+            #000 var(--hc-fade-top),
+            #000 calc(100% - var(--hc-fade-bottom)),
+            transparent 100%
+        );
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
+}
+html.rcitrat-preview .hub-rail {
+    -webkit-mask-image: none;
+    mask-image: none;
+}
+
+html.rcitrat-preview :focus-visible {
+    outline: 2px solid var(--hc-accent);
+    outline-offset: 3px;
+}
+
+/* Shared surface primitive. */
+html.rcitrat-preview .hc-surface {
+    --hc-fill: var(--hc-glass-1);
+    background: var(--hc-fill);
+    border: 0;
+    color: var(--hc-on);
+    backdrop-filter: var(--hc-glass-blur);
+    -webkit-backdrop-filter: var(--hc-glass-blur);
+    box-shadow:
+        0 0 8px 2px color-mix(in oklab, var(--hc-fill) 60%, transparent),
+        0 0 28px 8px color-mix(in oklab, var(--hc-fill) 24%, transparent);
+    transition:
+        --hc-fill var(--hc-duration-normal) var(--hc-ease),
+        background-color var(--hc-duration-normal) var(--hc-ease),
+        box-shadow var(--hc-duration-normal) var(--hc-ease);
+}
+html.rcitrat-preview .hc-surface:hover { --hc-fill: var(--hc-glass-2); }
+html.rcitrat-preview .hc-surface.is-active,
+html.rcitrat-preview .hc-surface[aria-selected="true"] {
+    --hc-fill: color-mix(in oklab, var(--hc-primary-container) 70%, transparent);
+    color: var(--hc-on-primary-container);
+}
+
+/* Home hub visual materials. Layout properties remain owned by index.html. */
+html.rcitrat-preview .hub-panel {
+    flex-basis: clamp(308px, 24vw, 340px);
+    width: clamp(308px, 24vw, 340px);
+}
+
+html.rcitrat-preview .hub-frame::before {
+    background: color-mix(in oklab, var(--hc-bg) 60%, transparent);
+}
+html.rcitrat-preview .hub-frame::after {
+    box-shadow: none;
+}
+
+html.rcitrat-preview .hub-tab,
+html.rcitrat-preview .module-group-toggle,
+html.rcitrat-preview .about-tags span,
+html.rcitrat-preview .module-group-entry,
+html.rcitrat-preview .theme-toggle,
+html.rcitrat-preview .back-btn,
+html.rcitrat-preview .glass-card,
+html.rcitrat-preview .glass-btn,
+html.rcitrat-preview .glass-input {
+    --hc-fill: var(--hc-glass-2);
+    background: var(--hc-fill);
+    color: var(--hc-on);
+    border-color: transparent;
+    backdrop-filter: var(--hc-glass-blur);
+    -webkit-backdrop-filter: var(--hc-glass-blur);
+    box-shadow:
+        0 0 8px 2px color-mix(in oklab, var(--hc-fill) 60%, transparent),
+        0 0 28px 8px color-mix(in oklab, var(--hc-fill) 24%, transparent);
+}
+
+html.rcitrat-preview .hub-tab:hover,
+html.rcitrat-preview .module-group-toggle:hover,
+html.rcitrat-preview .module-group-entry:hover,
+html.rcitrat-preview .glass-card:hover,
+html.rcitrat-preview .glass-btn:hover {
+    --hc-fill: var(--hc-glass-3);
+}
+
+html.rcitrat-preview .hub-tab.is-active {
+    --hc-fill: color-mix(in oklab, var(--hc-primary-container) 70%, transparent);
+    color: var(--hc-on-primary-container);
+}
+
+html.rcitrat-preview .hub-tab,
+html.rcitrat-preview .module-group-toggle,
+html.rcitrat-preview .module-group-entry,
+html.rcitrat-preview .theme-toggle,
+html.rcitrat-preview .back-btn,
+html.rcitrat-preview .glass-card,
+html.rcitrat-preview .glass-btn {
+    transition:
+        --hc-fill var(--hc-duration-normal) var(--hc-ease),
+        background-color var(--hc-duration-normal) var(--hc-ease),
+        color var(--hc-duration-fast) var(--hc-ease),
+        box-shadow var(--hc-duration-normal) var(--hc-ease);
+}
+
+html.rcitrat-preview .panel-head {
+    background: linear-gradient(to bottom,
+        color-mix(in oklab, var(--hc-surface-1) 42%, transparent) 46%,
+        transparent);
+    backdrop-filter: var(--hc-glass-blur);
+    -webkit-backdrop-filter: var(--hc-glass-blur);
+}
+html.rcitrat-preview .panel-head::before {
+    background: color-mix(in oklab, var(--hc-on) 18%, transparent);
+}
+html.rcitrat-preview .hub-panel.is-current .panel-head::before {
+    background: var(--hc-accent);
+}
+html.rcitrat-preview .panel-number,
+html.rcitrat-preview .module-card.is-active .module-index {
+    color: var(--hc-accent);
+}
+
+/* Extend the tonal wash through the board's bottom gutter without changing layout. */
+html.rcitrat-preview .panel-inner {
+    position: relative;
+    isolation: isolate;
+}
+html.rcitrat-preview .panel-inner::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: calc(-1 * clamp(4.5rem, 12vh, 7rem));
+    left: 0;
+    z-index: -1;
+    opacity: 0;
+    backdrop-filter: var(--hc-glass-blur);
+    -webkit-backdrop-filter: var(--hc-glass-blur);
+    background-color: color-mix(in oklab, var(--hc-primary-container) 22%, transparent);
+    box-shadow:
+        0 0 24px -10px color-mix(in oklab, var(--hc-primary-container) 36%, transparent),
+        0 0 64px -24px color-mix(in oklab, var(--hc-primary-container) 22%, transparent);
+    pointer-events: none;
+    transition: opacity var(--hc-duration-normal) var(--hc-ease);
+}
+html.rcitrat-preview .hub-panel.is-current .panel-inner {
+    background-color: transparent;
+    box-shadow: none;
+}
+html.rcitrat-preview .hub-panel.is-current .panel-inner::before {
+    opacity: 1;
+}
+
+html.rcitrat-preview .about-mark {
+    --hc-fill: color-mix(in oklab, var(--hc-primary-container) 70%, transparent);
+    background: var(--hc-fill);
+    color: var(--hc-on-primary-container);
+    box-shadow:
+        0 0 8px 2px color-mix(in oklab, var(--hc-primary-container) 60%, transparent),
+        0 0 26px 8px color-mix(in oklab, var(--hc-primary-container) 24%, transparent);
+}
+html.rcitrat-preview .hub-panel.is-current .about-mark {
+    box-shadow:
+        0 0 10px 3px color-mix(in oklab, var(--hc-primary-container) 68%, transparent),
+        0 0 34px 10px color-mix(in oklab, var(--hc-primary-container) 28%, transparent);
+}
+html.rcitrat-preview .about-desc,
+html.rcitrat-preview .about-tags span,
+html.rcitrat-preview .module-desc,
+html.rcitrat-preview .module-group-entry-desc {
+    color: var(--hc-on-2);
+}
+
+html.rcitrat-preview .module-card {
+    --hc-fill: var(--hc-glass-2);
+    background: var(--hc-fill);
+    border-color: transparent;
+    color: var(--hc-on);
+    box-shadow:
+        0 0 8px 2px color-mix(in oklab, var(--hc-fill) 60%, transparent),
+        0 0 28px 8px color-mix(in oklab, var(--hc-fill) 24%, transparent);
+}
+html.rcitrat-preview .module-card:hover {
+    --hc-fill: var(--hc-glass-3);
+    box-shadow:
+        0 0 10px 3px color-mix(in oklab, var(--hc-fill) 62%, transparent),
+        0 0 32px 10px color-mix(in oklab, var(--hc-fill) 28%, transparent);
+}
+html.rcitrat-preview .module-card.is-active {
+    --hc-fill: color-mix(in oklab, var(--hc-primary-container) 70%, transparent);
+    background: var(--hc-fill);
+    border-color: transparent;
+    color: var(--hc-on-primary-container);
+    box-shadow:
+        0 0 10px 3px color-mix(in oklab, var(--hc-fill) 64%, transparent),
+        0 0 38px 12px color-mix(in oklab, var(--hc-fill) 30%, transparent);
+}
+html.rcitrat-preview .module-card.is-active::before {
+    background: var(--hc-on-primary-container);
+    box-shadow: 0 0 8px color-mix(in oklab, var(--hc-on-primary-container) 42%, transparent);
+}
+html.rcitrat-preview .module-card.is-active .module-index,
+html.rcitrat-preview .module-card.is-active .module-title,
+html.rcitrat-preview .module-card.is-active .module-desc,
+html.rcitrat-preview .module-card.is-active .module-go,
+html.rcitrat-preview .module-card.is-active .module-group-toggle,
+html.rcitrat-preview .module-card.module-group.is-active .module-group-main .module-go {
+    color: var(--hc-on-primary-container);
+}
+html.rcitrat-preview .module-card.is-active .module-title,
+html.rcitrat-preview .module-card.is-active .module-icon {
+    text-shadow: none;
+    filter: none;
+}
+html.rcitrat-preview .module-card.is-active .module-group-toggle {
+    --hc-fill: var(--hc-glass-3);
+}
+html.rcitrat-preview .module-card.is-active .module-group-toggle svg {
+    color: inherit;
+}
+
+html.rcitrat-preview .module-go,
+html.rcitrat-preview .module-group-entry svg {
+    color: var(--hc-on-2);
+}
+html.rcitrat-preview .module-card:hover .module-go,
+html.rcitrat-preview .module-group-entry:hover svg {
+    color: var(--hc-accent);
+}
+
+html.rcitrat-preview .module-dot {
+    background: color-mix(in oklab, var(--hc-on) 38%, transparent);
+}
+html.rcitrat-preview .module-dot.is-active {
+    background: var(--hc-accent);
+    box-shadow:
+        0 0 0 4px color-mix(in oklab, var(--hc-accent) 14%, transparent),
+        0 0 16px 4px color-mix(in oklab, var(--hc-accent) 38%, transparent);
+}
+
+html.rcitrat-preview .module-group-panel-inner {
+    background: transparent;
+}
+html.rcitrat-preview .module-group-entry {
+    --hc-fill: color-mix(in oklab, var(--hc-surface-1) 72%, transparent);
+}
+
+html.rcitrat-preview .glass-input {
+    --hc-fill: var(--hc-glass-3);
+}
+html.rcitrat-preview .glass-input:focus {
+    animation: none !important;
+    --hc-fill: var(--hc-glass-4);
+    box-shadow:
+        0 0 8px 2px color-mix(in oklab, var(--hc-accent) 50%, transparent),
+        0 0 26px 8px color-mix(in oklab, var(--hc-accent) 20%, transparent);
+}
+html.rcitrat-preview .glass-btn {
+    --hc-fill: var(--hc-accent);
+    color: var(--hc-on-accent);
+}
+html.rcitrat-preview .glass-btn:hover {
+    --hc-fill: var(--hc-primary);
+}
+
+/* Secondary pages reuse the same tonal primitives without their own theme engine. */
+html.rcitrat-preview :is(
+    .intro-card,
+    .post-card,
+    .post-toc,
+    .post-body,
+    .comments-section,
+    .gallery-item,
+    .play-card,
+    .article-content,
+    .result-card,
+    .school-container,
+    .result-container,
+    .search-box,
+    .pin-container,
+    .playlist-container,
+    .player-container,
+    .lyrics-container,
+    .cover-art,
+    .panel,
+    .token-card
+) {
+    --hc-fill: var(--hc-glass-1);
+    background: var(--hc-fill);
+    border-color: transparent;
+    color: var(--hc-on);
+    box-shadow:
+        0 0 8px 2px color-mix(in oklab, var(--hc-fill) 60%, transparent),
+        0 0 28px 8px color-mix(in oklab, var(--hc-fill) 24%, transparent);
+}
+html.rcitrat-preview .manager-shell .glass-card {
+    --hc-fill: var(--hc-glass-1);
+    background: var(--hc-fill);
+    border-color: transparent;
+    color: var(--hc-on);
+}
+html.rcitrat-preview :is(.post-card, .gallery-item, .play-card) {
+    transition:
+        --hc-fill var(--hc-duration-normal) var(--hc-ease),
+        background-color var(--hc-duration-normal) var(--hc-ease),
+        box-shadow var(--hc-duration-normal) var(--hc-ease),
+        transform var(--hc-duration-normal) var(--hc-ease);
+}
+html.rcitrat-preview :is(.post-card, .gallery-item, .play-card):hover {
+    --hc-fill: var(--hc-glass-2);
+    background: var(--hc-fill);
+    box-shadow:
+        0 0 10px 3px color-mix(in oklab, var(--hc-fill) 64%, transparent),
+        0 0 32px 10px color-mix(in oklab, var(--hc-fill) 28%, transparent);
+}
+
+html.rcitrat-preview :is(.glass-input, .school-input, .sickof-input, .log-filter) {
+    --hc-fill: var(--hc-glass-3);
+    background: var(--hc-fill);
+    border-color: transparent;
+    color: var(--hc-on);
+    box-shadow:
+        0 0 8px 2px color-mix(in oklab, var(--hc-fill) 58%, transparent),
+        0 0 24px 7px color-mix(in oklab, var(--hc-fill) 22%, transparent);
+}
+html.rcitrat-preview :is(.glass-input, .school-input, .sickof-input, .log-filter):focus,
+html.rcitrat-preview .search-box:focus-within {
+    animation: none !important;
+    --hc-fill: var(--hc-glass-4);
+    background: var(--hc-fill);
+    box-shadow:
+        0 0 8px 2px color-mix(in oklab, var(--hc-accent) 48%, transparent),
+        0 0 26px 8px color-mix(in oklab, var(--hc-accent) 18%, transparent);
+}
+html.rcitrat-preview .search-box:focus-within {
+    background: var(--hc-fill);
+}
+html.rcitrat-preview .search-box {
+    transition:
+        --hc-fill var(--hc-duration-normal) var(--hc-ease),
+        background-color var(--hc-duration-normal) var(--hc-ease),
+        box-shadow var(--hc-duration-normal) var(--hc-ease);
+}
+html.rcitrat-preview .pin-container {
+    --hc-fill: color-mix(in oklab, var(--hc-surface-1) 58%, transparent);
+    background: var(--hc-fill);
+    scrollbar-width: none;
+}
+html.rcitrat-preview .pin-container::-webkit-scrollbar {
+    display: none;
+}
+
+html.rcitrat-preview :is(.glass-btn, .school-btn, .search-btn, .btn-generate) {
+    --hc-fill: var(--hc-accent);
+    background: var(--hc-fill);
+    color: var(--hc-on-accent);
+    border-color: transparent;
+    box-shadow:
+        0 0 8px 2px color-mix(in oklab, var(--hc-fill) 60%, transparent),
+        0 0 26px 8px color-mix(in oklab, var(--hc-fill) 24%, transparent);
+}
+html.rcitrat-preview :is(.glass-btn, .school-btn, .search-btn, .btn-generate) .ic-a,
+html.rcitrat-preview :is(.glass-btn, .school-btn, .search-btn, .btn-generate) .ic-af {
+    --ic-accent: currentColor;
+}
+html.rcitrat-preview :is(.glass-btn, .school-btn, .search-btn, .btn-generate):hover {
+    --hc-fill: var(--hc-primary);
+    background: var(--hc-fill);
+    box-shadow:
+        0 0 10px 3px color-mix(in oklab, var(--hc-fill) 62%, transparent),
+        0 0 32px 10px color-mix(in oklab, var(--hc-fill) 28%, transparent);
+}
+html.rcitrat-preview .glass-btn.icon-btn:not(.danger):not(.success):not(.warning) {
+    --hc-fill: var(--hc-glass-2);
+    background: var(--hc-fill);
+    color: var(--hc-on-2);
+}
+html.rcitrat-preview .glass-btn.icon-btn:not(.danger):not(.success):not(.warning):hover {
+    --hc-fill: var(--hc-glass-3);
+    background: var(--hc-fill);
+    color: var(--hc-on);
+}
+html.rcitrat-preview .glass-btn.danger {
+    --hc-fill: color-mix(in oklab, #7b3434 78%, transparent);
+    background: var(--hc-fill);
+    color: #fff4f4;
+}
+html.rcitrat-preview .glass-btn.danger:hover {
+    --hc-fill: color-mix(in oklab, #964040 78%, transparent);
+    background: var(--hc-fill);
+}
+html.rcitrat-preview .glass-btn.success {
+    --hc-fill: color-mix(in oklab, #2f6848 78%, transparent);
+    background: var(--hc-fill);
+    color: #f4fff8;
+}
+html.rcitrat-preview .glass-btn.success:hover {
+    --hc-fill: color-mix(in oklab, #397d57 78%, transparent);
+    background: var(--hc-fill);
+}
+html.rcitrat-preview .glass-btn.warning {
+    --hc-fill: color-mix(in oklab, #735c2b 78%, transparent);
+    background: var(--hc-fill);
+    color: #fff9e9;
+}
+html.rcitrat-preview .glass-btn.warning:hover {
+    --hc-fill: color-mix(in oklab, #8a6e33 78%, transparent);
+    background: var(--hc-fill);
+}
+html.rcitrat-preview :is(.btn-copy, .toc-toggle, .log-refresh, .log-more) {
+    --hc-fill: var(--hc-glass-2);
+    background: var(--hc-fill);
+    color: var(--hc-on);
+    border-color: transparent;
+    box-shadow:
+        0 0 8px 2px color-mix(in oklab, var(--hc-fill) 60%, transparent),
+        0 0 26px 8px color-mix(in oklab, var(--hc-fill) 24%, transparent);
+}
+html.rcitrat-preview :is(.btn-copy, .toc-toggle, .log-refresh, .log-more):hover {
+    --hc-fill: var(--hc-glass-3);
+    background: var(--hc-fill);
+}
+
+html.rcitrat-preview :is(.intro-link, .post-card-tag, .post-tag) {
+    background: color-mix(in oklab, var(--hc-accent) 18%, transparent);
+    color: var(--hc-accent);
+}
+html.rcitrat-preview .intro-link:hover {
+    background: color-mix(in oklab, var(--hc-accent) 28%, transparent);
+}
+html.rcitrat-preview .section-label::after {
+    background: color-mix(in oklab, var(--hc-accent) 28%, transparent);
+}
+html.rcitrat-preview .search-input-wrap hc-icon {
+    color: var(--hc-on-2);
+}
+
+html.rcitrat-preview .post-body {
+    line-height: 1.85;
+}
+html.rcitrat-preview .post-body a,
+html.rcitrat-preview .post-toc-item a:hover,
+html.rcitrat-preview .toc-toggle:hover,
+html.rcitrat-preview .section-title,
+html.rcitrat-preview #title {
+    color: var(--hc-primary);
+}
+html.rcitrat-preview .post-body blockquote,
+html.rcitrat-preview .post-body details {
+    border-color: transparent;
+    background: color-mix(in oklab, var(--hc-primary-container) 18%, transparent);
+    box-shadow: 0 0 22px -12px color-mix(in oklab, var(--hc-primary-container) 42%, transparent);
+}
+html.rcitrat-preview .post-body pre,
+html.rcitrat-preview .config-code {
+    --hc-fill: var(--hc-glass-3);
+    background: var(--hc-fill);
+    border-color: transparent;
+    box-shadow:
+        0 0 8px 2px color-mix(in oklab, var(--hc-fill) 58%, transparent),
+        0 0 24px 7px color-mix(in oklab, var(--hc-fill) 20%, transparent);
+}
+html.rcitrat-preview .post-body code {
+    background: color-mix(in oklab, var(--hc-accent) 14%, transparent);
+    color: var(--hc-on);
+}
+html.rcitrat-preview .post-body pre code {
+    background: transparent;
+}
+html.rcitrat-preview .post-body hr {
+    background: color-mix(in oklab, var(--hc-on) 16%, transparent);
+}
+html.rcitrat-preview .post-body th {
+    background: color-mix(in oklab, var(--hc-accent) 10%, transparent);
+}
+html.rcitrat-preview .post-body th,
+html.rcitrat-preview .post-body td {
+    border-color: color-mix(in oklab, var(--hc-on) 14%, transparent);
+}
+html.rcitrat-preview .post-body .markdown-alert {
+    border-color: transparent;
+    background: color-mix(in oklab, var(--alert-color, var(--hc-accent)) 12%, transparent);
+}
+html.rcitrat-preview .post-toc {
+    scrollbar-color: var(--hc-accent) transparent;
+}
+html.rcitrat-preview .post-toc-item a {
+    color: var(--hc-on-2);
+}
+html.rcitrat-preview .post-toc-item a:hover {
+    border-left-color: var(--hc-accent);
+}
+
+html.rcitrat-preview .article-img img,
+html.rcitrat-preview .viewer-image {
+    box-shadow:
+        0 0 10px 3px color-mix(in oklab, var(--hc-surface-2) 58%, transparent),
+        0 0 34px 10px color-mix(in oklab, var(--hc-surface-2) 24%, transparent);
+}
+html.rcitrat-preview .viewer-overlay {
+    background: color-mix(in oklab, var(--hc-bg) 92%, transparent);
+    backdrop-filter: var(--hc-glass-blur) !important;
+    -webkit-backdrop-filter: var(--hc-glass-blur) !important;
+}
+html.rcitrat-preview .modal-overlay {
+    background: color-mix(in oklab, var(--hc-bg) 84%, transparent) !important;
+    backdrop-filter: var(--hc-glass-blur) !important;
+    -webkit-backdrop-filter: var(--hc-glass-blur) !important;
+}
+html.rcitrat-preview :is(.viewer-close, .viewer-nav, .viewer-caption) {
+    --hc-fill: var(--hc-glass-2);
+    background: var(--hc-fill);
+    color: var(--hc-on);
+    border-color: transparent;
+    box-shadow:
+        0 0 8px 2px color-mix(in oklab, var(--hc-fill) 60%, transparent),
+        0 0 24px 7px color-mix(in oklab, var(--hc-fill) 24%, transparent);
+}
+html.rcitrat-preview :is(.viewer-close, .viewer-nav):hover {
+    --hc-fill: var(--hc-glass-3);
+    background: var(--hc-fill);
+}
+
+html.rcitrat-preview .playlist-item {
+    --hc-fill: var(--hc-glass-2);
+    background: var(--hc-fill);
+    color: var(--hc-on-2);
+    box-shadow:
+        0 0 7px 2px color-mix(in oklab, var(--hc-fill) 54%, transparent),
+        0 0 22px 6px color-mix(in oklab, var(--hc-fill) 18%, transparent);
+}
+html.rcitrat-preview .playlist-item:hover {
+    --hc-fill: var(--hc-glass-3);
+    background: var(--hc-fill);
+    color: var(--hc-on);
+}
+html.rcitrat-preview .playlist-item.active {
+    --hc-fill: color-mix(in oklab, var(--hc-primary-container) 70%, transparent);
+    background: var(--hc-fill);
+    color: var(--hc-on-primary-container);
+    box-shadow:
+        0 0 10px 3px color-mix(in oklab, var(--hc-fill) 62%, transparent),
+        0 0 32px 10px color-mix(in oklab, var(--hc-fill) 26%, transparent);
+}
+html.rcitrat-preview .lyrics-line.active {
+    color: var(--hc-accent) !important;
+}
+html.rcitrat-preview .controls button {
+    background: var(--hc-accent);
+    color: var(--hc-on-accent);
+    box-shadow:
+        0 0 8px 2px color-mix(in oklab, var(--hc-accent) 60%, transparent),
+        0 0 24px 7px color-mix(in oklab, var(--hc-accent) 24%, transparent);
+}
+html.rcitrat-preview .controls button:hover:not(:disabled) {
+    background: var(--hc-primary);
+    box-shadow:
+        0 0 10px 3px color-mix(in oklab, var(--hc-primary) 62%, transparent),
+        0 0 30px 9px color-mix(in oklab, var(--hc-primary) 26%, transparent);
+}
+html.rcitrat-preview #progress {
+    accent-color: var(--hc-accent);
+}
+html.rcitrat-preview #progress::-webkit-slider-thumb,
+html.rcitrat-preview #progress::-moz-range-thumb {
+    background: var(--hc-accent);
+    box-shadow: 0 0 8px 2px color-mix(in oklab, var(--hc-accent) 50%, transparent);
+}
+
+html.rcitrat-preview :is(.endpoint-option, .log-entry, .binding) {
+    --hc-fill: var(--hc-glass-2);
+    background: var(--hc-fill);
+    border-color: transparent;
+    box-shadow:
+        0 0 7px 2px color-mix(in oklab, var(--hc-fill) 54%, transparent),
+        0 0 22px 6px color-mix(in oklab, var(--hc-fill) 18%, transparent);
+}
+html.rcitrat-preview .endpoint-option[aria-checked="true"],
+html.rcitrat-preview .log-tabs button[aria-selected="true"],
+html.rcitrat-preview .config-tabs .config-tab[aria-selected="true"] {
+    --hc-fill: color-mix(in oklab, var(--hc-primary-container) 70%, transparent);
+    background: var(--hc-fill) !important;
+    color: var(--hc-on-primary-container) !important;
+    border-color: transparent !important;
+    box-shadow:
+        0 0 9px 3px color-mix(in oklab, var(--hc-fill) 60%, transparent),
+        0 0 28px 8px color-mix(in oklab, var(--hc-fill) 24%, transparent) !important;
+}
+html.rcitrat-preview .config-tabs .config-tab {
+    --hc-fill: var(--hc-glass-2);
+    background: var(--hc-fill);
+    color: var(--hc-on-2);
+}
+html.rcitrat-preview .log-tabs {
+    --hc-fill: var(--hc-glass-2);
+    background: var(--hc-glass-2);
+}
+html.rcitrat-preview .route-switch {
+    border-color: transparent;
+    box-shadow: 0 0 8px 2px color-mix(in oklab, var(--hc-surface-3) 52%, transparent);
+}
+html.rcitrat-preview .route-switch[aria-checked="true"] {
+    background: var(--hc-accent);
+}
+
+/* Charindexe mounts its interface dynamically; only colors and materials are overridden. */
+html.rcitrat-preview :is(
+    .app-logo,
+    .app-layout,
+    .sidebar,
+    .settings-panel,
+    .settings-section,
+    .choice-container,
+    .think-body,
+    .plugin-panel,
+    .sidebar-section,
+    .msg-bubble,
+    .chat-messages
+) {
+    --hc-fill: var(--hc-glass-1);
+    background: var(--hc-fill);
+    border-color: transparent;
+    color: var(--hc-on);
+    box-shadow:
+        0 0 8px 2px color-mix(in oklab, var(--hc-fill) 56%, transparent),
+        0 0 26px 8px color-mix(in oklab, var(--hc-fill) 20%, transparent);
+}
+html.rcitrat-preview :is(.chat-messages, .glass-textarea) {
+    border-color: transparent !important;
+}
+html.rcitrat-preview .glass-textarea {
+    --hc-fill: var(--hc-glass-3);
+    background: var(--hc-fill);
+    color: var(--hc-on);
+    box-shadow:
+        0 0 8px 2px color-mix(in oklab, var(--hc-fill) 58%, transparent),
+        0 0 24px 7px color-mix(in oklab, var(--hc-fill) 22%, transparent);
+}
+html.rcitrat-preview :is(.app-tabs, .app-tab-content, .chat-input-area, .chat-action-bar) {
+    --hc-fill: var(--hc-glass-2);
+    background: var(--hc-fill);
+    border-color: transparent;
+}
+html.rcitrat-preview .app-tab {
+    color: var(--hc-on-2);
+}
+html.rcitrat-preview .app-tab:hover {
+    color: var(--hc-on);
+}
+html.rcitrat-preview .app-tab.active {
+    --hc-fill: color-mix(in oklab, var(--hc-primary-container) 70%, transparent);
+    background: var(--hc-fill);
+    color: var(--hc-on-primary-container);
+    box-shadow:
+        0 0 8px 2px color-mix(in oklab, var(--hc-primary-container) 60%, transparent),
+        0 0 24px 7px color-mix(in oklab, var(--hc-primary-container) 22%, transparent);
+}
+html.rcitrat-preview :is(.chat-icon-btn, .msg-action-btn, .choice-btn) {
+    --hc-fill: var(--hc-glass-2);
+    background: var(--hc-fill);
+    border-color: transparent;
+    color: var(--hc-on-2);
+    box-shadow:
+        0 0 6px 2px color-mix(in oklab, var(--hc-fill) 50%, transparent),
+        0 0 20px 6px color-mix(in oklab, var(--hc-fill) 16%, transparent);
+}
+html.rcitrat-preview :is(.chat-icon-btn, .msg-action-btn, .choice-btn):hover {
+    --hc-fill: var(--hc-glass-3);
+    background: var(--hc-fill);
+    color: var(--hc-on);
+}
+
+html.rcitrat-preview .play-card.playing {
+    --hc-fill: var(--hc-glass-2);
+    background: var(--hc-fill);
+}
+html.rcitrat-preview .play-card .play-icon {
+    color: var(--hc-accent);
+}
+
+html.rcitrat-preview #head img {
+    border-color: transparent;
+    box-shadow:
+        0 0 10px 3px color-mix(in oklab, var(--hc-surface-2) 60%, transparent),
+        0 0 34px 10px color-mix(in oklab, var(--hc-surface-2) 24%, transparent);
+}
+html.rcitrat-preview #accept-button,
+html.rcitrat-preview #accept-onclick {
+    --hc-fill: color-mix(in oklab, var(--hc-primary) 82%, transparent);
+    background: var(--hc-fill) !important;
+    color: var(--hc-on-primary) !important;
+    box-shadow:
+        0 0 10px 3px color-mix(in oklab, var(--hc-primary) 62%, transparent),
+        0 0 34px 10px color-mix(in oklab, var(--hc-primary) 26%, transparent);
+}
+html.rcitrat-preview #refuse-button {
+    --hc-fill: var(--hc-glass-3);
+    background: var(--hc-fill) !important;
+    color: var(--hc-on) !important;
+    box-shadow:
+        0 0 8px 2px color-mix(in oklab, var(--hc-surface-3) 58%, transparent),
+        0 0 28px 8px color-mix(in oklab, var(--hc-surface-3) 22%, transparent);
+}
+html.rcitrat-preview :is(#accept-button, #accept-onclick, #refuse-button) p {
+    color: inherit;
+}
+html.rcitrat-preview #title-p {
+    color: var(--hc-on) !important;
+}
+
+html.rcitrat-preview .fade-in {
+    animation: hc-surface-in var(--hc-duration-slow) var(--hc-ease-out) both;
+}
+@keyframes hc-surface-in {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: none; }
+}
+
+html.rcitrat-preview #toast-container {
+    position: fixed;
+    left: 50%;
+    bottom: 1.4rem;
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    width: min(86vw, 360px);
+    pointer-events: none;
+    transform: translateX(-50%);
+}
+html.rcitrat-preview .toast-item {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.65rem 0.9rem;
+    border-radius: var(--radius-pill);
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity var(--hc-duration-fast) var(--hc-ease),
+                transform var(--hc-duration-fast) var(--hc-ease);
+}
+html.rcitrat-preview .toast-item.show {
+    opacity: 1;
+    transform: none;
+}
+html.rcitrat-preview #page-loader {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--hc-bg);
+    transition: opacity var(--hc-duration-normal) var(--hc-ease),
+                visibility var(--hc-duration-normal) var(--hc-ease);
+}
+html.rcitrat-preview #page-loader.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+html.rcitrat-preview #page-loader .loader-ring {
+    width: 42px;
+    height: 42px;
+    border: 3px solid color-mix(in oklab, var(--hc-on) 18%, transparent);
+    border-top-color: var(--hc-accent);
+    border-radius: 50%;
+    animation: hc-loader-spin 0.7s linear infinite;
+}
+@keyframes hc-loader-spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Preserve the existing theme-toggle hover motion while using tonal materials. */
+html.rcitrat-preview .theme-toggle {
+    transition:
+        --hc-fill var(--hc-duration-normal) var(--hc-ease),
+        background-color var(--hc-duration-normal) var(--hc-ease),
+        color var(--hc-duration-fast) var(--hc-ease),
+        box-shadow var(--hc-duration-normal) var(--hc-ease),
+        transform var(--transition-normal);
+}
+html.rcitrat-preview .theme-toggle:hover {
+    transform: scale(1.14) rotate(20deg);
+}
+
+html.rcitrat-preview .toast-item {
+    --hc-fill: var(--hc-glass-4);
+    background: var(--hc-fill);
+    color: var(--hc-on);
+    box-shadow:
+        0 0 8px 2px color-mix(in oklab, var(--hc-fill) 60%, transparent),
+        0 0 28px 8px color-mix(in oklab, var(--hc-fill) 24%, transparent);
+}
+
+/* Document-aligned two-layer feathering: no offsets and no color cast. */
+html.rcitrat-preview :is(
+    .hc-surface,
+    .module-card,
+    .glass-card,
+    .intro-card,
+    .post-card,
+    .post-toc,
+    .post-body,
+    .comments-section,
+    .gallery-item,
+    .play-card,
+    .article-content,
+    .result-card,
+    .school-container,
+    .result-container,
+    .search-box,
+    .pin-container,
+    .playlist-container,
+    .player-container,
+    .lyrics-container,
+    .panel,
+    .token-card,
+    .manager-shell .glass-card,
+    .post-body pre,
+    .config-code,
+    .app-logo,
+    .app-layout,
+    .sidebar,
+    .settings-panel,
+    .settings-section,
+    .choice-container,
+    .think-body,
+    .plugin-panel,
+    .sidebar-section,
+    .msg-bubble,
+    .chat-messages,
+    .glass-textarea
+) {
+    backdrop-filter: var(--hc-glass-blur) !important;
+    -webkit-backdrop-filter: var(--hc-glass-blur) !important;
+    box-shadow:
+        0 0 14px 4px color-mix(in oklab, var(--hc-fill) 86%, transparent),
+        0 0 40px 10px color-mix(in oklab, var(--hc-fill) 30%, transparent) !important;
+}
+
+html.rcitrat-preview :is(
+    .hub-tab,
+    .module-group-toggle,
+    .module-group-entry,
+    .about-mark,
+    .about-tags span,
+    .theme-toggle,
+    .back-btn,
+    .glass-btn,
+    .glass-input,
+    .school-input,
+    .sickof-input,
+    .sickof-btn,
+    .search-btn,
+    .playlist-item,
+    .playlist-item-go,
+    .controls button,
+    .viewer-close,
+    .viewer-nav,
+    .viewer-caption,
+    .endpoint-option,
+    .log-entry,
+    .binding,
+    .config-tabs .config-tab,
+    .log-tabs button[aria-selected="true"],
+    .app-tab.active,
+    .chat-icon-btn,
+    .msg-action-btn,
+    .choice-btn,
+    .app-tabs,
+    .chat-input-area,
+    .chat-action-bar,
+    .log-tabs,
+    .route-switch,
+    #accept-button,
+    #accept-onclick,
+    #refuse-button,
+    .toast-item
+) {
+    backdrop-filter: var(--hc-glass-blur) !important;
+    -webkit-backdrop-filter: var(--hc-glass-blur) !important;
+    box-shadow:
+        0 0 10px 2px color-mix(in oklab, var(--hc-fill) 78%, transparent),
+        0 0 24px 5px color-mix(in oklab, var(--hc-fill) 20%, transparent) !important;
+}
+
+html.rcitrat-preview .route-switch {
+    --hc-fill: color-mix(in oklab, #b67b2e 82%, transparent);
+    background: var(--hc-fill);
+    border-color: transparent;
+}
+html.rcitrat-preview .route-switch[aria-checked="true"] {
+    --hc-fill: color-mix(in oklab, #3c9e66 82%, transparent);
+    background: var(--hc-fill);
+}
+
+@media (max-width: 640px) {
+    html.rcitrat-preview .hub-panel {
+        flex-basis: clamp(188px, 80vw, 260px);
+        width: clamp(188px, 80vw, 260px);
+    }
+    html.rcitrat-preview .panel-inner::before {
+        bottom: -3rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html.rcitrat-preview .hub-stage,
+    html.rcitrat-preview .module-track,
+    html.rcitrat-preview .hub-rail,
+    html.rcitrat-preview .panel-inner,
+    html.rcitrat-preview .panel-inner::before,
+    html.rcitrat-preview .module-card,
+    html.rcitrat-preview .hub-tab,
+    html.rcitrat-preview .module-dot,
+    html.rcitrat-preview .module-go,
+    html.rcitrat-preview .module-group-panel,
+    html.rcitrat-preview .module-group-panel-inner,
+    html.rcitrat-preview .module-group-entry,
+    html.rcitrat-preview .module-group-toggle,
+    html.rcitrat-preview .fade-in,
+    html.rcitrat-preview .app-tab,
+    html.rcitrat-preview .playlist-item,
+    html.rcitrat-preview .post-card,
+    html.rcitrat-preview .gallery-item {
+        transition-duration: .01ms !important;
+        animation-duration: .01ms !important;
+    }
+}

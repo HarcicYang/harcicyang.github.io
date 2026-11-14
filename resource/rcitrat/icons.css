@@ -1,0 +1,211 @@
+/* Icon geometry and one-shot hover/selection animations. */
+
+.ic {
+    width: 1em;
+    height: 1em;
+    flex: none;
+    fill: none;
+    overflow: visible;
+    stroke-width: 1.75;
+    vertical-align: -0.125em;
+}
+
+.ic-a { stroke: var(--ic-accent, var(--hc-accent)); }
+.ic-af { fill: var(--ic-accent, var(--hc-accent)); stroke: none; }
+.ic-fill { fill: currentColor; stroke: none; }
+
+.module-icon hc-icon {
+    display: block;
+    height: 1em;
+    font-size: 1em;
+    line-height: 1;
+    overflow: hidden;
+}
+.module-icon .ic { display: block; }
+.module-go hc-icon { display: inline-flex; align-items: center; justify-content: center; font-size: 16px; }
+.module-group-entry hc-icon { display: inline-flex; align-items: center; justify-content: center; font-size: 14px; }
+.back-btn hc-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    font-size: 18px;
+    line-height: 0;
+}
+.search-btn hc-icon,
+.viewer-close hc-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    font-size: 18px;
+    line-height: 0;
+}
+.viewer-nav hc-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    font-size: 22px;
+    line-height: 0;
+}
+.glass-btn.icon-btn hc-icon,
+.sidebar-toggle-btn hc-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    font-size: 16px;
+    line-height: 0;
+}
+.theme-toggle hc-icon,
+.search-btn hc-icon {
+    fill: none;
+}
+:is(.theme-toggle, .back-btn, .search-btn, .viewer-close, .viewer-nav) hc-icon .ic {
+    fill: none;
+}
+:is(.theme-toggle, .back-btn, .search-btn, .viewer-close, .viewer-nav) hc-icon .ic-af {
+    fill: var(--ic-accent, currentColor);
+}
+:is(.theme-toggle, .back-btn, .search-btn, .viewer-close, .viewer-nav) hc-icon .ic-fill {
+    fill: currentColor;
+}
+.theme-toggle hc-icon .ic-af,
+.search-btn hc-icon .ic-af {
+    fill: var(--ic-accent, var(--hc-accent));
+}
+.theme-toggle hc-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    font-size: 22px;
+    line-height: 0;
+}
+/* Legacy sun/moon nodes stay only for theme.js compatibility; never let them occupy flex space. */
+html.rcitrat-preview #themeToggle > .icon-sun,
+html.rcitrat-preview #themeToggle > .icon-moon {
+    position: absolute !important;
+    width: 0 !important;
+    height: 0 !important;
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+.theme-toggle hc-icon .ic {
+    display: block;
+    width: 22px;
+    height: 22px;
+    margin: 0;
+    vertical-align: middle;
+}
+
+.ic-theme .t-rays,
+.ic-theme .t-core { transform-origin: 12px 12px; }
+.ic-theme .t-rays { transition: transform .6s var(--hc-spring, ease), opacity .4s ease; }
+.ic-theme .t-core { transform: scale(.8); transition: transform .6s var(--hc-spring, ease); }
+.ic-theme .t-cut { transform: translate(8px, -8px); transition: transform .6s var(--hc-spring, ease); }
+.ic-theme .t-stars { opacity: 0; transform-origin: 17.5px 17px; transform: scale(.4); transition: opacity .35s ease, transform .5s ease; }
+html[data-theme="dark"] .ic-theme .t-rays,
+hc-icon[data-theme="dark"] .ic-theme .t-rays { transform: rotate(-70deg) scale(.4); opacity: 0; }
+html[data-theme="dark"] .ic-theme .t-core,
+hc-icon[data-theme="dark"] .ic-theme .t-core { transform: scale(1.2); }
+html[data-theme="dark"] .ic-theme .t-cut,
+hc-icon[data-theme="dark"] .ic-theme .t-cut { transform: none; }
+html[data-theme="dark"] .ic-theme .t-stars,
+hc-icon[data-theme="dark"] .ic-theme .t-stars { opacity: 1; transform: none; transition-delay: .2s; }
+.module-card.is-active .ic-a { --ic-accent: currentColor; }
+.module-card.is-active .ic-af { --ic-accent: currentColor; }
+.module-card.is-active .ic,
+:is(.is-active, [aria-selected="true"], [aria-checked="true"], [aria-current="true"]) .ic-host .ic {
+    filter: drop-shadow(0 0 5px color-mix(in oklab, currentColor 42%, transparent));
+}
+
+.s-lens, .s-glint { transform-origin: 10.5px 10.5px; }
+.s-handle { stroke-dasharray: 10 10; }
+.b-bolt, .m-beam, .w-ink, .ck { stroke-dasharray: 100 100; }
+.b-charge { opacity: .2; }
+.b-spark { opacity: 0; transform-origin: 12px 12px; }
+.m-note { transform-origin: 12px 19px; }
+.r-eyes { transform-origin: 12px 13.5px; }
+.r-ant { transform-origin: 12px 8px; }
+.k-page { opacity: 0; transform-origin: 12px 12px; }
+.e-arm, .c-bub, .v-disc, .p-set, .k-star, .g-cap { transform-origin: 12px 12px; }
+.p-wave path { transform-origin: 14.6px 9.4px; }
+.k-mini { transform-origin: 18.2px 17.3px; }
+.g-tassel { transform-origin: 21.4px 9.2px; }
+.a-head, .a-shaft { transition: transform .45s var(--hc-spring, cubic-bezier(.34, 1.56, .64, 1)); }
+.a-shaft { transform-origin: 4.5px 12px; }
+.dp-bulb { transform-origin: 17px 7px; }
+
+:is(.ic-host:hover, .ic-host:focus-visible, .ic-go, .is-active .ic-host, [aria-selected="true"] .ic-host, [aria-checked="true"] .ic-host, [aria-current="true"] .ic-host, .module-card:hover, .module-card:focus-visible) .ic-search .s-lens { animation: hc-s-scan .9s ease 1 both; }
+:is(.ic-host:hover, .ic-host:focus-visible, .ic-go, .is-active .ic-host, [aria-selected="true"] .ic-host, [aria-checked="true"] .ic-host, [aria-current="true"] .ic-host, .module-card:hover, .module-card:focus-visible) .ic-search .s-glint { animation: hc-s-glint .9s ease 1 both; }
+:is(.ic-host:hover, .ic-host:focus-visible, .ic-go, .is-active .ic-host, [aria-selected="true"] .ic-host, [aria-checked="true"] .ic-host, [aria-current="true"] .ic-host, .module-card:hover, .module-card:focus-visible) .ic-search .s-handle { animation: hc-s-handle .9s ease-in-out 1 both; }
+:is(.ic-host:hover, .ic-host:focus-visible, .ic-go, .is-active .ic-host, [aria-selected="true"] .ic-host, [aria-checked="true"] .ic-host, [aria-current="true"] .ic-host, .module-card:hover, .module-card:focus-visible) .ic-bolt .b-bolt { animation: hc-b-draw 1.1s ease 1 both; }
+:is(.ic-host:hover, .ic-host:focus-visible, .ic-go, .is-active .ic-host, [aria-selected="true"] .ic-host, [aria-checked="true"] .ic-host, [aria-current="true"] .ic-host, .module-card:hover, .module-card:focus-visible) .ic-bolt .b-charge { animation: hc-b-flash 1.1s ease 1 both; }
+:is(.ic-host:hover, .ic-host:focus-visible, .ic-go, .is-active .ic-host, [aria-selected="true"] .ic-host, [aria-checked="true"] .ic-host, [aria-current="true"] .ic-host, .module-card:hover, .module-card:focus-visible) .ic-bolt .b-spark { animation: hc-b-spark 1.1s ease-out 1 both; }
+:is(.ic-host:hover, .ic-host:focus-visible, .ic-go, .is-active .ic-host, [aria-selected="true"] .ic-host, [aria-checked="true"] .ic-host, [aria-current="true"] .ic-host, .module-card:hover, .module-card:focus-visible) .ic-music .m-note { animation: hc-m-swing 1s ease 1 both; }
+:is(.ic-host:hover, .ic-host:focus-visible, .ic-go, .is-active .ic-host, [aria-selected="true"] .ic-host, [aria-checked="true"] .ic-host, [aria-current="true"] .ic-host, .module-card:hover, .module-card:focus-visible) .ic-music .m-beam { animation: hc-m-beam 1s ease-in-out 1 both; }
+:is(.ic-host:hover, .ic-host:focus-visible, .ic-go, .is-active .ic-host, [aria-selected="true"] .ic-host, [aria-checked="true"] .ic-host, [aria-current="true"] .ic-host, .module-card:hover, .module-card:focus-visible) .ic-write .w-pen { animation: hc-w-pen 1.1s linear 1 both; }
+:is(.ic-host:hover, .ic-host:focus-visible, .ic-go, .is-active .ic-host, [aria-selected="true"] .ic-host, [aria-checked="true"] .ic-host, [aria-current="true"] .ic-host, .module-card:hover, .module-card:focus-visible) .ic-write .w-ink { animation: hc-w-ink 1.1s linear 1 both; }
+:is(.ic-host:hover, .ic-host:focus-visible, .ic-go, .is-active .ic-host, [aria-selected="true"] .ic-host, [aria-checked="true"] .ic-host, [aria-current="true"] .ic-host, .module-card:hover, .module-card:focus-visible) .ic-image .i-sun { animation: hc-i-rise .9s ease 1 both; }
+:is(.ic-host:hover, .ic-host:focus-visible, .ic-go, .is-active .ic-host, [aria-selected="true"] .ic-host, [aria-checked="true"] .ic-host, [aria-current="true"] .ic-host, .module-card:hover, .module-card:focus-visible) .ic-image .i-mtn { animation: hc-i-pan .9s ease 1 both; }
+:is(.ic-host:hover, .ic-host:focus-visible, .ic-go, .is-active .ic-host, [aria-selected="true"] .ic-host, [aria-checked="true"] .ic-host, [aria-current="true"] .ic-host, .module-card:hover, .module-card:focus-visible) .ic-bot .r-eyes { animation: hc-r-blink 1.6s ease 1 both; }
+:is(.ic-host:hover, .ic-host:focus-visible, .ic-go, .is-active .ic-host, [aria-selected="true"] .ic-host, [aria-checked="true"] .ic-host, [aria-current="true"] .ic-host, .module-card:hover, .module-card:focus-visible) .ic-bot .r-ant { animation: hc-r-wob 1s ease-in-out 1 both; }
+:is(.ic-host:hover, .ic-host:focus-visible, .ic-go, .is-active .ic-host, [aria-selected="true"] .ic-host, [aria-checked="true"] .ic-host, [aria-current="true"] .ic-host, .module-card:hover, .module-card:focus-visible) .ic-book .k-page { animation: hc-k-flip 1s ease 1 both; }
+:is(.ic-host:hover, .ic-host:focus-visible, .ic-go, .is-active .ic-host, [aria-selected="true"] .ic-host, [aria-checked="true"] .ic-host, [aria-current="true"] .ic-host, .module-card:hover, .module-card:focus-visible) .ic-book .k-mark { animation: hc-k-dip 1s ease-in-out 1 both; }
+:is(.ic-host:hover, .ic-host:focus-visible, .ic-go, .is-active .ic-host, [aria-selected="true"] .ic-host, [aria-checked="true"] .ic-host, [aria-current="true"] .ic-host, .module-card:hover, .module-card:focus-visible) .ic-euler .e-arm { animation: hc-e-rot 1.4s ease 1 both; }
+:is(.ic-host:hover, .ic-host:focus-visible, .ic-go, .is-active .ic-host, [aria-selected="true"] .ic-host, [aria-checked="true"] .ic-host, [aria-current="true"] .ic-host, .module-card:hover, .module-card:focus-visible) .ic-chat .c-bub { animation: hc-c-pop .5s ease-out 1 both; }
+:is(.ic-host:hover, .ic-host:focus-visible, .ic-go, .is-active .ic-host, [aria-selected="true"] .ic-host, [aria-checked="true"] .ic-host, [aria-current="true"] .ic-host, .module-card:hover, .module-card:focus-visible) .ic-chat .c-dots circle { animation: hc-c-type 1s ease-in-out 1 both; }
+:is(.ic-host:hover, .ic-host:focus-visible, .ic-go, .is-active .ic-host, [aria-selected="true"] .ic-host, [aria-checked="true"] .ic-host, [aria-current="true"] .ic-host, .module-card:hover, .module-card:focus-visible) .ic-chat .c-dots circle:nth-child(2) { animation-delay: .14s; }
+:is(.ic-host:hover, .ic-host:focus-visible, .ic-go, .is-active .ic-host, [aria-selected="true"] .ic-host, [aria-checked="true"] .ic-host, [aria-current="true"] .ic-host, .module-card:hover, .module-card:focus-visible) .ic-chat .c-dots circle:nth-child(3) { animation-delay: .28s; }
+:is(.ic-host:hover, .ic-host:focus-visible, .ic-go, .is-active .ic-host, [aria-selected="true"] .ic-host, [aria-checked="true"] .ic-host, [aria-current="true"] .ic-host, .module-card:hover, .module-card:focus-visible) .ic-vinyl .v-disc { animation: hc-v-spin 2.4s linear 1 both; }
+:is(.ic-host:hover, .ic-host:focus-visible, .ic-go, .is-active .ic-host, [aria-selected="true"] .ic-host, [aria-checked="true"] .ic-host, [aria-current="true"] .ic-host, .module-card:hover, .module-card:focus-visible) .ic-phone .p-set { animation: hc-p-ring 1.4s ease-in-out 1 both; }
+:is(.ic-host:hover, .ic-host:focus-visible, .ic-go, .is-active .ic-host, [aria-selected="true"] .ic-host, [aria-checked="true"] .ic-host, [aria-current="true"] .ic-host, .module-card:hover, .module-card:focus-visible) .ic-phone .p-wave path { animation: hc-p-wave 1.4s ease-in-out 1 both; }
+:is(.ic-host:hover, .ic-host:focus-visible, .ic-go, .is-active .ic-host, [aria-selected="true"] .ic-host, [aria-checked="true"] .ic-host, [aria-current="true"] .ic-host, .module-card:hover, .module-card:focus-visible) .ic-phone .p-wave path:nth-child(2) { animation-delay: .15s; }
+:is(.ic-host:hover, .ic-host:focus-visible, .ic-go, .is-active .ic-host, [aria-selected="true"] .ic-host, [aria-checked="true"] .ic-host, [aria-current="true"] .ic-host, .module-card:hover, .module-card:focus-visible) .ic-coffee .j-steam path { animation: hc-j-rise 1.6s ease-in-out 1 both; }
+:is(.ic-host:hover, .ic-host:focus-visible, .ic-go, .is-active .ic-host, [aria-selected="true"] .ic-host, [aria-checked="true"] .ic-host, [aria-current="true"] .ic-host, .module-card:hover, .module-card:focus-visible) .ic-coffee .j-steam path:nth-child(2) { animation-delay: .5s; }
+:is(.ic-host:hover, .ic-host:focus-visible, .ic-go, .is-active .ic-host, [aria-selected="true"] .ic-host, [aria-checked="true"] .ic-host, [aria-current="true"] .ic-host, .module-card:hover, .module-card:focus-visible) .ic-sparkle .k-star { animation: hc-k-spin 1.1s ease 1 both; }
+:is(.ic-host:hover, .ic-host:focus-visible, .ic-go, .is-active .ic-host, [aria-selected="true"] .ic-host, [aria-checked="true"] .ic-host, [aria-current="true"] .ic-host, .module-card:hover, .module-card:focus-visible) .ic-sparkle .k-mini { animation: hc-k-tw 1.1s ease-in-out 1 both; }
+:is(.ic-host:hover, .ic-host:focus-visible, .ic-go, .is-active .ic-host, [aria-selected="true"] .ic-host, [aria-checked="true"] .ic-host, [aria-current="true"] .ic-host, .module-card:hover, .module-card:focus-visible) .ic-cap .g-cap { animation: hc-g-toss 1.1s ease 1 both; }
+:is(.ic-host:hover, .ic-host:focus-visible, .ic-go, .is-active .ic-host, [aria-selected="true"] .ic-host, [aria-checked="true"] .ic-host, [aria-current="true"] .ic-host, .module-card:hover, .module-card:focus-visible) .ic-cap .g-tassel { animation: hc-g-swing 1.3s ease-in-out 1 both; }
+:is(.ic-host:hover, .ic-host:focus-visible, .ic-go, .is-active .ic-host, [aria-selected="true"] .ic-host, [aria-checked="true"] .ic-host, [aria-current="true"] .ic-host, .module-card:hover, .module-card:focus-visible) :is(.ic-arrow, .ic-back) .a-head { transform: translateX(1.6px); }
+:is(.ic-host:hover, .ic-host:focus-visible, .ic-go, .is-active .ic-host, [aria-selected="true"] .ic-host, [aria-checked="true"] .ic-host, [aria-current="true"] .ic-host, .module-card:hover, .module-card:focus-visible) :is(.ic-arrow, .ic-back) .a-shaft { transform: scaleX(1.1); }
+
+@keyframes hc-s-scan { 0%, 100% { transform: none; } 30% { transform: translate(-1.4px, -.8px) rotate(-8deg); } 65% { transform: translate(1px, -1.1px) rotate(6deg); } }
+@keyframes hc-s-glint { to { transform: rotate(360deg); } }
+@keyframes hc-s-handle { 0%, 100% { stroke-dashoffset: 0; } 40% { stroke-dashoffset: 5; } }
+@keyframes hc-b-draw { 0% { stroke-dashoffset: 100; } 55%, 100% { stroke-dashoffset: 0; } }
+@keyframes hc-b-flash { 0%, 45%, 100% { opacity: .2; } 60% { opacity: .95; } }
+@keyframes hc-b-spark { 0%, 50% { opacity: 0; transform: scale(.6); } 65% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(1.25); } }
+@keyframes hc-m-swing { 0%, 100% { transform: none; } 20% { transform: translateY(-1.2px) rotate(-9deg); } 45% { transform: translateY(-.4px) rotate(7deg); } 70% { transform: rotate(-3deg); } }
+@keyframes hc-m-beam { 0% { stroke-dashoffset: 0; } 35% { stroke-dashoffset: -100; } 35.01% { stroke-dashoffset: 100; } 75%, 100% { stroke-dashoffset: 0; } }
+@keyframes hc-w-pen { 0% { transform: translate(-6.2px, 0); } 25% { transform: translate(-4.65px, -1.2px); } 50% { transform: translate(-3.1px, 0); } 75% { transform: translate(-1.55px, 1.2px); } 100% { transform: none; } }
+@keyframes hc-w-ink { from { stroke-dashoffset: 100; } to { stroke-dashoffset: 0; } }
+@keyframes hc-i-rise { 0% { transform: translateY(3px); opacity: 0; } 60% { transform: translateY(-.6px); opacity: 1; } 100% { transform: none; opacity: 1; } }
+@keyframes hc-i-pan { from { transform: translateX(.9px); } to { transform: none; } }
+@keyframes hc-r-blink { 0%, 20%, 40%, 100% { transform: none; } 10%, 30% { transform: scaleY(.12); } }
+@keyframes hc-r-wob { 0%, 100% { transform: none; } 20% { transform: rotate(16deg); } 45% { transform: rotate(-12deg); } 70% { transform: rotate(6deg); } }
+@keyframes hc-k-flip { 0% { transform: none; opacity: 0; } 15% { opacity: .9; } 25% { transform: scaleX(.55) skewY(-7deg); } 50% { transform: scaleX(0); } 75% { transform: scaleX(-.55) skewY(7deg); } 85% { opacity: .9; } 100% { transform: scaleX(-1); opacity: 0; } }
+@keyframes hc-k-dip { 0%, 100% { transform: none; } 50% { transform: translateY(1.3px); } }
+@keyframes hc-e-rot { from { transform: none; } to { transform: rotate(-360deg); } }
+@keyframes hc-c-pop { 0%, 100% { transform: none; } 30% { transform: scale(1.05); } }
+@keyframes hc-c-type { 0%, 60%, 100% { transform: none; opacity: .5; } 30% { transform: translateY(-1.8px); opacity: 1; } }
+@keyframes hc-v-spin { to { transform: rotate(360deg); } }
+@keyframes hc-p-ring { 0%, 50%, 100% { transform: none; } 6% { transform: rotate(-13deg); } 12% { transform: rotate(11deg); } 18% { transform: rotate(-10deg); } 24% { transform: rotate(8deg); } 30% { transform: rotate(-5deg); } 36% { transform: rotate(3deg); } }
+@keyframes hc-p-wave { 0%, 100% { opacity: 1; transform: none; } 20% { opacity: .15; transform: scale(.7); } 50% { opacity: 1; transform: scale(1.06); } }
+@keyframes hc-j-rise { 0% { transform: translateY(1.6px); opacity: 0; } 40% { opacity: 1; } 100% { transform: translateY(-1.8px); opacity: 0; } }
+@keyframes hc-k-spin { 0% { transform: none; } 50% { transform: rotate(45deg) scale(1.12); } 100% { transform: rotate(90deg); } }
+@keyframes hc-k-tw { 0%, 100% { transform: none; opacity: 1; } 40% { transform: scale(.3) rotate(45deg); opacity: .4; } 70% { transform: scale(1.25) rotate(90deg); opacity: 1; } }
+@keyframes hc-g-toss { 0%, 100% { transform: none; } 30% { transform: translateY(-2.6px) rotate(-10deg); } 60% { transform: translateY(.4px) rotate(3deg); } }
+@keyframes hc-g-swing { 0%, 100% { transform: none; } 25% { transform: rotate(22deg); } 50% { transform: rotate(-14deg); } 75% { transform: rotate(7deg); } }
+
+@media (prefers-reduced-motion: reduce) {
+    .ic, .ic * { animation: none !important; transition: none !important; }
+}

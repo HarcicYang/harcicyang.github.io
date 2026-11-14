@@ -37,7 +37,7 @@
     --radius-lg: 12px;
     --radius-xl: 12px;
     --radius-pill: 9999px;
-    --glass-blur: blur(12px);
+    --glass-blur: none;
     --transition-normal: 0.25s ease;
     --transition-fast: 0.15s ease;
     --bg-image: url("/resource/backgrounds/13.webp");
@@ -145,14 +145,11 @@ body::before {
     transition: box-shadow var(--transition-normal);
 }
 .glass-input:focus {
-    animation: inputPulse 2s ease-in-out infinite;
+    box-shadow:
+        0 0 8px 2px var(--ac-btn-shadow-color),
+        0 0 30px rgba(var(--accent-r), var(--accent-g), var(--accent-b), 0.18);
 }
 .glass-input::placeholder { color: var(--text-muted); }
-
-@keyframes inputPulse {
-    0%, 100% { box-shadow: 0 0 12px 8px var(--ac-btn-shadow-color), 0 0 30px rgba(var(--primary-rgb), 0.1); }
-    50%      { box-shadow: 0 0 22px 15px var(--ac-btn-shadow-color), 0 0 50px rgba(var(--primary-rgb), 0.2); }
-}
 
 /* ===== 3. Button — sweep + glow ===== */
 .glass-btn {
@@ -252,8 +249,8 @@ body::before {
 
 /* ===== 4. Card entrance — glow reveal ===== */
 @keyframes cardReveal {
-    from { opacity: 0; transform: translateY(16px); filter: brightness(0.5) blur(4px); }
-    to   { opacity: 1; transform: translateY(0);   filter: brightness(1) blur(0); }
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
 }
 .fade-in {
     animation: cardReveal 0.5s ease forwards;
