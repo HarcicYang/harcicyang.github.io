@@ -317,6 +317,7 @@
             color: var(--text-muted);
             overflow-wrap: anywhere;
         }
+        .about-desc-secondary { margin-top: 0.45rem; }
         .about-tags {
             display: flex;
             flex-wrap: wrap;
@@ -330,6 +331,43 @@
             font-size: 0.68rem;
             font-weight: 500;
             white-space: nowrap;
+        }
+        .about-links {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.55rem;
+        }
+        .about-link {
+            width: 2.5rem;
+            height: 2.5rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: 0;
+            border-radius: 50%;
+            background: transparent;
+            color: var(--text-secondary);
+            text-decoration: none;
+            box-shadow: none;
+            transition:
+                transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+                color 0.28s ease;
+        }
+        .about-link svg {
+            width: 1.15rem;
+            height: 1.15rem;
+            fill: currentColor;
+            pointer-events: none;
+        }
+        .about-link-bili svg {
+            width: 1.9rem;
+            height: 1.9rem;
+        }
+        .about-link:hover,
+        .about-link:focus-visible {
+            transform: translateY(-2px) scale(1.04);
+            color: var(--ac-btn-color-l);
         }
         .module-track {
             flex: 1;
@@ -737,6 +775,9 @@
             .about-mark { width: 40px; height: 40px; font-size: 1.15rem; }
             .about-desc { font-size: 0.72rem; }
             .about-tags span { font-size: 0.64rem; padding: 0.28rem 0.55rem; }
+            .about-link { width: 2.3rem; height: 2.3rem; }
+            .about-link svg { width: 1.05rem; height: 1.05rem; }
+            .about-link-bili svg { width: 1.72rem; height: 1.72rem; }
             .module-track { padding-right: 0.35rem; }
             .module-meter { gap: 0.4rem; }
             .module-dot { width: 7px; height: 7px; }
@@ -775,7 +816,8 @@
             .hub-stage, .module-track { scroll-behavior: auto; }
             .hub-rail { scroll-behavior: auto; }
             .panel-inner, .module-card, .hub-tab, .module-dot, .module-go, .hub-frame::before,
-            .module-group-panel, .module-group-panel-inner, .module-group-entry, .module-group-toggle, .module-group-toggle svg {
+            .module-group-panel, .module-group-panel-inner, .module-group-entry, .module-group-toggle, .module-group-toggle svg,
+            .about-link {
                 transition-duration: 0.01ms;
             }
             .module-group-entry { transition-delay: 0ms !important; }
@@ -818,7 +860,7 @@
             </div>
 
             <nav class="hub-rail" id="hubRail" aria-label="分区导航">
-                <button class="hub-tab" type="button" data-section="0" data-number="00">00 关于本站</button>
+                <button class="hub-tab" type="button" data-section="0" data-number="00">00 关于我</button>
                 <button class="hub-tab is-active" type="button" data-section="1" data-number="01" aria-current="true">01 工具</button>
                 <button class="hub-tab" type="button" data-section="2" data-number="02">02 内容</button>
                 <button class="hub-tab" type="button" data-section="3" data-number="03">03 项目</button>
@@ -835,22 +877,34 @@
                 <div class="panel-inner">
                     <header class="panel-head">
                         <span class="panel-number">00</span>
-                        <h2 class="panel-title" id="panel-title-0">关于本站</h2>
-                        <span class="panel-count">导航总览</span>
+                        <h2 class="panel-title" id="panel-title-0">关于我</h2>
+                        <span class="panel-count">Harcic</span>
                     </header>
                     <div class="panel-body about-body">
                         <div class="about-mark">
                             <img src="/resource/head.webp?v=github-84220553" alt="Harcic Yang" width="46" height="46">
                         </div>
                         <div class="about-copy">
-                            <span class="about-lead">Harcic's Hub</span>
-                            <p class="about-desc">记录、工具、实验与整活的入口都收在这里。</p>
+                            <span class="about-lead">Harcic</span>
+                            <p class="about-desc">在人设之下、一个迷茫的高中生。渴求改变，但暂时对现实无能为力。</p>
+                            <p class="about-desc about-desc-secondary">写代码、做工具，也记录一些仍在生长的想法。这里放着我维护的项目、常用入口和偶尔冒出来的实验。</p>
                         </div>
-                        <div class="about-tags" aria-label="站点关键词">
-                            <span>索引</span>
+                        <div class="about-tags" aria-label="个人关键词">
+                            <span>代码</span>
                             <span>创作</span>
-                            <span>实验</span>
+                            <span>折腾</span>
                         </div>
+                        <nav class="about-links" aria-label="社交链接">
+                            <a class="about-link" href="https://github.com/HarcicYang" target="_blank" rel="me noopener noreferrer" aria-label="GitHub" title="GitHub">
+                                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+                            </a>
+                            <a class="about-link about-link-bili" href="https://space.bilibili.com/686607596" target="_blank" rel="me noopener noreferrer" aria-label="BiliBili" title="BiliBili">
+                                <svg viewBox="0 0 1024 1024" aria-hidden="true" focusable="false"><path d="M450.803484 456.506027l-120.670435 23.103715 10.333298 45.288107 119.454151-23.102578-9.117014-45.289244z m65.04448 120.060586c-29.483236 63.220622-55.926329 15.502222-55.926328 15.502223l-19.754098 12.768142s38.90176 53.192249 75.986489 12.764729c43.770311 40.42752 77.203911-13.068516 77.203911-13.068516l-17.934791-11.55072c0.001138-0.304924-31.305956 44.983182-59.575183-16.415858z m59.57632-74.773617L695.182222 524.895573l10.029511-45.288106-120.364373-23.103716-9.423076 45.289245z m237.784178-88.926436c-1.905778-84.362809-75.487004-100.540871-75.487004-100.540871s-57.408853-0.316302-131.944676-0.95232l54.237867-52.332089s8.562916-10.784996-6.026809-22.834062c-14.592-12.051342-15.543182-6.660551-20.615396-3.487289-4.441884 3.169849-69.462471 66.920676-80.878933 78.340551-29.494613 0-60.2624-0.319716-90.075591-0.319716h10.466418s-77.705671-76.754489-82.781298-80.241777c-5.075627-3.488427-5.709369-8.56064-20.616533 3.487289-14.589724 12.05248-6.026809 22.8352-6.026809 22.8352l55.504213 53.919288c-60.261262 0-112.280462 0.319716-136.383147 1.268623-78.025387 22.521173-71.99744 100.859449-71.99744 100.859449s0.950044 168.100978 0 253.103217c8.562916 85.00224 73.899804 98.636231 73.899805 98.636231s26.007324 0.63488 45.357511 0.63488c1.900089 5.391929 3.486151 32.034133 33.302756 32.034134 29.495751 0 33.30048-32.034133 33.30048-32.034134s217.263218-0.950044 235.340231-0.950044c0.953458 9.196658 5.394204 33.619058 35.207395 33.303893 29.494613-0.636018 31.714418-35.20512 31.714418-35.20512s10.151253-0.95232 40.280747 0c70.413653-13.005938 74.534684-95.468658 74.534684-95.468657s-1.265209-169.689316-0.312889-254.056676zM752.628622 681.8304c0 13.319964-10.467556 24.102684-23.471218 24.102684H300.980907c-13.003662 0-23.47008-10.78272-23.47008-24.102684V397.961671c0-13.32224 10.467556-24.106098 23.47008-24.106098h428.176497c13.003662 0 23.471218 10.783858 23.471218 24.106098v283.868729z"/></svg>
+                            </a>
+                            <a class="about-link" href="https://x.com/harcicyang" target="_blank" rel="me noopener noreferrer" aria-label="X" title="X">
+                                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14.234 10.162 22.977 0h-2.072l-7.591 8.824L7.251 0H.258l9.168 13.343L.258 24H2.33l8.016-9.318L16.749 24h6.993zm-2.837 3.299-.929-1.329L3.076 1.56h3.182l5.965 8.532.929 1.329 7.754 11.09h-3.182z"/></svg>
+                            </a>
+                        </nav>
                     </div>
                 </div>
             </section>
