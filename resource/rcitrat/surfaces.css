@@ -2,7 +2,7 @@
 
 html.rcitrat-preview body,
 html.rcitrat-preview[data-theme="light"] body {
-    background: transparent !important;
+    background-color: var(--hc-bg) !important;
     color: var(--hc-on);
     isolation: isolate;
     scrollbar-color: var(--hc-accent) transparent;
@@ -34,6 +34,26 @@ html.rcitrat-preview body::before {
 html.rcitrat-preview[data-playing] body::before,
 html.rcitrat-preview[data-playing][data-theme="light"] body::before {
     filter: none !important;
+}
+
+/* Blend the bottom edge into Safari's system-tinted toolbar area on touch devices. */
+@media (hover: none) and (pointer: coarse) {
+    html.rcitrat-preview body::after {
+        content: "";
+        position: fixed;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: -1;
+        height: calc(4.5rem + env(safe-area-inset-bottom, 0px));
+        pointer-events: none;
+        background: linear-gradient(
+            to bottom,
+            transparent,
+            color-mix(in oklab, var(--hc-bg) 58%, transparent) 48%,
+            var(--hc-bg) 100%
+        );
+    }
 }
 
 html.rcitrat-preview ::selection {
