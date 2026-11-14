@@ -152,7 +152,6 @@
             scroll-behavior: auto;
             scrollbar-width: none;
             outline: none;
-            touch-action: pan-x pan-y;
         }
         .hub-stage::-webkit-scrollbar { display: none; }
         .hub-stage:focus-visible { box-shadow: inset 0 0 0 2px var(--ac-btn-color-l); }
@@ -346,7 +345,6 @@
             scroll-behavior: auto;
             overscroll-behavior: contain;
             scrollbar-width: none;
-            touch-action: auto;
             padding: 0;
         }
         .module-track::-webkit-scrollbar { display: none; }
@@ -763,9 +761,6 @@
             .panel-head { margin-bottom: 0.7rem; }
             .hub-board { padding-top: 1rem; }
         }
-        @media (pointer: coarse), (max-width: 768px) {
-            .hub-stage { touch-action: none; }
-        }
         @media (max-width: 440px) {
             .module-card { min-height: 58px; padding: 0.5rem 0.6rem; }
             .module-desc { display: none; }
@@ -1139,13 +1134,9 @@
             var wheelAccumX = 0;
             var wheelAccumY = 0;
             var scrollQueued = false;
-            var wheelChaining = !(window.matchMedia && window.matchMedia("(pointer: coarse)").matches);
             var wheelAxis = null;
             var lastWheelEventAt = 0;
             var lastWheelSampleAt = 0;
-            var touchGesture = null;
-            var touchTailTimers = [];
-            var suppressClickUntil = 0;
 
             function clamp(value, min, max) {
                 return Math.max(min, Math.min(max, value));
@@ -1460,112 +1451,13 @@
                     wheelAxis = "y";
                     if (nextModule >= 0 && nextModule < moduleCount) {
                         goToModule(nextModule, true, fast);
-                    } else if (wheelChaining && dirY > 0 && currentSection < panels.length - 1) {
+                    } else if (dirY > 0 && currentSection < panels.length - 1) {
                         goToSection(currentSection + 1, true, fast);
-                    } else if (wheelChaining && dirY < 0 && currentSection > 0) {
+                    } else if (dirY < 0 && currentSection > 0) {
                         goToSection(currentSection - 1, true, fast);
                     }
                 }
             }, { passive: false });
-
-            stage.addEventListener("touchstart", function(e) {
-                touchTailTimers.forEach(clearTimeout);
-                touchTailTimers = [];
-                if (e.touches.length !== 1) {
-                    touchGesture = null;
-                    return;
-                }
-                var touch = e.touches[0];
-                touchGesture = {
-                    x: touch.clientX,
-                    y: touch.clientY,
-                    anchorX: touch.clientX,
-                    anchorY: touch.clientY,
-                    axis: null,
-                    moved: false,
-                    steps: 0,
-                    lastStepAt: 0,
-                    section: currentSection,
-                    module: currentModule
-                };
-            }, { passive: true });
-
-            function stepTouchNavigation(axis, direction) {
-                if (axis === "x") {
-                    goToSection(currentSection + direction, true);
-                    return;
-                }
-                var nextModule = currentModule + direction;
-                var moduleCount = Math.max(1, cardsByPanel[currentSection].length);
-                if (nextModule >= 0 && nextModule < moduleCount) {
-                    goToModule(nextModule, true);
-                    return;
-                }
-                if (direction > 0 && currentSection < panels.length - 1) {
-                    goToSection(currentSection + 1, true);
-                } else if (direction < 0 && currentSection > 0) {
-                    currentSection -= 1;
-                    currentModule = Math.max(0, cardsByPanel[currentSection].length - 1);
-                    refreshState();
-                    scrollToFocus(true);
-                }
-            }
-
-            stage.addEventListener("touchmove", function(e) {
-                if (!touchGesture || e.touches.length !== 1) return;
-                var touch = e.touches[0];
-                var dx = touch.clientX - touchGesture.x;
-                var dy = touch.clientY - touchGesture.y;
-                if (Math.max(Math.abs(dx), Math.abs(dy)) > 10) {
-                    touchGesture.moved = true;
-                    touchGesture.axis = Math.abs(dx) >= Math.abs(dy) ? "x" : "y";
-                    e.preventDefault();
-                }
-                if (!touchGesture.axis) return;
-                var now = performance.now();
-                if (now - touchGesture.lastStepAt < 130) return;
-                var distance = touchGesture.axis === "x"
-                    ? touch.clientX - touchGesture.anchorX
-                    : touch.clientY - touchGesture.anchorY;
-                var threshold = touchGesture.steps === 0 ? 38 : 64;
-                if (Math.abs(distance) < threshold) return;
-                var direction = distance < 0 ? 1 : -1;
-                touchGesture.steps += 1;
-                touchGesture.lastStepAt = now;
-                if (touchGesture.axis === "x") touchGesture.anchorX += direction * 64;
-                else touchGesture.anchorY += direction * 64;
-                suppressClickUntil = now + 450;
-                stepTouchNavigation(touchGesture.axis, direction);
-            }, { passive: false });
-
-            function finishTouchGesture(event) {
-                if (!touchGesture) return;
-                var gesture = touchGesture;
-                touchGesture = null;
-                var touch = event.changedTouches && event.changedTouches[0];
-                if (!touch || !gesture.moved) return;
-                suppressClickUntil = performance.now() + 450;
-                var remaining = gesture.axis === "x"
-                    ? touch.clientX - gesture.anchorX
-                    : touch.clientY - gesture.anchorY;
-                var extraSteps = Math.min(3, Math.floor(Math.abs(remaining) / 64));
-                var direction = remaining < 0 ? 1 : -1;
-                for (var i = 0; i < extraSteps; i += 1) {
-                    touchTailTimers.push(setTimeout(function() {
-                        stepTouchNavigation(gesture.axis, direction);
-                    }, (i + 1) * 110));
-                }
-            }
-
-            stage.addEventListener("touchend", finishTouchGesture, { passive: true });
-            stage.addEventListener("touchcancel", function() {
-                touchGesture = null;
-            }, { passive: true });
-            stage.addEventListener("click", function(e) {
-                if (performance.now() >= suppressClickUntil) return;
-                e.preventDefault();
-                e.stopPropagation();
-            }, true);
 
             document.addEventListener("keydown", function(e) {
                 if (e.ctrlKey || e.metaKey || e.altKey) {
