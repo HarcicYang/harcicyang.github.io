@@ -1213,7 +1213,7 @@
                 scroller.__scrollAnimating = true;
                 var start = performance.now();
                 function frame(now) {
-                    var progress = Math.min(1, (now - start) / duration);
+                    var progress = clamp((now - start) / duration, 0, 1);
                     var eased = easeOutCubic(progress);
                     if (targetLeft !== null) scroller.scrollLeft = fromLeft + deltaLeft * eased;
                     if (targetTop !== null) scroller.scrollTop = fromTop + deltaTop * eased;
