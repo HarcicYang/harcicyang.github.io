@@ -10,8 +10,6 @@ exclude:
   - dev.py
   - AGENTS.md
   - "*.srs"
-  - "*.m4a"
-  - "*.mp3"
   - neony-src
 
 include:
