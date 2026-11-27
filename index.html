@@ -9,6 +9,14 @@
     <link rel="icon" type="image/svg+xml" href="/resource/favicon.svg">
     <link rel="stylesheet" href="/resource/theme.css?v=rcitrat-site-28">
     <style>
+        @font-face {
+            font-family: "Morrow Entry Serif";
+            src: url("/morrow/fonts/morrow-serif-sc.woff2") format("woff2");
+            font-style: normal;
+            font-weight: 400;
+            font-display: swap;
+        }
+
         .hub-shell {
             width: 100%;
             height: 100vh;
@@ -748,6 +756,138 @@
             transform: scale(1.55);
         }
 
+        .hub-secret-ember {
+            flex: 0 0 auto;
+            align-self: center;
+            width: 0.32rem;
+            height: 0.32rem;
+            margin: 0 0.25rem 0 0.55rem;
+            border-radius: 50%;
+            background: var(--ac-btn-color);
+            opacity: 0;
+            box-shadow: 0 0 0.8rem var(--ac-btn-shadow-color);
+        }
+        .hub-secret-ember.is-lit {
+            animation: secret-ember 1.15s ease-out both;
+        }
+        .hub-tab-secret {
+            min-width: 2.75rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            padding-inline: 0.75rem;
+            font-variant-numeric: tabular-nums;
+            letter-spacing: 0.08em;
+        }
+        .hub-tab-secret::before {
+            content: "";
+            width: 0.26rem;
+            height: 0.26rem;
+            flex: 0 0 auto;
+            border-radius: 50%;
+            background: currentColor;
+            opacity: 0.46;
+        }
+        .hub-tab-secret.is-revealing {
+            animation: secret-tab-in 760ms cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+
+        .secret-track {
+            justify-content: center;
+            gap: 0.9rem;
+        }
+        .secret-static-dot {
+            cursor: default;
+            pointer-events: none;
+        }
+        .hub-panel-secret .secret-room-card {
+            min-height: 5.5rem;
+        }
+        .secret-room-card .module-icon {
+            width: 46px;
+            min-width: 46px;
+        }
+        .secret-room-card .module-icon svg {
+            width: 42px;
+            height: 42px;
+        }
+        .secret-kicker {
+            display: block;
+            margin-bottom: 0.28rem;
+            color: var(--text-muted);
+            font-size: 0.52rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            line-height: 1.3;
+            text-transform: uppercase;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .secret-room-card .module-title {
+            font-family: "Morrow Entry Serif", "Noto Serif CJK SC", "Songti SC", Georgia, serif;
+            font-size: 1.35rem;
+            font-weight: 400;
+            letter-spacing: 0.015em;
+        }
+        .secret-room-card.is-active .secret-kicker {
+            color: var(--btn-text-color);
+            opacity: 0.58;
+        }
+        .secret-note {
+            margin: 0;
+            padding: 0.85rem 0.25rem 0;
+            border-top: 1px solid color-mix(in srgb, var(--text-color) 12%, transparent);
+            color: var(--text-muted);
+            font-family: "Morrow Entry Serif", "Noto Serif CJK SC", "Songti SC", Georgia, serif;
+            font-size: 0.86rem;
+            letter-spacing: 0.01em;
+            line-height: 1.6;
+        }
+        .hub-secret-ember[hidden],
+        .hub-tab-secret[hidden],
+        .hub-panel-secret[hidden] {
+            display: none;
+        }
+
+        @keyframes secret-ember {
+            0% {
+                opacity: 0;
+                transform: scale(0.45);
+            }
+            24% {
+                opacity: 0.9;
+                transform: scale(1);
+            }
+            62% {
+                opacity: 0.42;
+                transform: scale(0.88);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(1.25);
+            }
+        }
+
+        @keyframes secret-tab-in {
+            0% {
+                opacity: 0;
+                transform: translateX(-0.7rem) scale(0.78);
+                filter: blur(3px);
+            }
+            60% {
+                opacity: 0.88;
+                transform: translateX(0.08rem) scale(1.02);
+                filter: blur(0);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+                filter: blur(0);
+            }
+        }
+
         @media (max-width: 900px) {
             .hub-top { gap: 1rem; }
             .hub-count { display: none; }
@@ -807,6 +947,7 @@
             .module-desc { display: none; }
             .module-group-head { min-height: 58px; padding: 0.5rem 0.55rem 0.5rem 0.6rem; }
             .module-group-entry-desc { display: none; }
+            .secret-kicker { font-size: 0.46rem; letter-spacing: 0.08em; }
         }
         @media (max-width: 380px) {
             .module-go { display: none; }
@@ -817,8 +958,9 @@
             .hub-rail { scroll-behavior: auto; }
             .panel-inner, .module-card, .hub-tab, .module-dot, .module-go, .hub-frame::before,
             .module-group-panel, .module-group-panel-inner, .module-group-entry, .module-group-toggle, .module-group-toggle svg,
-            .about-link {
+            .about-link, .hub-secret-ember, .hub-tab-secret {
                 transition-duration: 0.01ms;
+                animation-duration: 0.01ms;
             }
             .module-group-entry { transition-delay: 0ms !important; }
         }
@@ -865,6 +1007,8 @@
                 <button class="hub-tab" type="button" data-section="2" data-number="02">02 内容</button>
                 <button class="hub-tab" type="button" data-section="3" data-number="03">03 项目</button>
                 <button class="hub-tab" type="button" data-section="4" data-number="04">04 整活</button>
+                <span class="hub-secret-ember" id="hubSecretEmber" aria-hidden="true" hidden></span>
+                <button class="hub-tab hub-tab-secret" id="hubSecretTab" type="button" data-section="5" data-number="05" aria-label="未命名房间" hidden>05</button>
             </nav>
 
             <div class="hub-count" id="hubCount" aria-live="polite">01 / 04</div>
@@ -1165,6 +1309,41 @@
                     </div>
                 </div>
             </section>
+
+            <section class="hub-panel hub-panel-secret" id="secretPanel" aria-labelledby="panel-title-5" hidden>
+                <div class="panel-inner">
+                    <header class="panel-head">
+                        <span class="panel-number">05</span>
+                        <h2 class="panel-title" id="panel-title-5">房间</h2>
+                        <span class="panel-count">1 个出口</span>
+                    </header>
+                    <div class="panel-body">
+                        <div class="module-track secret-track">
+                            <a class="module-card secret-room-card" href="/morrow/" aria-label="进入 Morrow 的房间，房间状态：有人">
+                                <span class="module-index">05</span>
+                                <span class="module-icon" aria-hidden="true">
+                                    <svg viewBox="0 0 48 48">
+                                        <circle cx="24" cy="24" r="16" fill="none" stroke="currentColor" stroke-width="1.4" opacity="0.46"/>
+                                        <circle cx="24" cy="24" r="11" fill="currentColor" opacity="0.1"/>
+                                        <circle cx="24" cy="24" r="6.5" fill="currentColor" opacity="0.34"/>
+                                        <path d="M24 3v5M24 40v5M3 24h5M40 24h5" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity="0.24"/>
+                                    </svg>
+                                </span>
+                                <span class="module-copy">
+                                    <span class="secret-kicker">Morrow / Edition 01</span>
+                                    <span class="module-title">Morrow</span>
+                                    <span class="module-desc">房间状态：有人</span>
+                                </span>
+                                <span class="module-go" aria-hidden="true"><hc-icon name="arrow"></hc-icon></span>
+                            </a>
+                            <p class="secret-note">这盏灯已经学会了这个房间。</p>
+                        </div>
+                        <div class="module-meter" aria-hidden="true">
+                            <span class="module-dot is-active secret-static-dot"></span>
+                        </div>
+                    </div>
+                </div>
+            </section>
                 </div>
             </main>
         </div>
@@ -1174,8 +1353,8 @@
         (function() {
             var stage = document.getElementById("hubStage");
             var rail = document.getElementById("hubRail");
-            var panels = Array.prototype.slice.call(document.querySelectorAll(".hub-panel"));
-            var tabs = Array.prototype.slice.call(document.querySelectorAll(".hub-tab"));
+            var panels = Array.prototype.slice.call(document.querySelectorAll(".hub-panel:not([hidden])"));
+            var tabs = Array.prototype.slice.call(document.querySelectorAll(".hub-tab:not([hidden])"));
             var cardsByPanel = panels.map(function(panel) {
                 return Array.prototype.slice.call(panel.querySelectorAll(".module-card"));
             });
@@ -1183,6 +1362,9 @@
                 return Array.prototype.slice.call(panel.querySelectorAll(".module-dot"));
             });
             var countEl = document.getElementById("hubCount");
+            var secretTab = document.getElementById("hubSecretTab");
+            var secretPanel = document.getElementById("secretPanel");
+            var secretEmber = document.getElementById("hubSecretEmber");
             var currentSection = 1;
             var currentModule = 0;
             var wheelAccumX = 0;
@@ -1191,6 +1373,14 @@
             var wheelAxis = null;
             var lastWheelEventAt = 0;
             var lastWheelSampleAt = 0;
+            var secretRevealed = false;
+            var secretAttempts = 0;
+            var secretLastAttemptAt = 0;
+            var secretResetTimer = 0;
+            var secretEmberTimer = 0;
+            var secretWheelTimer = 0;
+            var secretTabTimer = 0;
+            var boundaryTouchStart = null;
 
             function clamp(value, min, max) {
                 return Math.max(min, Math.min(max, value));
@@ -1219,6 +1409,91 @@
             }
             function pad(value) {
                 return value < 10 ? "0" + value : String(value);
+            }
+            function resetSecretAttempts() {
+                secretAttempts = 0;
+                secretLastAttemptAt = 0;
+                clearTimeout(secretResetTimer);
+                clearTimeout(secretEmberTimer);
+                secretResetTimer = 0;
+                secretEmberTimer = 0;
+                if (secretEmber) {
+                    secretEmber.classList.remove("is-lit");
+                    secretEmber.hidden = true;
+                }
+            }
+            function flashSecretEmber() {
+                if (!secretEmber || secretRevealed) return;
+                clearTimeout(secretEmberTimer);
+                secretEmber.hidden = false;
+                secretEmber.classList.remove("is-lit");
+                void secretEmber.offsetWidth;
+                secretEmber.classList.add("is-lit");
+                secretEmberTimer = setTimeout(function() {
+                    secretEmber.classList.remove("is-lit");
+                    secretEmber.hidden = true;
+                    secretEmberTimer = 0;
+                }, 1200);
+            }
+            function revealSecretEntry(animate) {
+                if (secretRevealed || !secretTab || !secretPanel) return;
+                secretRevealed = true;
+                clearTimeout(secretWheelTimer);
+                clearTimeout(secretTabTimer);
+                resetSecretAttempts();
+                secretTab.hidden = false;
+                secretPanel.hidden = false;
+                panels.push(secretPanel);
+                tabs.push(secretTab);
+                cardsByPanel.push(Array.prototype.slice.call(secretPanel.querySelectorAll(".module-card")));
+                dotsByPanel.push(Array.prototype.slice.call(secretPanel.querySelectorAll(".module-dot")));
+                secretTab.addEventListener("click", function() {
+                    goToSection(tabs.length - 1, true);
+                });
+                try {
+                    sessionStorage.setItem("harcic-morrow-room", "found");
+                } catch (error) {}
+                refreshState();
+                if (animate) {
+                    secretTab.classList.add("is-revealing");
+                    secretTabTimer = setTimeout(function() {
+                        secretTab.classList.remove("is-revealing");
+                        secretTabTimer = 0;
+                    }, 820);
+                    requestAnimationFrame(function() {
+                        secretTab.scrollIntoView({ behavior: "smooth", inline: "end", block: "nearest" });
+                    });
+                }
+            }
+            function atSectionBoundary() {
+                return currentSection === panels.length - 1;
+            }
+            function atModuleBoundary() {
+                var lastModule = Math.max(1, cardsByPanel[currentSection].length) - 1;
+                return atSectionBoundary() && currentModule >= lastModule;
+            }
+            function registerBoundaryAttempt(requireLastModule) {
+                if (secretRevealed) return;
+                if (requireLastModule ? !atModuleBoundary() : !atSectionBoundary()) return;
+                var now = Date.now();
+                if (secretLastAttemptAt && now - secretLastAttemptAt > 4200) resetSecretAttempts();
+                secretAttempts += 1;
+                secretLastAttemptAt = now;
+                clearTimeout(secretResetTimer);
+                if (secretAttempts === 2) flashSecretEmber();
+                if (secretAttempts >= 3) {
+                    revealSecretEntry(true);
+                    return;
+                }
+                secretResetTimer = setTimeout(resetSecretAttempts, 4500);
+            }
+            function queueWheelBoundaryAttempt(requireLastModule) {
+                if (secretRevealed) return;
+                clearTimeout(secretWheelTimer);
+                secretWheelTimer = setTimeout(function() {
+                    secretWheelTimer = 0;
+                    registerBoundaryAttempt(requireLastModule);
+                }, 320);
             }
             function normalizeWheelDelta(value, mode) {
                 if (mode === 1) return value * 16;
@@ -1300,7 +1575,7 @@
                     var number = tab && tab.dataset && tab.dataset.number !== undefined
                         ? parseInt(tab.dataset.number, 10)
                         : currentSection;
-                    countEl.textContent = pad(number) + " / " + pad(panels.length);
+                    countEl.textContent = pad(number) + " / " + pad(Math.max(1, panels.length - 1));
                 }
                 panels.forEach(function(panel, si) {
                     cardsByPanel[si].forEach(function(card, mi) {
@@ -1489,7 +1764,11 @@
                     wheelAccumX = 0;
                     wheelAccumY = 0;
                     wheelAxis = "x";
-                    if (targetSection < 0 || targetSection >= panels.length) return;
+                    if (targetSection >= panels.length) {
+                        if (dirX > 0 && atSectionBoundary()) queueWheelBoundaryAttempt(false);
+                        return;
+                    }
+                    if (targetSection < 0) return;
                     goToSection(targetSection, true, fast);
                     return;
                 }
@@ -1510,9 +1789,38 @@
                         goToSection(currentSection + 1, true, fast);
                     } else if (dirY < 0 && currentSection > 0) {
                         goToSection(currentSection - 1, true, fast);
+                    } else if (dirY > 0 && atModuleBoundary()) {
+                        queueWheelBoundaryAttempt(true);
                     }
                 }
             }, { passive: false });
+
+            stage.addEventListener("touchstart", function(e) {
+                boundaryTouchStart = null;
+                if (secretRevealed || e.touches.length !== 1) return;
+                var maxLeft = stage.scrollWidth - stage.clientWidth;
+                var edgeTolerance = Math.max(40, stage.clientWidth * 0.08);
+                var atRightEdge = stage.scrollLeft >= maxLeft - edgeTolerance;
+                if (!atRightEdge || !atSectionBoundary()) return;
+                boundaryTouchStart = {
+                    x: e.touches[0].clientX,
+                    y: e.touches[0].clientY
+                };
+            }, { passive: true });
+
+            stage.addEventListener("touchend", function(e) {
+                if (!boundaryTouchStart || !e.changedTouches.length) return;
+                var dx = e.changedTouches[0].clientX - boundaryTouchStart.x;
+                var dy = e.changedTouches[0].clientY - boundaryTouchStart.y;
+                boundaryTouchStart = null;
+                if (dx < -45 && Math.abs(dx) > Math.abs(dy) * 1.25) {
+                    registerBoundaryAttempt(false);
+                }
+            }, { passive: true });
+
+            stage.addEventListener("touchcancel", function() {
+                boundaryTouchStart = null;
+            }, { passive: true });
 
             document.addEventListener("keydown", function(e) {
                 if (e.ctrlKey || e.metaKey || e.altKey) {
@@ -1537,12 +1845,20 @@
                 if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
                     if (!onStage) return;
                     e.preventDefault();
+                    if (e.key === "ArrowRight" && atSectionBoundary()) {
+                        if (!e.repeat) registerBoundaryAttempt(false);
+                        return;
+                    }
                     goToSection(currentSection + (e.key === "ArrowRight" ? 1 : -1), true);
                     return;
                 }
                 if (e.key === "ArrowUp" || e.key === "ArrowDown") {
                     if (!onStage) return;
                     e.preventDefault();
+                    if (e.key === "ArrowDown" && atModuleBoundary()) {
+                        if (!e.repeat) registerBoundaryAttempt(true);
+                        return;
+                    }
                     goToModuleAcross(currentModule + (e.key === "ArrowDown" ? 1 : -1), true);
                     return;
                 }
@@ -1589,6 +1905,9 @@
                     });
                 });
             }
+            try {
+                if (sessionStorage.getItem("harcic-morrow-room") === "found") revealSecretEntry(false);
+            } catch (error) {}
             window.addEventListener("load", function() {
                 refreshState();
                 scrollToFocus(false);
