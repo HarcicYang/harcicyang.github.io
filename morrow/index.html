@@ -370,8 +370,42 @@
             animation: page-tear 360ms steps(2, end) 1;
         }
 
+        .atmosphere {
+            position: fixed;
+            inset: 0;
+            z-index: 70;
+            opacity: 0;
+            pointer-events: none;
+            background:
+                radial-gradient(ellipse at 50% 42%, transparent 32%, rgba(5, 2, 2, 0.58) 100%),
+                radial-gradient(circle at 88% 14%, rgba(109, 22, 16, 0.16), transparent 31%),
+                repeating-linear-gradient(0deg, transparent 0 7px, rgba(255, 255, 255, 0.014) 8px);
+            will-change: opacity;
+        }
+
         body.page-glitching main {
             animation: page-warp 430ms steps(2, end) 1;
+        }
+
+        body.deep-night .site-header,
+        body.deep-night .threshold-content {
+            animation: tremor-a 6.4s steps(1, end) infinite;
+        }
+
+        body.has-bleed .night-log-list,
+        body.has-bleed .faq,
+        body.has-bleed .receipt-layout,
+        body.has-bleed .site-footer {
+            animation: tremor-b 4.9s steps(1, end) infinite;
+        }
+
+        body.micro-stutter .site-header,
+        body.micro-stutter .threshold-content,
+        body.micro-stutter .night-log-list,
+        body.micro-stutter .faq,
+        body.micro-stutter .receipt-layout,
+        body.micro-stutter .site-footer {
+            animation: micro-jolt 110ms steps(2, end) 1 !important;
         }
 
         body.has-bleed .receipt-copy h2,
@@ -2027,6 +2061,24 @@
             white-space: nowrap;
         }
 
+        .spec-warning {
+            margin: 1.35rem 0 0;
+            padding: 0.85rem 1rem;
+            border-left: 2px solid rgba(160, 52, 35, 0.46);
+            background: rgba(69, 16, 11, 0.18);
+            color: rgba(232, 181, 149, 0.7);
+            font-size: 0.8rem;
+            letter-spacing: 0.02em;
+            line-height: 1.7;
+        }
+
+        body.has-bleed .spec-warning {
+            border-left-color: #a53a2b;
+            background: rgba(88, 19, 13, 0.3);
+            color: #e6b08d;
+            text-shadow: 0.04em 0 rgba(182, 39, 30, 0.22);
+        }
+
         .night-log {
             overflow: hidden;
             background: #070706;
@@ -3158,6 +3210,54 @@
             }
         }
 
+        @keyframes tremor-a {
+            0%, 9%, 11%, 33%, 36%, 71%, 74%, 100% {
+                transform: translate3d(0, 0, 0);
+            }
+            10% {
+                transform: translate3d(0.32px, -0.16px, 0);
+            }
+            35% {
+                transform: translate3d(-0.24px, 0.13px, 0);
+            }
+            72% {
+                transform: translate3d(0.18px, 0.11px, 0);
+            }
+            73% {
+                transform: translate3d(-0.28px, -0.1px, 0);
+            }
+        }
+
+        @keyframes tremor-b {
+            0%, 14%, 17%, 48%, 51%, 83%, 86%, 100% {
+                transform: translate3d(0, 0, 0);
+            }
+            15% {
+                transform: translate3d(-0.24px, 0.14px, 0);
+            }
+            49% {
+                transform: translate3d(0.3px, -0.12px, 0);
+            }
+            84% {
+                transform: translate3d(-0.16px, -0.1px, 0);
+            }
+        }
+
+        @keyframes micro-jolt {
+            0% {
+                transform: translate3d(0, 0, 0);
+            }
+            28% {
+                transform: translate3d(-1.1px, 0.35px, 0) skewX(0.08deg);
+            }
+            62% {
+                transform: translate3d(0.75px, -0.24px, 0) skewX(-0.06deg);
+            }
+            100% {
+                transform: translate3d(0, 0, 0);
+            }
+        }
+
         @media (max-width: 1100px) {
             .hero {
                 grid-template-columns: minmax(0, 1fr) minmax(21rem, 0.68fr);
@@ -3957,6 +4057,7 @@
     </div>
     <span class="echo-cursor" id="echoCursor" aria-hidden="true"></span>
     <div class="glitch-flash" id="glitchFlash" aria-hidden="true"></div>
+    <div class="atmosphere" id="atmosphere" aria-hidden="true"></div>
     <div class="post-dialog-whisper" id="postDialogWhisper" role="status" aria-live="polite"></div>
 
     <main id="main">
@@ -4347,7 +4448,7 @@
                         <article class="beat" data-beat="2" aria-hidden="true">
                             <span class="beat-label">存在 / 等待</span>
                             <h2>它不需要看见你。<br><em>它只需要等你。</em></h2>
-                            <p>十四个夜晚足够认识一个房间。现在，Morrow 正在学习你站着不动时会发出什么声音。</p>
+                            <p>十四个夜晚足够认识一个房间。你移动时，热场会比你晚半秒才移动。现在它已经追上来了。</p>
                             <div class="beat-readout">
                                 <span>热源</span>
                                 <strong>02</strong>
@@ -4450,6 +4551,7 @@
                             <p>热感与移动数据留在灯内。不会生成影像，也不会保存声音。记忆会在十四夜后自动清除。</p>
                             <span class="spec-afterthought">通常如此。</span>
                         </div>
+                        <p class="spec-warning" data-reveal>如果房间人数显示为 2，请在灯熄灭前保持闭眼。</p>
                     </div>
                 </div>
             </div>
@@ -4777,7 +4879,7 @@
         <p class="dialog-speaker">Morrow</p>
         <h2 id="morrowDialogTitle">房间里有<br>两个会话。</h2>
         <p class="dialog-line" id="dialogLine">你看到了那张收据。它不是演示。</p>
-        <p class="dialog-subline" id="dialogSubline">一个会话属于你。另一个没有关闭按钮。</p>
+        <p class="dialog-subline" id="dialogSubline">一个会话属于你。另一个没有关闭按钮，也没有呼吸声。</p>
         <div class="dialog-actions" id="dialogActions">
             <button type="button" data-dialog-choice="who">你是谁</button>
             <button type="button" data-dialog-choice="exit">关闭页面</button>
@@ -4806,6 +4908,7 @@
             const watcherEyes = document.getElementById("watcherEyes");
             const echoCursor = document.getElementById("echoCursor");
             const glitchFlash = document.getElementById("glitchFlash");
+            const atmosphere = document.getElementById("atmosphere");
             const postDialogWhisper = document.getElementById("postDialogWhisper");
             const roomStatus = document.querySelector(".room-status strong");
             const heroTitle = document.querySelector(".hero h1");
@@ -4844,6 +4947,7 @@
             let scrollEvents = 0;
             let dialogTypingTimer = 0;
             let glitchTimer = 0;
+            let stutterTimer = 0;
 
             const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 
@@ -4880,6 +4984,22 @@
                     glitchFlash.classList.remove("is-active");
                     glitchTimer = 0;
                 }, 450);
+            };
+
+            const scheduleMicroStutter = () => {
+                clearTimeout(stutterTimer);
+                const delay = body.classList.contains("has-bleed")
+                    ? 2600 + Math.random() * 3800
+                    : 3800 + Math.random() * 5200;
+                stutterTimer = setTimeout(() => {
+                    if (!document.hidden && !reduceMotion.matches && body.classList.contains("deep-night")) {
+                        body.classList.remove("micro-stutter");
+                        void body.offsetWidth;
+                        body.classList.add("micro-stutter");
+                        setTimeout(() => body.classList.remove("micro-stutter"), 110 + Math.random() * 80);
+                    }
+                    scheduleMicroStutter();
+                }, delay);
             };
 
             const typeDialogText = (element, text, done) => {
@@ -4963,6 +5083,10 @@
                 const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
                 const progress = clamp(window.scrollY / maxScroll, 0, 1);
                 progressDot.style.top = `${(progress * 100).toFixed(3)}%`;
+                if (atmosphere) {
+                    const veil = clamp((progress - 0.16) / 0.76, 0, 1);
+                    atmosphere.style.opacity = (veil * 0.44).toFixed(3);
+                }
                 body.classList.toggle("deep-night", progress > 0.45);
                 body.classList.toggle("final-night", progress > 0.93);
                 if (!memoryMutated && progress > 0.78) {
@@ -5053,7 +5177,7 @@
                     observer.disconnect();
                     setTimeout(() => {
                         nightLog.classList.add("is-occupied");
-                        if (nightValidation) nightValidation.textContent = "人数已更新：2";
+                        if (nightValidation) nightValidation.textContent = "人数已更新：2。它正在屏幕这一侧呼吸。";
                     }, 2600);
                 }, { threshold: 0.28 });
                 nightObserver.observe(nightLog);
@@ -5178,6 +5302,7 @@
             updateDawn();
             updateSessionClock();
             setInterval(updateSessionClock, 1000);
+            scheduleMicroStutter();
             updateProgress();
         })();
     </script>
