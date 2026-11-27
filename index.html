@@ -1450,9 +1450,6 @@
                 secretTab.addEventListener("click", function() {
                     goToSection(tabs.length - 1, true);
                 });
-                try {
-                    sessionStorage.setItem("harcic-morrow-room", "found");
-                } catch (error) {}
                 refreshState();
                 if (animate) {
                     secretTab.classList.add("is-revealing");
@@ -1905,9 +1902,6 @@
                     });
                 });
             }
-            try {
-                if (sessionStorage.getItem("harcic-morrow-room") === "found") revealSecretEntry(false);
-            } catch (error) {}
             window.addEventListener("load", function() {
                 refreshState();
                 scrollToFocus(false);
