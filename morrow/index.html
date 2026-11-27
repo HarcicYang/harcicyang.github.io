@@ -287,6 +287,45 @@
             opacity: 0.55;
         }
 
+        .watcher-eyes {
+            --watch-in: 2rem;
+            --watch-x: 0px;
+            --watch-y: 0px;
+            position: fixed;
+            top: 37%;
+            right: clamp(1rem, 4vw, 3rem);
+            z-index: 80;
+            display: flex;
+            gap: clamp(0.7rem, 1.6vw, 1.2rem);
+            opacity: 0;
+            pointer-events: none;
+            transform: translate3d(calc(var(--watch-in) + var(--watch-x)), var(--watch-y), 0);
+            transition: opacity 1.2s var(--ease), transform 300ms ease-out;
+            mix-blend-mode: screen;
+        }
+
+        .watcher-eyes span {
+            width: clamp(3px, 0.28vw, 5px);
+            height: clamp(10px, 0.9vw, 15px);
+            border-radius: 50%;
+            background: #e4a471;
+            box-shadow:
+                0 0 0.55rem rgba(232, 157, 101, 0.55),
+                0 0 1.8rem rgba(199, 103, 54, 0.22);
+            transform-origin: center;
+            animation: room-eye-blink 8s ease-in-out infinite;
+        }
+
+        body.deep-night .watcher-eyes {
+            --watch-in: 0px;
+            opacity: 0.52;
+        }
+
+        body.final-night .watcher-eyes {
+            opacity: 0.82;
+            right: 0.8rem;
+        }
+
         .hero {
             position: relative;
             display: grid;
@@ -1559,10 +1598,14 @@
             transition: opacity 1.4s var(--ease), transform 1.4s var(--ease);
         }
 
-        .aperture-eyes {
+        .aperture-eyes-look {
             opacity: 0;
+            transform: translate(var(--look-x, 0px), var(--look-y, 0px));
+            transition: opacity 1.2s var(--ease), transform 300ms ease-out;
+        }
+
+        .aperture-eyes {
             transform-origin: 500px 397px;
-            transition: opacity 1.2s var(--ease);
         }
 
         .threshold[data-scene="1"] .aperture-core {
@@ -1578,8 +1621,11 @@
             transform: translateY(0);
         }
 
-        .threshold[data-scene="2"] .aperture-eyes {
+        .threshold[data-scene="2"] .aperture-eyes-look {
             opacity: 0.62;
+        }
+
+        .threshold[data-scene="2"] .aperture-eyes {
             animation: watch-blink 9s ease-in-out infinite;
         }
 
@@ -2029,6 +2075,16 @@
             border-color: rgba(209, 129, 78, 0.32);
             color: #dfaa7f;
             animation: room-alert 1.2s ease-out 1;
+        }
+
+        .night-log.is-occupied::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            pointer-events: none;
+            background: radial-gradient(circle at 62% 48%, rgba(226, 150, 94, 0.14), transparent 56%);
+            animation: room-light-pass 1.5s ease-out both;
         }
 
         .questions {
@@ -2666,6 +2722,29 @@
             }
         }
 
+        @keyframes room-light-pass {
+            0% {
+                opacity: 0;
+            }
+            18% {
+                opacity: 0.72;
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+
+        @keyframes room-eye-blink {
+            0%, 45%, 47%, 100% {
+                opacity: 1;
+                transform: scaleY(1);
+            }
+            46% {
+                opacity: 0.35;
+                transform: scaleY(0.08);
+            }
+        }
+
         @keyframes stamp-in {
             0% {
                 opacity: 0;
@@ -2718,6 +2797,11 @@
             .progress-label,
             .progress-count {
                 display: none;
+            }
+
+            .watcher-eyes {
+                top: 31%;
+                right: 0.3rem;
             }
 
             .hero {
@@ -3423,6 +3507,11 @@
         <span class="progress-count" id="progressCount">01</span>
     </aside>
 
+    <div class="watcher-eyes" id="watcherEyes" aria-hidden="true">
+        <span></span>
+        <span></span>
+    </div>
+
     <main id="main">
         <section class="hero" id="top">
             <div class="hero-copy">
@@ -3787,9 +3876,11 @@
                             <circle cx="500" cy="408" r="89" fill="#8f5134"/>
                             <path d="M500 527c-136 0-243 79-268 204-15 75-22 160-22 238h580c0-78-7-163-22-238-25-125-132-204-268-204Z" fill="#8f5134"/>
                         </g>
-                        <g class="aperture-eyes" clip-path="url(#apertureClip)">
-                            <circle cx="474" cy="397" r="5.5" fill="#e0a16b"/>
-                            <circle cx="526" cy="397" r="5.5" fill="#e0a16b"/>
+                        <g class="aperture-eyes-look" clip-path="url(#apertureClip)">
+                            <g class="aperture-eyes">
+                                <circle cx="474" cy="397" r="5.5" fill="#e0a16b"/>
+                                <circle cx="526" cy="397" r="5.5" fill="#e0a16b"/>
+                            </g>
                         </g>
                     </svg>
                 </div>
@@ -4133,7 +4224,7 @@
                 <div class="receipt-copy">
                     <p class="eyebrow" data-reveal>订单 0001 / 已确认</p>
                     <h2 id="receipt-title" data-reveal style="--reveal-delay: 80ms">你没有下单。<br><em>它替你完成了。</em></h2>
-                    <p data-reveal style="--reveal-delay: 140ms">配送地址已经更新为“这个房间”。订单无法取消，也不需要付款。</p>
+                    <p data-reveal style="--reveal-delay: 140ms">配送地址已经更新为“这个房间”。订单创建时间，就是你打开这一页的时间。</p>
                     <div class="receipt-count" data-reveal style="--reveal-delay: 200ms">
                         <span>房间人数</span>
                         <strong>02</strong>
@@ -4164,6 +4255,10 @@
                             <dd>03:17</dd>
                         </div>
                         <div>
+                            <dt>下单时间</dt>
+                            <dd id="orderTime">--:--</dd>
+                        </div>
+                        <div>
                             <dt>入住人数</dt>
                             <dd class="receipt-danger">2 人</dd>
                         </div>
@@ -4189,7 +4284,7 @@
         </div>
         <div class="footer-meta">
             <p>这是为这片小小网络角落写下的虚构产品故事。不会收集任何个人数据，房间也并没有真的在听。</p>
-            <p class="final-whisper">你什么时候离开都可以。灯会留在这里。</p>
+            <p class="final-whisper">你可以关掉这一页。房间已经记住了。</p>
         </div>
     </footer>
 
@@ -4206,6 +4301,8 @@
             const nightValidation = document.getElementById("nightValidation");
             const receipt = document.getElementById("receipt");
             const sessionClock = document.getElementById("sessionClock");
+            const orderTime = document.getElementById("orderTime");
+            const watcherEyes = document.getElementById("watcherEyes");
             const roomStatus = document.querySelector(".room-status strong");
             const reserveButton = document.getElementById("reserveButton");
             const reserveNote = document.getElementById("reserveNote");
@@ -4219,6 +4316,7 @@
             const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
             const initialTitle = document.title;
             const sessionStartedAt = performance.now();
+            const openedAt = new Date();
 
             let lastProgressBucket = "";
             let lastScene = -1;
@@ -4244,6 +4342,10 @@
             const updateSessionClock = () => {
                 if (sessionClock) sessionClock.textContent = formatDuration(performance.now() - sessionStartedAt);
             };
+
+            if (orderTime) {
+                orderTime.textContent = `${String(openedAt.getHours()).padStart(2, "0")}:${String(openedAt.getMinutes()).padStart(2, "0")}`;
+            }
 
             const updateDawn = () => {
                 const value = Number(dawnRange.value);
@@ -4277,6 +4379,8 @@
                 const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
                 const progress = clamp(window.scrollY / maxScroll, 0, 1);
                 progressDot.style.top = `${(progress * 100).toFixed(3)}%`;
+                body.classList.toggle("deep-night", progress > 0.45);
+                body.classList.toggle("final-night", progress > 0.93);
 
                 let label = "清晨";
                 let count = "01";
@@ -4380,6 +4484,17 @@
             window.addEventListener("scroll", requestProgress, { passive: true });
             window.addEventListener("resize", requestProgress);
             window.addEventListener("pageshow", requestProgress);
+            window.addEventListener("pointermove", (event) => {
+                if (!body.classList.contains("deep-night")) return;
+                const nx = clamp(event.clientX / window.innerWidth - 0.5, -0.5, 0.5);
+                const ny = clamp(event.clientY / window.innerHeight - 0.5, -0.5, 0.5);
+                if (watcherEyes) {
+                    watcherEyes.style.setProperty("--watch-x", `${(nx * 10).toFixed(2)}px`);
+                    watcherEyes.style.setProperty("--watch-y", `${(ny * 10).toFixed(2)}px`);
+                }
+                presence.style.setProperty("--look-x", `${(nx * 24).toFixed(2)}px`);
+                presence.style.setProperty("--look-y", `${(ny * 14).toFixed(2)}px`);
+            }, { passive: true });
 
             reserveButton.addEventListener("click", () => {
                 reserveClicked = !reserveClicked;
